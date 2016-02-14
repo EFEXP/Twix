@@ -6,11 +6,10 @@ import android.support.v7.widget.RecyclerView;
 
 public abstract class  LastScrollListener extends RecyclerView.OnScrollListener {
 
-  int firstVisibleItem, visibleItemCount, totalItemCount;
-  private int previousTotal = 0;
+  int pastVisiblesItems, visibleItemCount, totalItemCount;
+
   private boolean loading = true;
   private int current_page = 1;
-
   private LinearLayoutManager mLinearLayoutManager;
 
   public  LastScrollListener(LinearLayoutManager linearLayoutManager) {
@@ -20,26 +19,24 @@ public abstract class  LastScrollListener extends RecyclerView.OnScrollListener 
   @Override
   public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
     super.onScrolled(recyclerView, dx, dy);
+    if(dy > 0) //check for scroll down
+    {
+      visibleItemCount = mLinearLayoutManager.getChildCount();
+      totalItemCount =mLinearLayoutManager.getItemCount();
+      pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
 
-    visibleItemCount = recyclerView.getChildCount();
-    totalItemCount = mLinearLayoutManager.getItemCount();
-    firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-
-    if (loading) {
-      if (totalItemCount > previousTotal) {
-        loading = false;
-        previousTotal = totalItemCount;
+      if (loading)
+      {
+        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
+        {
+          loading = false;
+         onLoadMore(current_page);
+          current_page++;
+        }
       }
     }
-
-    if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem)) {
-      current_page++;
-
-      onLoadMore(current_page);
-
-      loading = true;
-    }
   }
+
 
   public abstract void onLoadMore(int current_page);
 }
