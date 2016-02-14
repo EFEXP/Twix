@@ -2,10 +2,7 @@ package xyz.donot.twix.twitter
 
 import rx.Observable
 import rx.lang.kotlin.observable
-import twitter4j.Paging
-import twitter4j.Status
-import twitter4j.Twitter
-import twitter4j.TwitterException
+import twitter4j.*
 import xyz.donot.twix.util.basicNetworkTask
 
 class TwitterObservable(val twitter : Twitter)
@@ -42,6 +39,22 @@ class TwitterObservable(val twitter : Twitter)
     }
       .basicNetworkTask()
   }
+
+  fun getHomeTimelineListAsync(paging: Paging): Observable<ResponseList<Status>>
+  {
+    return  Observable.create<ResponseList<Status>> { subscriber ->
+      try {
+          subscriber.onNext(twitter.getHomeTimeline(paging))
+
+      } catch (e: TwitterException) {
+        subscriber.onError(e)
+      }
+      subscriber.onCompleted()
+    }
+      .basicNetworkTask()
+  }
+
+
   fun getMentionsTimelineAsync(paging: Paging): Observable<Status>
   {
     return  Observable.create<Status> { subscriber ->

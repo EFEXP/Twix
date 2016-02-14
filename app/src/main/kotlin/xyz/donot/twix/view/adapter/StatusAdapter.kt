@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.util.getRelativeTime
 import xyz.donot.twix.view.listener.OnRecyclerListener
-import twitter4j.Status
 import java.util.*
 
 class StatusAdapter(private val mContext: Context, private val mData: ArrayList<Status>?, private val mListener: OnRecyclerListener?) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
@@ -41,17 +41,10 @@ class StatusAdapter(private val mContext: Context, private val mData: ArrayList<
            countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
            Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
           }
-
-
         }
-
-
-
-      // クリック処理
-        viewHolder.itemView.setOnClickListener {mListener?.onRecyclerClicked(it, i) }
-
+      viewHolder.itemView.setOnClickListener {mListener?.onRecyclerClicked(it, i) }
     }
-
+  
     override fun getItemCount(): Int {
         if (mData != null) {
             return mData.size
