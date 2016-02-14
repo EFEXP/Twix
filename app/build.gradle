@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+    defaultConfig {
+        applicationId "xyz.donot.twix"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+    }
+
+}
+
+dependencies {
+    def version="0.87.4"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile "io.reactivex:rxjava:1.1.1"
+    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'com.trello:rxlifecycle-components:0.4.0'
+    compile 'io.reactivex:rxkotlin:0.40.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'org.twitter4j:twitter4j-core:4.0.4'
+    compile 'org.twitter4j:twitter4j-stream:4.0.4'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    //realm
+    compile "io.realm:realm-android-library:${version}@aar"
+    compile "io.realm:realm-annotations:${version}"
+    kapt "io.realm:realm-annotations:${version}"
+    kapt "io.realm:realm-annotations-processor:${version}"
+    compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
+        transitive = true;
+    }
+}
+kapt {
+    generateStubs = true
+}
+buildscript {
+    ext.kotlin_version = '1.0.0-rc-1036'
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+      classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+        classpath 'io.fabric.tools:gradle:1.21.2'
+    }
+}
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
+}
