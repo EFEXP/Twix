@@ -29,10 +29,9 @@ class CentralActivity : AppCompatActivity() {
         fab.setOnClickListener({
           TweetComposer.Builder(this).show()
         })
+
         val v=findViewById(R.id.design_navigation_view) as NavigationView
-        v.setNavigationItemSelectedListener {
-          menuItem: MenuItem ->
-          throw UnknownError()
+        v.setNavigationItemSelectedListener { menuItem: MenuItem ->
           Toast.makeText(this@CentralActivity,"design_navigation_view",Toast.LENGTH_LONG).show()
           when (menuItem.itemId) {
             R.id.setting -> {

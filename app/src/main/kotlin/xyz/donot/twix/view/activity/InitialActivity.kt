@@ -3,20 +3,20 @@ package xyz.donot.twix.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity
+import android.support.v7.app.AppCompatActivity
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.TwitterSession
-import xyz.donot.twix.model.DBAccount
-import xyz.donot.twix.R
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.android.synthetic.main.content_initial.*
+import xyz.donot.twix.R
+import xyz.donot.twix.model.DBAccount
 
 
-class InitialActivity : RxAppCompatActivity() {
+class InitialActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

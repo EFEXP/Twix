@@ -33,7 +33,8 @@
     <activity
       android:name=".view.activity.AccountSettingActivity"
       android:label="@string/title_activity_account_setting"
-      android:theme="@style/AppTheme.NoActionBar"></activity>
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity android:name=".view.activity.BaseActivity"></activity>
   </application>
 
 </manifest>

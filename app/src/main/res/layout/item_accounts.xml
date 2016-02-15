@@ -15,7 +15,7 @@
     android:layout_margin="5dp"
     android:contentDescription="@string/Loading"
     android:layout_alignParentLeft="true"
-
+    android:scaleType="centerCrop"
     />
 
   <TextView
