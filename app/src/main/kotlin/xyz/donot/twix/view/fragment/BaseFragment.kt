@@ -28,17 +28,19 @@ abstract class BaseFragment : Fragment() {
         retainInstance = true
     }
 
+
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
         val recycler_view=v.findViewById(R.id.recycler_view)as SuperRecyclerView
-     recycler_view.apply {
+        recycler_view.apply {
        setLayoutManager(LinearLayoutManager(activity))
-       adapter = mAdapter
+       adapter =mAdapter
         setupMoreListener( { numberOfItems,  numberBeforeMore,  currentItemPos ->
           TimelineLoader();
           page++ }
-          , 10)
+          , 5)
      }
+
 
      return v}
 

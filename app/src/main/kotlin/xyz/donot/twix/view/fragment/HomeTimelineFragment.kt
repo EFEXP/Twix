@@ -37,20 +37,19 @@ class HomeTimelineFragment : BaseFragment() {
   fun onEventMainThread(statusEvent: OnStatusEvent){
     logd("Got a message", statusEvent.status.text)
     data.addFirst(statusEvent.status)
-    mAdapter.
     mAdapter.notifyItemInserted(0)
 
     }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-      eventBus.register(this)
-  }
 
-  override fun onDestroy() {
-    super.onDestroy()
+  override fun onPause() {
+    super.onPause()
     eventBus.unregister(this)
+
   }
 
-
+  override fun onResume() {
+    super.onResume()
+    eventBus.register(this)
+  }
 }
