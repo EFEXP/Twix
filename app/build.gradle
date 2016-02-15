@@ -48,20 +48,18 @@ dependencies {
     compile 'com.trello:rxlifecycle-components:0.4.0'
     compile 'io.reactivex:rxkotlin:0.40.1'
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'org.twitter4j:twitter4j-core:4.0.4'
     compile 'org.twitter4j:twitter4j-stream:4.0.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:support-v4:23.1.1'
-  compile 'com.malinskiy:superrecyclerview:1.1.2'
- // compile 'com.jcodecraeer:xrecyclerview:1.2.6'
+    compile 'com.malinskiy:superrecyclerview:1.1.2'
+     compile 'org.greenrobot:eventbus:3.0.0'
 }
 kapt {
     generateStubs = true
 }
 buildscript {
-    ext.kotlin_version = '1.0.0-rc-1036'
+    ext.kotlin_version = '1.0.0'
     repositories {
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }

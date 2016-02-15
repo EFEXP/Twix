@@ -8,13 +8,15 @@ import xyz.donot.twix.util.getMyName
 import xyz.donot.twix.view.fragment.FavTimelineFragment
 
 import xyz.donot.twix.view.fragment.HomeTimelineFragment
+import xyz.donot.twix.view.fragment.UserTimelineFragment
 
 class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         return when(position){
           0->HomeTimelineFragment()
-          1->FavTimelineFragment(getMyName())
+          1->UserTimelineFragment(getMyName())
+          2->FavTimelineFragment(getMyName())
           else->FavTimelineFragment(getMyName())//throw IllegalStateException()
         }}
 
@@ -22,11 +24,12 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence {
         return when(position){
           0->"Home"
-          1->"Fav"
+          1->"User"
+          2->"Me"
           else->"Unknown"
     }}
 
     override fun getCount(): Int {
-        return 2
+        return 3
     }
 }

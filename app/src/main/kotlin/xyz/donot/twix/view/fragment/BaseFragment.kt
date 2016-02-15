@@ -29,7 +29,7 @@ abstract class BaseFragment : RxFragment() {
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
-    val recycler_view=v.findViewById(R.id.recycler_view)as SuperRecyclerView
+        val recycler_view=v.findViewById(R.id.recycler_view)as SuperRecyclerView
 
      recycler_view.apply {
        setLayoutManager(LinearLayoutManager(activity))

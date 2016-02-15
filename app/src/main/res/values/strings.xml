@@ -5,4 +5,8 @@
 
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="setting">設定</string>
+  <string name="account">アカウント切り替え</string>
+  <string name="title_activity_account_setting">AccountSettingActivity</string>
+  <string name="Loading">Loading</string>
 </resources>
