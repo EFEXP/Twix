@@ -15,8 +15,16 @@ fun Context.getTwitterInstance(): twitter4j.Twitter {
   val consumerSecret = this.getString(R.string.twitter_consumer_secret)
   val twitter =  TwitterFactory().instance
   twitter.setOAuthConsumer(consumerKey, consumerSecret)
-  twitter.oAuthAccessToken=this.loadAccessToken()
+  twitter.oAuthAccessToken=loadAccessToken()
   return twitter
+}
+
+
+fun getMyName(): String{
+  Realm.getDefaultInstance().use {
+    val ac= it.where(DBAccount::class.java).equalTo("isMain",true).findFirst()
+    return ac.name?:throw IllegalStateException()
+  }
 }
 
 

@@ -7,8 +7,12 @@
   android:padding="@dimen/tw__card_spacing_small"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
   >
-<android.support.v7.widget.RecyclerView
+<com.malinskiy.superrecyclerview.SuperRecyclerView
   android:id="@+id/recycler_view"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"/>
+  android:layout_height="match_parent"
+  app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+  app:scrollbarStyle="insideInset"
+  app:layout_behavior="@string/appbar_scrolling_view_behavior"
+  />
 </LinearLayout>

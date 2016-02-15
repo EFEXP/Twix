@@ -15,7 +15,7 @@ import xyz.donot.twix.util.getRelativeTime
 import xyz.donot.twix.view.listener.OnRecyclerListener
 import java.util.*
 
-class StatusAdapter(private val mContext: Context, private val mData: ArrayList<Status>?, private val mListener: OnRecyclerListener?) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
+class StatusAdapter(private val mContext: Context, private val mData: LinkedList<Status>?, private val mListener: OnRecyclerListener?) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
 
 
     private val mInflater: LayoutInflater
@@ -44,7 +44,7 @@ class StatusAdapter(private val mContext: Context, private val mData: ArrayList<
         }
       viewHolder.itemView.setOnClickListener {mListener?.onRecyclerClicked(it, i) }
     }
-  
+
     override fun getItemCount(): Int {
         if (mData != null) {
             return mData.size
