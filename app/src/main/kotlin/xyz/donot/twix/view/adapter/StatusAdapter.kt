@@ -32,7 +32,10 @@ class StatusAdapter(private val mContext: Context, private val mData: LinkedList
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         // データ表示
         if (mData != null && mData.size > i ) {
-         val item= if (mData[i].isRetweet){mData[i].retweetedStatus}else{mData[i]}
+         val item= if (mData[i].isRetweet){
+           viewHolder.retweetText.text="${mData[i].user.name}がリツイート"
+             mData[i].retweetedStatus
+           }else{mData[i]}
           viewHolder.apply {
            userName.text = item.user.name
            screenName.text = item.user.screenName
@@ -53,9 +56,9 @@ class StatusAdapter(private val mContext: Context, private val mData: LinkedList
         }
     }
 
-    // ViewHolder(固有ならインナークラスでOK)
+    // ViewHolder
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+      val retweetText:TextView
       val userName: TextView
       val screenName:TextView
       val tweetText:TextView
@@ -64,6 +67,7 @@ class StatusAdapter(private val mContext: Context, private val mData: LinkedList
       val icon:ImageView
 
         init {
+          retweetText=itemView.findViewById(R.id.textView_isRT)as TextView
           userName = itemView.findViewById(R.id.user_name_text) as TextView
           screenName = itemView.findViewById(R.id.screen_name) as TextView
           tweetText = itemView.findViewById(R.id.tweet_text) as TextView

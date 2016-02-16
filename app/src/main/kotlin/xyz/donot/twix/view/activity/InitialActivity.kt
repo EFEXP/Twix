@@ -17,7 +17,6 @@ import xyz.donot.twix.model.DBAccount
 
 
 class InitialActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
@@ -25,26 +24,35 @@ class InitialActivity : AppCompatActivity() {
         twitter_login_button.callback=object : Callback<TwitterSession>() {
           override fun success(result: Result<TwitterSession>) {
             val authToken = Twitter.getSessionManager().activeSession.authToken
+
            Realm.getDefaultInstance().use {
+             if(!it.where(DBAccount::class.java).equalTo("id",result.data.userId).isValid){showErrorSnackbar( R.string.description_already_added_account)
+             return
+             }
              it.executeTransaction {
               it.createObject(DBAccount::class.java).apply {
                 key = authToken.token
-               secret = authToken.secret
-               id =result.data.userId
-                name =result.data.userName
+                secret = authToken.secret
+                id =result.data.userId
+                screenName =result.data.userName
                isMain = true
               }
              }
            }
-            startActivity(Intent(this@InitialActivity, CentralActivity::class.java))
+            startActivity(Intent(this@InitialActivity, MainActivity::class.java))
             finish()
           }
-          override fun failure(exception: TwitterException) {
-            Snackbar.make(initial_activity_coordinator,"認証に失敗しました",Snackbar.LENGTH_LONG).show()
+          override fun failure(exception: TwitterException?) {
+         showErrorSnackbar(R.string.description_a_network_error_occurred)
           }
         }
     }
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+  fun showErrorSnackbar(stringId:Int)
+  {
+    Snackbar.make(initial_activity_coordinator,  resources.getString(stringId),Snackbar.LENGTH_LONG).show()
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     twitter_login_button.onActivityResult(requestCode, resultCode, data)
   }

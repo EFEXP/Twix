@@ -19,7 +19,9 @@ class AccountSettingActivity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { startActivity(Intent(this@AccountSettingActivity,InitialActivity::class.java)) }
+        fab.setOnClickListener { startActivity(Intent(this@AccountSettingActivity,InitialActivity::class.java))
+        finish()
+        }
         val ac=Realm.getDefaultInstance().where(DBAccount::class.java).findAll()
         accountList.adapter=MyUserAccountAdapter(this@AccountSettingActivity,0,ac,true)
         accountList.setOnItemClickListener { adapterView, view, i, l ->

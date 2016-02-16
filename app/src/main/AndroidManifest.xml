@@ -21,8 +21,8 @@
       android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
 
     <activity
-      android:name=".view.activity.CentralActivity"
-      android:label="@string/title_activity_central"
+      android:name=".view.activity.MainActivity"
+      android:label="@string/title_activity_main"
       android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,9 @@
       android:name=".view.activity.AccountSettingActivity"
       android:label="@string/title_activity_account_setting"
       android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".view.activity.BaseActivity"></activity>
+    <activity
+      android:name=".view.activity.SettingsActivity"
+      android:label="@string/title_activity_settings"></activity>
   </application>
 
 </manifest>

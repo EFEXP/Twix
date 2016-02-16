@@ -8,7 +8,7 @@ import xyz.donot.twix.util.basicNetworkTask
 class TwitterObservable(val twitter : Twitter)
 {
 
-  fun getFavoritesAsync(screenName:String?,paging: Paging): Observable<Status>
+  fun getFavoritesAsync(screenName:Long,paging: Paging): Observable<Status>
   {
     return  observable<Status> { subscriber ->
       try {
@@ -71,7 +71,7 @@ class TwitterObservable(val twitter : Twitter)
       .basicNetworkTask()
   }
 
-  fun getUserTimelineAsync(screenName:String?,paging: Paging): Observable<Status>
+  fun getUserTimelineAsync(screenName:Long?,paging: Paging): Observable<Status>
   {
     return  Observable.create<Status> { subscriber ->
       try {

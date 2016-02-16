@@ -2,6 +2,8 @@ package xyz.donot.twix.view.fragment
 
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -36,9 +38,9 @@ class HomeTimelineFragment : BaseFragment() {
   @Subscribe
   fun onEventMainThread(statusEvent: OnStatusEvent){
     logd("Got a message", statusEvent.status.text)
+  Handler(Looper.getMainLooper()).post {
     data.addFirst(statusEvent.status)
-    mAdapter.notifyItemInserted(0)
-
+    mAdapter.notifyItemInserted(0) }
     }
 
 

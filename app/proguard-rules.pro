@@ -41,6 +41,11 @@
 # Kotlin
 -dontwarn kotlin.**
 
+# for EventBus
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+
 -keep class io.realm.annotations.RealmModule
 -keep @io.realm.annotations.RealmModule class *
 -keep class io.realm.internal.Keep

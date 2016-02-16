@@ -28,6 +28,7 @@
       android:layout_marginStart="5dp"
       android:layout_toEndOf="@+id/icon"
       android:textStyle="bold"
+      android:textColor="?android:textColorPrimary"
       android:layout_marginLeft="5dp"
       android:layout_toRightOf="@+id/icon" />
 
@@ -42,7 +43,6 @@
       android:paddingEnd="0dp"
       android:paddingStart="5dp"
       android:singleLine="true"
-      android:textColor="?android:attr/textColorSecondary"
       android:textAppearance="?android:attr/textAppearanceSmall"
       android:layout_toRightOf="@+id/textView_date"
       android:paddingRight="0dp"
@@ -58,7 +58,6 @@
       android:paddingEnd="0dp"
       android:paddingStart="5dp"
       android:singleLine="true"
-      android:textColor="@color/tw__composer_light_gray"
       android:textAppearance="?android:attr/textAppearanceSmall"
       android:layout_toRightOf="@+id/user_name_text"
       android:paddingRight="0dp"
@@ -72,6 +71,7 @@
       android:layout_alignStart="@+id/user_name_text"
       android:layout_below="@+id/user_name_text"
       android:layout_alignLeft="@+id/user_name_text"
+      android:textColor="?android:textColorPrimary"
       android:autoLink="web"
       />
     <TextView
@@ -80,7 +80,6 @@
       android:layout_height="wrap_content"
       android:layout_below="@+id/media_container_grid"
       android:textAppearance="?android:attr/textAppearanceSmall"
-      android:textColor="@color/tw__composer_light_gray"
       android:layout_alignStart="@+id/tweet_text"
       android:layout_alignLeft="@+id/tweet_text" />
     <TextView
@@ -111,7 +110,7 @@
       android:layout_alignStart="@+id/tweet_text"
       android:layout_below="@id/count"
       android:textAppearance="?android:attr/textAppearanceSmall"
-      android:textColor="?android:attr/textColorPrimary"
+      android:textColor="?android:attr/textColorHighlight"
       android:layout_alignLeft="@+id/tweet_text" />
   </RelativeLayout>
 
