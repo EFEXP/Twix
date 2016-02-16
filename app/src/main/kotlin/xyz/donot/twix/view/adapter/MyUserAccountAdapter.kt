@@ -9,11 +9,18 @@ import android.widget.ListAdapter
 import android.widget.TextView
 
 import com.bumptech.glide.Glide
+import io.realm.Realm
 
 import io.realm.RealmBaseAdapter
 import io.realm.RealmResults
+import rx.lang.kotlin.observable
+import twitter4j.Twitter
+import twitter4j.User
 import xyz.donot.twix.R
 import xyz.donot.twix.model.DBAccount
+import xyz.donot.twix.util.basicNetworkTask
+import xyz.donot.twix.util.getMyId
+import xyz.donot.twix.util.getTwitterInstance
 
 
 class MyUserAccountAdapter(context: Context, resId: Int,
@@ -38,10 +45,9 @@ class MyUserAccountAdapter(context: Context, resId: Int,
 
         val item = realmResults[position]
       viewHolder.name?.text = item.name
-
-
+      Glide.with(context).load(item.profileImageUrl).into(viewHolder.icon)
       viewHolder.screenName?.text = item.screenName
-        Glide.with(context).load(item.profileImageUrl).into(viewHolder.icon)
+
         Log.d("Realm", item.toString())
         return convertView
     }

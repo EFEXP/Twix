@@ -70,4 +70,5 @@
   <string name="pref_title_retweet">リツイート</string>
   <string name="pref_title_like">いいね</string>
   <string name="pref_title_reply">リプライ</string>
+  <string name="title_activity_picture">PictureActivity</string>
 </resources>
