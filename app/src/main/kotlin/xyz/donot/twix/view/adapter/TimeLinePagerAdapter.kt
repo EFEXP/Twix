@@ -18,7 +18,7 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
           0->HomeTimelineFragment()
           1->UserTimelineFragment(getMyId())
           2->FavTimelineFragment(getMyId())
-          else->FavTimelineFragment(getMyId())//throw IllegalStateException()
+          else->throw  IllegalStateException()
         }}
 
 
@@ -26,8 +26,8 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return when(position){
           0->"Home"
           1->"User"
-          2->"Fav"
-          else->"Unknown"
+          2->"Like"
+          else->throw  IllegalStateException()
     }}
 
     override fun getCount(): Int {

@@ -3,8 +3,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context="xyz.donot.twix.view.fragment.PictureFragment">
-<com.goka.flickableview.FlickableImageView
-  android:id="@+id/flickable_image"
+<uk.co.senab.photoview.PhotoView
+  android:id="@+id/photo_view_image"
   android:layout_width="match_parent"
   android:layout_height="match_parent" />
 </FrameLayout>

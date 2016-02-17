@@ -2,16 +2,20 @@ package xyz.donot.twix.view.adapter
 
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.util.getRelativeTime
+import xyz.donot.twix.view.activity.PictureActivity
 import xyz.donot.twix.view.listener.OnRecyclerListener
 import java.util.*
 
@@ -35,7 +39,29 @@ class StatusAdapter(private val mContext: Context, private val mData: LinkedList
          val item= if (mData[i].isRetweet){
            viewHolder.retweetText.text="${mData[i].user.name}がリツイート"
              mData[i].retweetedStatus
-           }else{mData[i]}
+           }else{
+           viewHolder.retweetText.visibility=View.GONE
+           mData[i]
+         }
+            //画像関連
+          if(item.extendedMediaEntities.size>0){
+            val list =item.extendedMediaEntities.map { it.mediaURLHttps }
+            val gridAdapter=TweetPictureGridAdapter(mContext,0)
+            item.extendedMediaEntities.iterator().forEach {
+              gridAdapter.add(it.mediaURLHttps)
+            }
+            viewHolder.mediaContainerGrid.apply {
+              adapter=gridAdapter
+              onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
+                context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
+              visibility = View.VISIBLE
+            }
+
+          }
+          else{
+            viewHolder.mediaContainerGrid.visibility = View.GONE
+          }
+          //ビューホルダー
           viewHolder.apply {
            userName.text = item.user.name
            screenName.text = item.user.screenName
@@ -65,8 +91,9 @@ class StatusAdapter(private val mContext: Context, private val mData: LinkedList
       val  dateText:TextView
       val countText:TextView
       val icon:ImageView
-
+      val mediaContainerGrid:GridView
         init {
+          mediaContainerGrid=itemView.findViewById(R.id.media_container_grid)as GridView
           retweetText=itemView.findViewById(R.id.textView_isRT)as TextView
           userName = itemView.findViewById(R.id.user_name_text) as TextView
           screenName = itemView.findViewById(R.id.screen_name) as TextView
