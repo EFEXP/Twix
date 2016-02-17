@@ -37,6 +37,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //realm
+  compile 'com.android.support:customtabs:23.1.1'
     compile "io.realm:realm-android-library:${version}@aar"
     compile "io.realm:realm-annotations:${version}"
     kapt "io.realm:realm-annotations:${version}"
@@ -46,7 +47,6 @@ dependencies {
     }
     kapt 'org.greenrobot:eventbus:3.0.0'
   compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
-    compile 'com.apradanas.simplelinkabletext:library:1.0.3@aar'
     compile 'io.reactivex:rxkotlin:0.40.1'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.android.support:design:23.1.1'

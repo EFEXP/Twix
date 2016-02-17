@@ -42,16 +42,21 @@ class HomeTimelineFragment : BaseFragment() {
     data.addFirst(statusEvent.status)
     mAdapter.notifyItemInserted(0) }
     }
+  override fun onCreate(savedInstanceState: Bundle?){
+    super.onCreate(savedInstanceState)
+    eventBus.register(this)
+  }
 
-
+  override fun onDestroy() {
+    super.onDestroy()
+    eventBus.unregister(this)
+  }
   override fun onPause() {
     super.onPause()
-    eventBus.unregister(this)
-
   }
 
   override fun onResume() {
     super.onResume()
-    eventBus.register(this)
+
   }
 }
