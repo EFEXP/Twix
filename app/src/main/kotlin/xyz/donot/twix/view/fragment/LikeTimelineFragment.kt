@@ -6,21 +6,15 @@ import twitter4j.Paging
 import xyz.donot.twix.twitter.TwitterObservable
 import xyz.donot.twix.util.getTwitterInstance
 
-class FavTimelineFragment(val userId:Long): BaseFragment() {
+class LikeTimelineFragment(val userId:Long): BaseFragment() {
+  val twitter by lazy { activity.getTwitterInstance() }
   override fun TimelineLoader() {
-    val twitter=activity.getTwitterInstance()
     val paging = Paging(page, 30)
-    page++
     TwitterObservable(twitter).getFavoritesAsync(userId,paging).subscribe {
-      data.add(it);
-      mAdapter.notifyItemChanged(mAdapter.itemCount) }
+      mAdapter.add(it); }
   }
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-    val twitter=activity.getTwitterInstance()
-    TwitterObservable(twitter).getFavoritesAsync(userId,Paging(1)).subscribe {
-      data.add(it);
-      mAdapter.notifyItemChanged(mAdapter.itemCount) }
-    page++
+
   }
 
 

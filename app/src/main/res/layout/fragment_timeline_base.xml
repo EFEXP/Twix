@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  android:orientation="vertical"
   android:layout_width="match_parent"
-    android:layout_height="match_parent"
+  android:layout_height="match_parent"
   android:padding="@dimen/tw__card_spacing_small"
-  app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  >
-<com.malinskiy.superrecyclerview.SuperRecyclerView
+  app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
   android:id="@+id/recycler_view"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
-  app:scrollbarStyle="insideInset"
-  app:layout_behavior="@string/appbar_scrolling_view_behavior"
+  app:recyclerviewScrollbars="vertical"
   />
+  <!--  app:scrollbarStyle="insideInset"
+    app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+  -->
+
 </LinearLayout>

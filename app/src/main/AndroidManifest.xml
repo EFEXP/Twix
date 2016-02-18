@@ -40,6 +40,10 @@
     <activity
       android:name=".view.activity.PictureActivity"
       android:label="@string/title_activity_picture"
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.UserActivity"
+      android:label="@string/title_activity_scrolling"
       android:theme="@style/AppTheme.NoActionBar"></activity>
   </application>
 

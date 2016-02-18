@@ -6,31 +6,33 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.goka.flickableview.FlickableImageView
 import org.greenrobot.eventbus.EventBus
-
+import uk.co.senab.photoview.PhotoViewAttacher
 import xyz.donot.twix.R
-import xyz.donot.twix.event.OnFlickedEvent
 
 
 class PictureFragment : Fragment() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val eventbus=   EventBus.getDefault()
-     val url= arguments.getString("url")
-         val image=   view.findViewById(R.id.flickable_image)as FlickableImageView
-      Glide.with(this).load(url).asBitmap().into(image)
-      image.setOnFlickListener(object:FlickableImageView.OnFlickableImageViewFlickListener{
-        override fun onStartFlick() {
+  }
 
-        }
 
-        override fun onFinishFlick() {
-          eventbus.post(OnFlickedEvent())
-        }
-      })
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    val v = inflater.inflate(R.layout.fragment_picture, container, false)
+    val eventbus=   EventBus.getDefault()
+    val stringURL= arguments.getString("url")
+    val img = v.findViewById(R.id.photo_view_image)as ImageView
+    Glide.with(this).load( stringURL).asBitmap().into(img)
+    PhotoViewAttacher(img).update()
 
-    }
+
+
+    return v
+  }
+
+
+
 }

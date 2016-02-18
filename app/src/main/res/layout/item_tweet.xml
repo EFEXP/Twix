@@ -62,9 +62,7 @@
       android:layout_toRightOf="@+id/user_name_text"
       android:paddingRight="0dp"
       android:paddingLeft="5dp" />
-
-
-    <TextView
+    <xyz.donot.twix.view.customview.simplelinkabletext.LinkableTextView
       android:id="@+id/tweet_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -72,8 +70,9 @@
       android:layout_below="@+id/user_name_text"
       android:layout_alignLeft="@+id/user_name_text"
       android:textColor="?android:textColorPrimary"
-      android:autoLink="web"
       />
+
+
     <TextView
       android:id="@+id/count"
       android:layout_width="wrap_content"
@@ -94,6 +93,7 @@
       android:id="@+id/media_container_grid"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+
       android:numColumns="4"
       android:columnWidth="100dp"
       android:verticalSpacing="2dp"
