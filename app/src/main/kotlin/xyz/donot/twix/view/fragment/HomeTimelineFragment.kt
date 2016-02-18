@@ -32,7 +32,8 @@ class HomeTimelineFragment : BaseFragment() {
         data.add(it)
         mAdapter.notifyItemChanged(mAdapter.itemCount) }
         page++
-   StreamManager(twitter,USER_STREAM).run()
+   StreamManager.getStreamObject(twitter,USER_STREAM).run()
+
     }
 
   @Subscribe
