@@ -3,6 +3,7 @@
   package="xyz.donot.twix">
 
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.VIBRATE" />
 
   <application
     android:name=".Twix"
@@ -44,7 +45,7 @@
     <activity
       android:name=".view.activity.UserActivity"
       android:label="@string/title_activity_scrolling"
-      android:theme="@style/AppTheme.NoActionBar"></activity>
+      android:theme="@style/AppTheme.NoActionBar" />
   </application>
 
 </manifest>

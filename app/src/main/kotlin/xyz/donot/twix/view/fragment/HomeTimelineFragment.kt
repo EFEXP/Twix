@@ -4,11 +4,13 @@ package xyz.donot.twix.view.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.preference.PreferenceManager
 import android.view.View
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import twitter4j.Paging
 import twitter4j.Status
+import xyz.donot.twix.event.OnDeleteEvent
 import xyz.donot.twix.event.OnStatusEvent
 import xyz.donot.twix.event.TwitterSubscriber
 import xyz.donot.twix.twitter.Factory
@@ -34,7 +36,7 @@ class HomeTimelineFragment : BaseFragment() {
   }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-  Factory.getStreamObject(twitter, StreamType.USER_STREAM).run()
+  Factory.getStreamObject(activity,twitter, StreamType.USER_STREAM).run()
     }
 
   @Subscribe
@@ -43,6 +45,12 @@ class HomeTimelineFragment : BaseFragment() {
   Handler(Looper.getMainLooper()).post {
     mAdapter.insert(statusEvent.status) }
     }
+
+  @Subscribe
+  fun onEvent(deleteEvent: OnDeleteEvent){
+    if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("deleteNotify",true))
+   twitter.updateStatus("${deleteEvent.component1().userId}のツイ消しで草")
+  }
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)
     eventBus.register(this)
