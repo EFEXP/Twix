@@ -26,8 +26,6 @@ abstract class BaseFragment : Fragment() {
     open val  mAdapter by lazy {UltimateStatusAdapter(activity, data)}
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true

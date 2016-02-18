@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <xyz.donot.twix.view.customview.simplelinkabletext.LinkableEditText
+  android:gravity="bottom"
+  android:minHeight="200dp"
+    android:layout_height="wrap_content">
+  <EditText
     android:hint="@string/What_is_happening"
     android:id="@+id/editText_status"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="top"
     android:focusable="true"
     android:layout_weight="5"/>
     <Button

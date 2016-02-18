@@ -19,6 +19,7 @@ import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
 import xyz.donot.twix.util.getRelativeTime
 import xyz.donot.twix.view.activity.PictureActivity
+import xyz.donot.twix.view.activity.UserActivity
 import xyz.donot.twix.view.customview.simplelinkabletext.Link
 import xyz.donot.twix.view.customview.simplelinkabletext.LinkableTextView
 import xyz.donot.twix.view.listener.OnRecyclerListener
@@ -26,6 +27,29 @@ import java.util.*
 import java.util.regex.Pattern
 
  class StatusAdapter(private val mContext: Context, private val mData: LinkedList<Status>, private val mListener: OnRecyclerListener?) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
+
+   val array=  arrayOf(
+
+     Link(Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?"))
+       .setUnderlined(false)
+       .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
+       .setTextStyle(Link.TextStyle.BOLD)
+       .setClickListener {
+         EventBus.getDefault().post(OnCustomtabEvent(it))
+
+       }
+     ,
+
+     Link(Pattern.compile("(@\\w+)"))
+       .setUnderlined(false)
+       .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
+       .setTextStyle(Link.TextStyle.BOLD)
+       .setClickListener {
+       }
+     ,
+     Link(Pattern.compile("(#\\w+)"))
+       .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
+       .setTextStyle(Link.TextStyle.BOLD)).toMutableList()
 
 
     private val mInflater: LayoutInflater
@@ -69,39 +93,13 @@ import java.util.regex.Pattern
           }
           //ビューホルダー
           viewHolder.apply {
-          val array=  arrayOf(
-
-            Link(Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?"))
-              .setUnderlined(false)
-              .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
-              .setTextStyle(Link.TextStyle.BOLD)
-              .setClickListener {
-
-                EventBus.getDefault().post(OnCustomtabEvent(it))
-
-              }
-            ,
-
-            Link(Pattern.compile("(@\\w+)"))
-              .setUnderlined(false)
-              .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
-              .setTextStyle(Link.TextStyle.BOLD)
-              .setClickListener {
-
-
-
-              }
-            ,
-              Link(Pattern.compile("(#\\w+)"))
-                .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
-                .setTextStyle(Link.TextStyle.BOLD)).toMutableList()
-
-            status_text.setText(item.text).addLinks(array).build()
+           status_text.setText(item.text).addLinks(array).build()
            userName.text = item.user.name
            screenName.text = item.user.screenName
            dateText.text = getRelativeTime(item.createdAt)
            countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
-           Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
+            Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
+            icon.setOnClickListener({ mContext.startActivity(Intent(mContext,UserActivity::class.java)) })
           }
         }
       viewHolder.itemView.setOnClickListener {mListener?.onRecyclerClicked(it, i) }

@@ -10,13 +10,9 @@ import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-
-
 import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
-import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.util.haveToken
-import xyz.donot.twix.util.updateUserProfile
 import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
 
 
@@ -48,8 +44,6 @@ class MainActivity : AppCompatActivity() {
           }
           true
         })
-
-        updateUserProfile(this@MainActivity.getTwitterInstance())
       }
 
 
@@ -63,7 +57,9 @@ class MainActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    eventbus.register(this@MainActivity)}
+    eventbus.register(this@MainActivity)
+
+  }
 
   @Subscribe
  fun onEventMainThread(onCustomTabEvent: OnCustomtabEvent){

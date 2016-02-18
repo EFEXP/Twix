@@ -3,9 +3,12 @@ package xyz.donot.twix.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_account_setting.*
+
 import kotlinx.android.synthetic.main.content_account_setting.*
 import xyz.donot.twix.R
 import xyz.donot.twix.model.DBAccount
@@ -22,16 +25,20 @@ class AccountSettingActivity : AppCompatActivity() {
         fab.setOnClickListener { startActivity(Intent(this@AccountSettingActivity,InitialActivity::class.java))
         finish()
         }
-        val ac=Realm.getDefaultInstance().where(DBAccount::class.java).findAll()
+        val ac= Realm.getDefaultInstance().where(DBAccount::class.java).findAll()
         accountList.adapter=MyUserAccountAdapter(this@AccountSettingActivity,0,ac,true)
         accountList.setOnItemClickListener { adapterView, view, i, l ->
            val item=accountList.adapter.getItem(i) as DBAccount
           Realm.getDefaultInstance().use {
             it.executeTransaction {
             it.where(DBAccount::class.java).equalTo("isMain", true).findFirst().isMain=false
-            it.where(DBAccount::class.java).equalTo("name", item.name).findFirst().isMain=true
+            val st= it.where(DBAccount::class.java).equalTo("id", item.id).findFirst().apply {
+              isMain=true
+            }
+              Snackbar.make(coordinatorLayout,"${st.screenName}をメインに設定しました",Snackbar.LENGTH_SHORT).show()
             }
           }
+
         }
     }
 
