@@ -11,12 +11,11 @@ import twitter4j.Paging
 import twitter4j.Status
 import xyz.donot.twix.event.OnStatusEvent
 import xyz.donot.twix.event.TwitterSubscriber
-import xyz.donot.twix.twitter.StreamManager
+import xyz.donot.twix.twitter.Factory
+import xyz.donot.twix.twitter.StreamType
 import xyz.donot.twix.twitter.TwitterObservable
-import xyz.donot.twix.twitter.USER_STREAM
 import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.util.logd
-import xyz.donot.twix.view.adapter.UltimateStatusAdapter
 
 class HomeTimelineFragment : BaseFragment() {
 
@@ -35,7 +34,7 @@ class HomeTimelineFragment : BaseFragment() {
   }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-   StreamManager.getStreamObject(twitter,USER_STREAM).run()
+  Factory.getStreamObject(twitter, StreamType.USER_STREAM).run()
     }
 
   @Subscribe

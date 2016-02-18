@@ -12,7 +12,7 @@ import xyz.donot.twix.view.fragment.UserTimelineFragment
 class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when(position){
-          0->Factory.home?:throw UnknownError()
+          0->Factory.home
           1->Factory.user
           2->Factory.like
           else->throw  IllegalStateException()
@@ -30,10 +30,9 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
         return 3
     }
-  object Factory{
-    val home:HomeTimelineFragment? = null
-      get(){ return field?: HomeTimelineFragment() }
-    val user by lazy { UserTimelineFragment(getMyId())}
-    val like by lazy { LikeTimelineFragment(getMyId()) }
-  }
+}
+object Factory{
+  val home:HomeTimelineFragment by  lazy { HomeTimelineFragment()  }
+  val user by lazy { UserTimelineFragment(getMyId())}
+  val like by lazy { LikeTimelineFragment(getMyId()) }
 }
