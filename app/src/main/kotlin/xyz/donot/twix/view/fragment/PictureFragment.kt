@@ -6,9 +6,10 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import org.greenrobot.eventbus.EventBus
-import uk.co.senab.photoview.PhotoView
+import uk.co.senab.photoview.PhotoViewAttacher
 import xyz.donot.twix.R
 
 
@@ -19,13 +20,13 @@ class PictureFragment : Fragment() {
   }
 
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    val v = inflater!!.inflate(R.layout.fragment_picture, container, false)
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    val v = inflater.inflate(R.layout.fragment_picture, container, false)
     val eventbus=   EventBus.getDefault()
     val stringURL= arguments.getString("url")
-    val img = v.findViewById(R.id.photo_view_image)as PhotoView
+    val img = v.findViewById(R.id.photo_view_image)as ImageView
     Glide.with(this).load( stringURL).asBitmap().into(img)
-
+    PhotoViewAttacher(img).update()
 
 
 

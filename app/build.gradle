@@ -45,7 +45,7 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
         transitive = true;
     }
-   compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
+  compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
     kapt 'org.greenrobot:eventbus:3.0.0'
     compile 'io.reactivex:rxkotlin:0.40.1'
     compile 'io.reactivex:rxandroid:1.1.0'

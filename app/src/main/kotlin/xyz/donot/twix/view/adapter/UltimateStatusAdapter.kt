@@ -13,9 +13,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder
-
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter
 import org.greenrobot.eventbus.EventBus
+
 import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
@@ -27,7 +27,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 
-class UltimateStatusAdapter(private val mContext: Context, private val statusList: List<Status>) : UltimateViewAdapter<UltimateStatusAdapter.ViewHolder>() {
+class UltimateStatusAdapter(private val mContext: Context, private val statusList: LinkedList<Status>) : UltimateViewAdapter<UltimateStatusAdapter.ViewHolder>() {
 
   private val mInflater: LayoutInflater
 
@@ -145,5 +145,31 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
       icon =itemView.findViewById(R.id.icon) as ImageView
     }
 
+  }
+  fun add(status :Status)
+  {
+    statusList.add(status)
+    this.notifyItemInserted(statusList.size)
+  }
+  fun insert(status: Status)
+  {
+    statusList.addFirst(status)
+    this.notifyItemInserted(0)
+  }
+  fun clear(){
+    statusList.clear()
+    this.notifyDataSetChanged()
+  }
+
+  override fun toggleSelection(pos: Int) {
+    super.toggleSelection(pos)
+  }
+
+  override fun setSelected(pos: Int) {
+    super.setSelected(pos)
+  }
+
+  override fun clearSelection(pos: Int) {
+    super.clearSelection(pos)
   }
 }
