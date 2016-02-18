@@ -16,9 +16,12 @@ import xyz.donot.twix.twitter.TwitterObservable
 import xyz.donot.twix.twitter.USER_STREAM
 import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.util.logd
+import xyz.donot.twix.view.adapter.UltimateStatusAdapter
 
 class HomeTimelineFragment : BaseFragment() {
- val eventBus by lazy { EventBus.getDefault() }
+
+
+  val eventBus by lazy { EventBus.getDefault() }
   val twitter by lazy { activity.getTwitterInstance() }
   override fun TimelineLoader() {
     val paging = Paging(page, 30)

@@ -13,6 +13,7 @@ import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.util.logw
 import xyz.donot.twix.view.adapter.UltimateStatusAdapter
+import xyz.donot.twix.view.listener.OnLoadMoreListener
 import java.util.*
 
 abstract class BaseFragment : Fragment() {
@@ -22,7 +23,7 @@ abstract class BaseFragment : Fragment() {
         return field
       }
     open val data by lazy { LinkedList<Status>() }
-    open val  mAdapter by lazy { UltimateStatusAdapter(activity, data) }
+    open val  mAdapter by lazy {UltimateStatusAdapter(activity, data)}
 
 
 
@@ -37,10 +38,17 @@ abstract class BaseFragment : Fragment() {
         val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
         val recycler=v.findViewById(R.id.recycler_view)as UltimateRecyclerView
         recycler.apply{
+
           logw("recycler",childCount.toString())
           recycler.setAdapter(mAdapter)
        layoutManager = ScrollSmoothLineaerLayoutManager(activity, LinearLayoutManager.VERTICAL, false, 300);
+          recycler.setOnScrollListener(object:OnLoadMoreListener(){
+            override fun onScrolledToBottom() {
+              TimelineLoader()
+            }
 
+
+          })
 
 
         //setOnLoadMoreListener { itemsCount, maxLastVisiblePosition -> TimelineLoader(); }

@@ -25,7 +25,7 @@ import xyz.donot.twix.view.listener.OnRecyclerListener
 import java.util.*
 import java.util.regex.Pattern
 
-class StatusAdapter(private val mContext: Context, private val mData: LinkedList<Status>, private val mListener: OnRecyclerListener?) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
+ class StatusAdapter(private val mContext: Context, private val mData: LinkedList<Status>, private val mListener: OnRecyclerListener?) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
 
 
     private val mInflater: LayoutInflater
