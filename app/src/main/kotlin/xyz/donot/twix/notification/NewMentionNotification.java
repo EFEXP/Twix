@@ -54,8 +54,7 @@ public class NewMentionNotification {
 
     final String ticker = txtString;
     final String title ="返信";
-    final String text = res.getString(
-      R.string.new_mention_notification_placeholder_text_template, txtString);
+    final String text = res.getString(R.string.new_mention_notification_placeholder_text_template, txtString);
 
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 

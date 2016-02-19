@@ -2,7 +2,6 @@ package xyz.donot.twix.view.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,55 +13,25 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter
-import org.greenrobot.eventbus.EventBus
-
 import twitter4j.Status
 import xyz.donot.twix.R
-import xyz.donot.twix.event.OnCustomtabEvent
+import xyz.donot.twix.util.getLinkList
 import xyz.donot.twix.util.getRelativeTime
+import xyz.donot.twix.util.getTimeLineLayoutId
 import xyz.donot.twix.view.activity.PictureActivity
-import xyz.donot.twix.view.customview.simplelinkabletext.Link
 import xyz.donot.twix.view.customview.simplelinkabletext.LinkableTextView
 import java.util.*
-import java.util.regex.Pattern
 
 
 class UltimateStatusAdapter(private val mContext: Context, private val statusList: LinkedList<Status>) : UltimateViewAdapter<UltimateStatusAdapter.ViewHolder>() {
 
   private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
 
-  val array=  arrayOf(
-
-    Link(Pattern.compile("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?"))
-      .setUnderlined(false)
-      .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
-      .setTextStyle(Link.TextStyle.BOLD)
-      .setClickListener {
-
-        EventBus.getDefault().post(OnCustomtabEvent(it))
-
-      }
-    ,
-
-    Link(Pattern.compile("(@\\w+)"))
-      .setUnderlined(false)
-      .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
-      .setTextStyle(Link.TextStyle.BOLD)
-      .setClickListener {
-
-
-
-      }
-    ,
-    Link(Pattern.compile("(#\\w+)"))
-      .setTextColor(ContextCompat.getColor(mContext,R.color.colorAccent))
-      .setTextStyle(Link.TextStyle.BOLD)).toMutableList()
 
 
 
 
   override fun onBindViewHolder(viewHolder: UltimateStatusAdapter.ViewHolder, i: Int) {
-
     if (statusList.size > i ) {
       val item= if (statusList[i].isRetweet){
         viewHolder.retweetText.text="${statusList[i].user.name}がリツイート"
@@ -84,16 +53,13 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
             context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
           visibility = View.VISIBLE
         }
-
-
-
       }
       else{
         viewHolder.mediaContainerGrid.visibility = View.GONE
       }
       //ビューホルダー
       viewHolder.apply {
-        status_text.setText(item.text).addLinks(array).build()
+        status_text.setText(item.text).addLinks(mContext.getLinkList()).build()
         userName.text = item.user.name
         screenName.text = item.user.screenName
         dateText.text = getRelativeTime(item.createdAt)
@@ -106,7 +72,7 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): UltimateStatusAdapter.ViewHolder {
-      return  ViewHolder(mInflater.inflate(R.layout.item_tweet, parent, false))
+      return  ViewHolder(mInflater.inflate(mContext.getTimeLineLayoutId(), parent, false))
     }
 
   override fun getAdapterItemCount(): Int {

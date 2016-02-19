@@ -40,7 +40,6 @@
 
   <!-- Example settings for Data & Sync -->
   <string name="pref_header_data_sync">Data &amp; sync</string>
-
   <string name="pref_title_sync_frequency">Sync frequency</string>
   <string-array name="pref_sync_frequency_titles">
     <item>15 minutes</item>
@@ -77,11 +76,12 @@
   <string name="What_is_happening">いまどうしてる？</string>
 
   <string name="new_mention_notification_title_template">新しい返信です: %1$s</string>
-
-  <!-- TODO: remove this placeholder text -->
   <string name="new_mention_notification_placeholder_text_template">Reply:%1$s</string>
 
   <string name="action_share">Share</string>
   <string name="action_reply">Reply</string>
   <string name="deleteNotify">ツイ消し通知</string>
+  <string name="use_card_view">カードビュー</string>
+  <string name="pref_header_app_design">デザイン</string>
+  <string name="title_activity_tweet_detail">TweetDetailActivity</string>
 </resources>

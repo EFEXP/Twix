@@ -12,7 +12,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
+import xyz.donot.twix.util.haveNetworkConnection
 import xyz.donot.twix.util.haveToken
+import xyz.donot.twix.util.showSnackbar
 import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
 
 
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this@MainActivity, InitialActivity::class.java))
         finish()
       }
-      else {
+      else if(haveNetworkConnection()) {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         viewpager.adapter=TimeLinePagerAdapter(supportFragmentManager)
@@ -45,6 +47,9 @@ class MainActivity : AppCompatActivity() {
           true
         })
       }
+      else{
+        showSnackbar(coordinatorLayout,R.string.description_a_network_error_occurred)
+      }
 
 
 
@@ -58,7 +63,6 @@ class MainActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
     eventbus.register(this@MainActivity)
-
   }
 
   @Subscribe

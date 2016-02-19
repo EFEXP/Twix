@@ -49,13 +49,14 @@ class HomeTimelineFragment : BaseFragment() {
   @Subscribe
   fun onEvent(deleteEvent: OnDeleteEvent){
     if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("deleteNotify",true))
-   twitter.updateStatus("${deleteEvent.component1().userId}のツイ消しで草")
-  }
+    {
+     val user= twitter.showUser(deleteEvent.component1().userId)
+   twitter.updateStatus("${user.name}のツイ消しで草")
+  }}
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)
     eventBus.register(this)
   }
-
   override fun onDestroy() {
     super.onDestroy()
     eventBus.unregister(this)

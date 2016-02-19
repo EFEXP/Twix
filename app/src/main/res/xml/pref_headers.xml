@@ -4,17 +4,22 @@
 
   <header
     android:fragment="xyz.donot.twix.view.activity.SettingsActivity$GeneralPreferenceFragment"
-    android:icon="@drawable/ic_info_black_24dp"
+    android:icon="@drawable/ic_info_grey"
     android:title="@string/pref_header_general" />
 
   <header
     android:fragment="xyz.donot.twix.view.activity.SettingsActivity$NotificationPreferenceFragment"
-    android:icon="@drawable/ic_notifications_black_24dp"
+    android:icon="@drawable/ic_notifications"
     android:title="@string/pref_header_notifications" />
 
   <header
     android:fragment="xyz.donot.twix.view.activity.SettingsActivity$DataSyncPreferenceFragment"
-    android:icon="@drawable/ic_sync_black_24dp"
+    android:icon="@drawable/ic_sync_grey"
     android:title="@string/pref_header_data_sync" />
+
+  <header
+    android:fragment="xyz.donot.twix.view.activity.SettingsActivity$DesignPreferenceFragment"
+    android:icon="@drawable/ic_settings_system_design"
+    android:title="@string/pref_header_app_design" />
 
 </preference-headers>
