@@ -36,7 +36,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
      */
     private fun setupActionBar() {
         val actionBar = supportActionBar
-      actionBar.setDisplayHomeAsUpEnabled(true)
+      actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 
@@ -64,7 +64,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 || GeneralPreferenceFragment::class.java.name == fragmentName
                 || DataSyncPreferenceFragment::class.java.name == fragmentName
                 || NotificationPreferenceFragment::class.java.name == fragmentName
-                || DesignPreferenceFragment::class.java.name == fragmentName
+                ||DesignPreferenceFragment::class.java.name == fragmentName
     }
 
     /**

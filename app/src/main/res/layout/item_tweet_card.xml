@@ -8,7 +8,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
     android:layout_margin="3dp"
     android:id="@+id/cardView">
     <include layout="@layout/item_tweet" />

@@ -35,7 +35,7 @@ android {
 dependencies {
     def version = "0.87.4"
     testCompile 'junit:junit:4.12'
-    compile "com.android.support:cardview-v7:23.1.1"
+
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //realm
     compile "io.realm:realm-android-library:${version}@aar"
@@ -46,12 +46,14 @@ dependencies {
         transitive = true;
     }
     kapt 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:customtabs:23.1.1'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
     compile 'io.reactivex:rxkotlin:0.40.1'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.android.support:design:23.1.1'
     compile 'org.twitter4j:twitter4j-core:4.0.4'
+    compile 'org.twitter4j:twitter4j-media-support:4.0.4'
     compile 'org.twitter4j:twitter4j-stream:4.0.4'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'org.greenrobot:eventbus:3.0.0'

@@ -20,6 +20,10 @@ fun Context.getTimeLineLayoutId():Int
    }
 }
 
+fun Context.getDetailHeaderLayoutId():Int
+{
+  return R.layout.item_detail_tweet
+}
 fun Context.getLinkList() :MutableList<Link>{
 
 return  arrayOf(

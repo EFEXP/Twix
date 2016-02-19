@@ -11,7 +11,10 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 
-
+/**
+ * A [android.preference.PreferenceActivity] which implements and proxies the necessary calls
+ * to be used with AppCompat.
+ */
 abstract class AppCompatPreferenceActivity : PreferenceActivity() {
 
     private var mDelegate: AppCompatDelegate? = null
@@ -27,7 +30,7 @@ abstract class AppCompatPreferenceActivity : PreferenceActivity() {
         delegate?.onPostCreate(savedInstanceState)
     }
 
-    val supportActionBar: ActionBar
+    val supportActionBar: ActionBar?
         get() = delegate?.supportActionBar as ActionBar
 
     fun setSupportActionBar(toolbar: Toolbar?) {

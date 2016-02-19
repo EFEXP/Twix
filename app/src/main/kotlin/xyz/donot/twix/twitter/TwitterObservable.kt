@@ -82,6 +82,17 @@ class TwitterObservable(val twitter : Twitter)
       .basicNetworkTask()
   }
 
+  fun showStatusAsync(statusId:Long) :Observable<Status>{
+    return observable <Status>{
+        try{it.onNext(twitter.showStatus(statusId))
+        it.onCompleted()
+        }
+        catch(ex:Exception){
+          it.onError(ex)
+        }
+    }  .basicNetworkTask()
+  }
+
   fun getUserTimelineAsync(userID:Long?,paging: Paging): Observable<Status>
   {
     return  Observable.create<Status> { subscriber ->

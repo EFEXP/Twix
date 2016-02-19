@@ -2,6 +2,7 @@ package xyz.donot.twix.view.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,13 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder
 import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter
 import twitter4j.Status
 import xyz.donot.twix.R
+import xyz.donot.twix.util.MediaUtil
 import xyz.donot.twix.util.getLinkList
 import xyz.donot.twix.util.getRelativeTime
 import xyz.donot.twix.util.getTimeLineLayoutId
 import xyz.donot.twix.view.activity.PictureActivity
+import xyz.donot.twix.view.activity.TweetDetailActivity
+import xyz.donot.twix.view.activity.VideoActivity
 import xyz.donot.twix.view.customview.simplelinkabletext.LinkableTextView
 import java.util.*
 
@@ -41,7 +45,10 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
         statusList[i]
       }
       //画像関連
+
       if(item.extendedMediaEntities.size>0){
+
+
         val list =item.extendedMediaEntities.map { it.mediaURLHttps }
         val gridAdapter=TweetPictureGridAdapter(mContext,0)
         item.extendedMediaEntities.iterator().forEach {
@@ -50,7 +57,12 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
         viewHolder.mediaContainerGrid.apply {
           adapter=gridAdapter
           onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
-            context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
+       val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
+            if (videourl!=null) {
+              context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
+            } else
+            { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
+          }
           visibility = View.VISIBLE
         }
       }
@@ -65,6 +77,7 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
         dateText.text = getRelativeTime(item.createdAt)
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
+        cardView.setOnClickListener({ mContext.startActivity(Intent(mContext,TweetDetailActivity::class.java).putExtra("status_id",item.id)) })
       }}
   }
     override fun getViewHolder(view: View): UltimateStatusAdapter.ViewHolder {
@@ -101,7 +114,9 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
     val icon: ImageView
     val status_text: LinkableTextView
     val mediaContainerGrid: GridView
+    val cardView:CardView
     init {
+      cardView=itemView.findViewById(R.id.cardView)as CardView
       status_text=itemView.findViewById(R.id.tweet_text)as LinkableTextView
       mediaContainerGrid=itemView.findViewById(R.id.media_container_grid)as GridView
       retweetText=itemView.findViewById(R.id.textView_isRT)as TextView
