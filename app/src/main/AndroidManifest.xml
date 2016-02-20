@@ -51,7 +51,9 @@
       android:name=".view.activity.TweetDetailActivity"
       android:label="@string/title_activity_tweet_detail"
       android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".view.activity.VideoActivity"></activity>
+    <activity
+      android:name=".view.activity.VideoActivity"
+      android:theme="@style/AppTheme.NoActionBar"/>
   </application>
 
 </manifest>

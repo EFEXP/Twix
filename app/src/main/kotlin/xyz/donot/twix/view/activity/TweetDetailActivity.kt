@@ -17,23 +17,29 @@ class TweetDetailActivity : AppCompatActivity() {
 
    val data by lazy { LinkedList<Status>() }
   val  mAdapter by lazy { UltimateStatusAdapter(this@TweetDetailActivity, data) }
-
+  val twitter by lazy { getTwitterInstance()}
   override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_detail)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-        val twitter= getTwitterInstance()
-        val tObservable=TwitterObservable(twitter)
-    tObservable.showStatusAsync(intent.extras.getLong("status_id")).subscribe {
-      mAdapter.add(it)
-      if(it.inReplyToStatusId>0) {
-        tObservable.showStatusAsync(it.inReplyToStatusId).subscribe { mAdapter.insert(it) }
-      }
-    }
+      loadReply(intent.extras.getLong("status_id"))
       detail_recycler_view.setAdapter(mAdapter)
       detail_recycler_view.layoutManager = ScrollSmoothLineaerLayoutManager(this@TweetDetailActivity, LinearLayoutManager.VERTICAL, false, 300);
+
+
+
     }
+  fun loadReply(long: Long){
+    val observer= TwitterObservable(twitter).showStatusAsync(long)
+    observer.subscribe {
+      mAdapter.add(it) }
+    observer.subscribe {
+      val voo=it.inReplyToStatusId>0
+      if(voo){
+      loadReply(it.inReplyToStatusId)
+    } }
+  }
 
 
 }

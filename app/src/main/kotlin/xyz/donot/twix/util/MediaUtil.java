@@ -162,9 +162,8 @@ public class MediaUtil {
               videoMap.put(bitrate, videoUrl);
             }
           }
-          // ビットレートの最も低い(=軽量な)動画を返す
           Collections.sort(bitrateList);
-          return videoMap.get(bitrateList.get(0));
+          return videoMap.get(bitrateList.get(bitrateList.size()-1));
         }
       }
     }

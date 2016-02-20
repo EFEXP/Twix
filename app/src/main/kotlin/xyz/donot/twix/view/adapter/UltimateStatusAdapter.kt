@@ -30,11 +30,6 @@ import java.util.*
 class UltimateStatusAdapter(private val mContext: Context, private val statusList: LinkedList<Status>) : UltimateViewAdapter<UltimateStatusAdapter.ViewHolder>() {
 
   private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
-
-
-
-
-
   override fun onBindViewHolder(viewHolder: UltimateStatusAdapter.ViewHolder, i: Int) {
     if (statusList.size > i ) {
       val item= if (statusList[i].isRetweet){
@@ -47,8 +42,6 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
       //画像関連
 
       if(item.extendedMediaEntities.size>0){
-
-
         val list =item.extendedMediaEntities.map { it.mediaURLHttps }
         val gridAdapter=TweetPictureGridAdapter(mContext,0)
         item.extendedMediaEntities.iterator().forEach {
@@ -95,9 +88,6 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
     override fun generateHeaderId(position: Int): Long {
         return 0
     }
-
-
-
     override fun onCreateHeaderViewHolder(parent: ViewGroup): RecyclerView.ViewHolder? {
         return null
     }

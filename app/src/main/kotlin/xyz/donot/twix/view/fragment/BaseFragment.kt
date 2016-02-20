@@ -36,7 +36,6 @@ abstract class BaseFragment : Fragment() {
         val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
         val recycler=v.findViewById(R.id.recycler_view)as UltimateRecyclerView
         recycler.apply{
-
           logw("recycler",childCount.toString())
           recycler.setAdapter(mAdapter)
        layoutManager = ScrollSmoothLineaerLayoutManager(activity, LinearLayoutManager.VERTICAL, false, 300);
@@ -48,15 +47,15 @@ abstract class BaseFragment : Fragment() {
 
           })
 
-
+        recycler.setEmptyView(R.layout.item_empty_view)
+          recycler.showEmptyView()
         //setOnLoadMoreListener { itemsCount, maxLastVisiblePosition -> TimelineLoader(); }
           TimelineLoader()
      }
      return v}
 
   fun enableLoadMore(){
-   val recyclerView= view?.findViewById(R.id.recycler_view)as UltimateRecyclerView
-    logw("recycler",recyclerView.childCount.toString())
+  // val recyclerView= view?.findViewById(R.id.recycler_view)as UltimateRecyclerView
      // recyclerView.enableLoadmore()
   }
 
