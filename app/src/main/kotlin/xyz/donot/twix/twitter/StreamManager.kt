@@ -12,7 +12,7 @@ import xyz.donot.twix.util.logd
 
 
 
-class StreamManager( val context: Context, val twitter : Twitter, val type:StreamType)
+ class StreamManager( val context: Context, val twitter : Twitter, val type:StreamType)
 {
   val eventBus by lazy { EventBus.getDefault() }
    var isConnected:Boolean
@@ -20,7 +20,8 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
 
   fun run()
   {
-    if(!this.isConnected){ this.isConnected= true
+    if(!this.isConnected){
+      this.isConnected= true
    val stream= TwitterStreamFactory().getInstance(twitter.authorization)
     StreamCreateUtil.addStatusListener(stream,MyNotificationAdapter())
     when(type){
@@ -71,7 +72,10 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
 object Factory {
   var instance :StreamManager?=null
   fun getStreamObject(context: Context,twitter : Twitter, type:StreamType):StreamManager{
-    return instance?:StreamManager(context,twitter,type)
+    if (instance == null) {
+      instance=StreamManager(context,twitter,type)
+    }
+    return instance?:throw IllegalStateException()
   }
 }
 enum  class StreamType{

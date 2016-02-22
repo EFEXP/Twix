@@ -4,7 +4,6 @@ package xyz.donot.twix.view.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.preference.PreferenceManager
 import android.view.View
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -48,11 +47,9 @@ class HomeTimelineFragment : BaseFragment() {
 
   @Subscribe
   fun onEvent(deleteEvent: OnDeleteEvent){
-    if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("deleteNotify",true))
-    {
-     val user= twitter.showUser(deleteEvent.component1().userId)
-   twitter.updateStatus("${user.name}のツイ消しで草")
-  }}
+    val statusData= data.first { it.id==deleteEvent.component1().statusId }
+    mAdapter.remove(statusData)
+  }
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)
     eventBus.register(this)

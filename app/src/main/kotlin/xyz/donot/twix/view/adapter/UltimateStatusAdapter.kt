@@ -72,7 +72,8 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
         Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
         cardView.setOnClickListener({ mContext.startActivity(Intent(mContext,TweetDetailActivity::class.java).putExtra("status_id",item.id)) })
       }}
-  }
+
+      }
     override fun getViewHolder(view: View): UltimateStatusAdapter.ViewHolder {
         return ViewHolder(view)
     }
@@ -130,6 +131,10 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
   }
   fun clear(){
     statusList.clear()
+    this.notifyDataSetChanged()
+  }
+  fun remove(status: Status){
+    statusList.remove(status)
     this.notifyDataSetChanged()
   }
 

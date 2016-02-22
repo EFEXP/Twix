@@ -66,8 +66,8 @@ fun updateUserProfile(twitter:Twitter){
 
 fun getMyId(): Long{
   Realm.getDefaultInstance().use {
-    val ac= it.where(DBAccount::class.java).equalTo("isMain",true).findFirst()
-    return ac.id
+
+    return  it.where(DBAccount::class.java).equalTo("isMain",true).findFirst().id
   }
 }
 
