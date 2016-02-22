@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -16,18 +16,14 @@ import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
 import xyz.donot.twix.event.TwitterSubscriber
 import xyz.donot.twix.twitter.TwitterUpdateObservable
-import xyz.donot.twix.util.getTwitterInstance
-import xyz.donot.twix.util.haveNetworkConnection
-import xyz.donot.twix.util.haveToken
-import xyz.donot.twix.util.showSnackbar
+import xyz.donot.twix.util.*
 import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : RxAppCompatActivity() {
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy {  getTwitterInstance() }
     override fun onCreate(savedInstanceState: Bundle?) {
-
       super.onCreate(savedInstanceState)
       if(!haveToken())
       {
@@ -54,18 +50,16 @@ class MainActivity : AppCompatActivity() {
         })
         button_tweet.setOnClickListener({
           val tObserver= TwitterUpdateObservable(twitter);
-          tObserver.updateStatusAsync(  editText_status.editableText.toString()).subscribe(object:TwitterSubscriber(){
-            override fun onLoaded() {
-            }
+          tObserver.updateStatusAsync(editText_status.editableText.toString())
+            .bindToLifecycle(this@MainActivity)
+            .subscribe(object:TwitterSubscriber(){
             override fun onStatus(status: Status) {
-
-              Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
-                Thread(Runnable {twitter.destroyStatus(status.id) })
+              Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す",
+                {Thread(Runnable {twitter.destroyStatus(status.id) })
               }).show()
                           }
           })
           editText_status.setText("")
-
         })
       }
       else{

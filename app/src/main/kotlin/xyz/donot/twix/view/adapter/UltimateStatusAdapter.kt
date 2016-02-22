@@ -22,6 +22,7 @@ import xyz.donot.twix.util.getRelativeTime
 import xyz.donot.twix.util.getTimeLineLayoutId
 import xyz.donot.twix.view.activity.PictureActivity
 import xyz.donot.twix.view.activity.TweetDetailActivity
+import xyz.donot.twix.view.activity.UserActivity
 import xyz.donot.twix.view.activity.VideoActivity
 import xyz.donot.twix.view.customview.simplelinkabletext.LinkableTextView
 import java.util.*
@@ -71,6 +72,8 @@ class UltimateStatusAdapter(private val mContext: Context, private val statusLis
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
         cardView.setOnClickListener({ mContext.startActivity(Intent(mContext,TweetDetailActivity::class.java).putExtra("status_id",item.id)) })
+        icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}
+
       }}
 
       }

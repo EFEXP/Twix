@@ -15,6 +15,7 @@ import xyz.donot.twix.event.TwitterSubscriber
 import xyz.donot.twix.twitter.Factory
 import xyz.donot.twix.twitter.StreamType
 import xyz.donot.twix.twitter.TwitterObservable
+import xyz.donot.twix.util.bindToLifecycle
 import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.util.logd
 
@@ -25,12 +26,11 @@ class HomeTimelineFragment : BaseFragment() {
   val twitter by lazy { activity.getTwitterInstance() }
   override fun TimelineLoader() {
     val paging = Paging(page, 30)
-    val observableTweet=TwitterObservable(twitter).getHomeTimelineAsync(paging)
-    observableTweet.subscribe(object :TwitterSubscriber(){
-      override fun onLoaded() {
-
-        enableLoadMore()
-      }
+    TwitterObservable(twitter)
+      .getHomeTimelineAsync(paging)
+      .bindToLifecycle(this@HomeTimelineFragment)
+    .subscribe(object :TwitterSubscriber(){
+      override fun onLoaded() { enableLoadMore() }
       override fun onStatus(status: Status) { mAdapter.add(status) } })
   }
 
