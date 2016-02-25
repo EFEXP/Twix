@@ -52,7 +52,6 @@ public class NewMentionNotification {
     final Bitmap picture = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
 
 
-    final String ticker = txtString;
     final String title ="返信";
     final String text = res.getString(R.string.new_mention_notification_placeholder_text_template, txtString);
 
@@ -81,7 +80,7 @@ public class NewMentionNotification {
       .setLargeIcon(picture)
 
       // Set ticker text (preview) information for this notification.
-      .setTicker(ticker)
+      .setTicker(txtString)
 
       // Show a number. This is useful when stacking notifications of
       // a single type.

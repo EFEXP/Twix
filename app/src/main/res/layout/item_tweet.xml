@@ -2,7 +2,7 @@
 
 <RelativeLayout android:id="@+id/tweet_back"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   android:descendantFocusability="blocksDescendants"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
@@ -62,7 +62,7 @@
       android:layout_toRightOf="@+id/user_name_text"
       android:paddingRight="0dp"
       android:paddingLeft="5dp" />
-    <xyz.donot.twix.view.customview.simplelinkabletext.LinkableTextView
+    <com.klinker.android.link_builder.LinkConsumableTextView
       android:id="@+id/tweet_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

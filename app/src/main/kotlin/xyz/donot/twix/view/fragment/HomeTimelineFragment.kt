@@ -2,8 +2,6 @@ package xyz.donot.twix.view.fragment
 
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -29,9 +27,12 @@ class HomeTimelineFragment : BaseFragment() {
     TwitterObservable(twitter)
       .getHomeTimelineAsync(paging)
       .bindToLifecycle(this@HomeTimelineFragment)
-    .subscribe(object :TwitterSubscriber(){
-      override fun onLoaded() { enableLoadMore() }
-      override fun onStatus(status: Status) { mAdapter.add(status) } })
+    .subscribe(object:
+      TwitterSubscriber(){
+      override fun onStatus(status: Status) {
+        mAdapter.add(status)
+      }
+    } )
   }
 
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -41,14 +42,14 @@ class HomeTimelineFragment : BaseFragment() {
   @Subscribe
   fun onEventMainThread(statusEvent: OnStatusEvent){
     logd("You got a message.", statusEvent.status.text)
-  Handler(Looper.getMainLooper()).post {
+
     mAdapter.insert(statusEvent.status) }
-    }
+
 
   @Subscribe
   fun onEvent(deleteEvent: OnDeleteEvent){
-    val statusData= data.first { it.id==deleteEvent.component1().statusId }
-    mAdapter.remove(statusData)
+    val statusData= data.filter { it.id==deleteEvent.component1().statusId }.first()
+ mAdapter.remove(statusData)
   }
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)

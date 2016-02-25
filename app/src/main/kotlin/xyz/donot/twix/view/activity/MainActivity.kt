@@ -1,12 +1,15 @@
 package xyz.donot.twix.view.activity
 
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -54,10 +57,17 @@ class MainActivity : RxAppCompatActivity() {
             .bindToLifecycle(this@MainActivity)
             .subscribe(object:TwitterSubscriber(){
             override fun onStatus(status: Status) {
-              Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す",
-                {Thread(Runnable {twitter.destroyStatus(status.id) })
-              }).show()
+            val   inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+              inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+              Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
+
+                tObserver.deleteStatusAsync(status.id).subscribe {
+                Toast.makeText(this@MainActivity,"削除しました",Toast.LENGTH_LONG).show()
+                }
+
+                 }).show()
                           }
+
           })
           editText_status.setText("")
         })
