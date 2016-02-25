@@ -1,12 +1,5 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-  <SwitchPreference
-    android:defaultValue="true"
-    android:key="deleteNotify"
-    android:summary="つい消しを通知します"
-    android:title="@string/deleteNotify" />
-
   <SwitchPreference
     android:defaultValue="true"
     android:key="example_switch"
