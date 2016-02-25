@@ -18,6 +18,6 @@ abstract  class TwitterSubscriber : Subscriber<Status>() {
       onStatus(status)
     }
  abstract  fun onStatus(status: Status)
-  open fun onLoaded(){}
+  abstract  fun onLoaded()
 }
 

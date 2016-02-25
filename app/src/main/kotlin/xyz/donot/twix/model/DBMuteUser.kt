@@ -7,5 +7,9 @@ import io.realm.annotations.RealmClass
 
 @RealmClass
 open  class DBMuteUser : RealmObject() {
-  @PrimaryKey  open  var id: Long = 0L
+
+    @PrimaryKey
+    open  var screenName: String? = null
+
+
 }
