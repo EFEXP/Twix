@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_user_detail.*
 import xyz.donot.twix.R
 import xyz.donot.twix.twitter.TwitterObservable
@@ -18,7 +18,7 @@ class UserDetailFragment(val userId:Long) : Fragment()
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
     TwitterObservable(twitter).showUser(userId)
     .subscribe {
-      Glide.with(this@UserDetailFragment).load(it.originalProfileImageURLHttps).into(icon_user)
+      Picasso.with(activity).load(it.originalProfileImageURLHttps).into(icon_user)
       user_name.text=it.name
       screen_name.text=it.screenName
       description.text=it.description.replace("\n","")

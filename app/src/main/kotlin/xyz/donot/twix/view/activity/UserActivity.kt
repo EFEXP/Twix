@@ -2,7 +2,7 @@ package xyz.donot.twix.view.activity
 
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_user.*
 import rx.Subscriber
@@ -29,7 +29,7 @@ class UserActivity : RxAppCompatActivity() {
         p0.printStackTrace()
         }
         override fun onNext(p0: User) {
-          Glide.with(this@UserActivity).load(p0.profileBannerIPadURL).into(banner)
+          Picasso.with(this@UserActivity).load(p0.profileBannerIPadURL).into(banner)
           toolbar.title=p0.name
           toolbar.subtitle=p0.screenName
         }

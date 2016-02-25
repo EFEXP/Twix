@@ -13,9 +13,9 @@ import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.klinker.android.link_builder.LinkBuilder
 import com.klinker.android.link_builder.LinkConsumableTextView
+import com.squareup.picasso.Picasso
 import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.util.MediaUtil
@@ -74,7 +74,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         screenName.text = item.user.screenName
         dateText.text = getRelativeTime(item.createdAt)
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
-        Glide.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
+        Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
         cardView.setOnClickListener({ mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id",item.id)) })
         icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}
         status_text.text=item.text

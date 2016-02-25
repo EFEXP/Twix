@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import xyz.donot.twix.R
 
 
@@ -29,7 +29,7 @@ class TweetPictureGridAdapter(context: Context, resource: Int) : ArrayAdapter<St
       view = convertView.tag as ViewHolder
     }
 
-  Glide.with(context).load(item).into(view.mainContent)
+  Picasso.with(context).load(item).into(view.mainContent)
       if(convertView!=null){
         return convertView
       }
