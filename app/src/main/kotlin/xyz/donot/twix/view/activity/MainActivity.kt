@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
+import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -51,6 +52,10 @@ class MainActivity : RxAppCompatActivity() {
           }
           true
         })
+        button_tweet.setOnLongClickListener {
+          TweetComposer.Builder(this@MainActivity).show()
+          true
+        }
         button_tweet.setOnClickListener({
           val tObserver= TwitterUpdateObservable(twitter);
           tObserver.updateStatusAsync(editText_status.editableText.toString())
@@ -60,7 +65,6 @@ class MainActivity : RxAppCompatActivity() {
             val   inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
               inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
               Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
-
                 tObserver.deleteStatusAsync(status.id).subscribe {
                 Toast.makeText(this@MainActivity,"削除しました",Toast.LENGTH_LONG).show()
                 }

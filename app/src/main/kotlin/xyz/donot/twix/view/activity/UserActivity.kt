@@ -20,8 +20,7 @@ class UserActivity : RxAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-      TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
+        TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
       .subscribe(object : Subscriber<User>() {
         override fun onCompleted() {
 
@@ -30,8 +29,7 @@ class UserActivity : RxAppCompatActivity() {
         p0.printStackTrace()
         }
         override fun onNext(p0: User) {
-          Glide.with(this@UserActivity).load(p0.profileBannerIPadURL).asBitmap().into(banner)
-          Glide.with(this@UserActivity).load(p0.originalProfileImageURLHttps).asBitmap().into(icon)
+          Glide.with(this@UserActivity).load(p0.profileBannerIPadURL).into(banner)
           toolbar.title=p0.name
           toolbar.subtitle=p0.screenName
         }

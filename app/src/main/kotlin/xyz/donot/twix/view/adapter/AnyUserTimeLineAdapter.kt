@@ -4,27 +4,30 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import xyz.donot.twix.view.fragment.LikeTimelineFragment
+import xyz.donot.twix.view.fragment.UserDetailFragment
 import xyz.donot.twix.view.fragment.UserTimelineFragment
 
  class AnyUserTimeLineAdapter(fm: FragmentManager,val userId:Long) : FragmentPagerAdapter(fm)
 {
 override fun getItem(position: Int): Fragment {
   return when(position){
-    0->UserTimelineFragment(userId)//AnyUserTimeLineFactory.user
-    1-> LikeTimelineFragment(userId) //.like
+    0->UserDetailFragment(userId)
+    1->UserTimelineFragment(userId)//AnyUserTimeLineFactory.user
+    2-> LikeTimelineFragment(userId) //.like
     else->throw  IllegalStateException()
   }}
 
 
 override fun getPageTitle(position: Int): CharSequence {
   return when(position){
-    0->"User"
-    1->"Like"
+    0->"Info"
+    1->"User"
+    2->"Like"
     else->throw IllegalStateException()
   }}
 
 override fun getCount(): Int {
-  return 2
+  return 3
 }
 }
 object AnyUserTimeLineFactory{

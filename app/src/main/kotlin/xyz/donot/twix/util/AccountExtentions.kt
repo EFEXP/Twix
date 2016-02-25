@@ -33,15 +33,6 @@ fun isMentionToMe(status: Status): Boolean {
   return  status.userMentionEntities.map { it.id }.filter { it==getMyId() }.isNotEmpty()
 }
 
-@Suppress
-fun Context.getNamedTwitterInstance(id:Long): twitter4j.Twitter {
-  val consumerKey =this.getString(R.string.twitter_consumer_key)
-  val consumerSecret = this.getString(R.string.twitter_consumer_secret)
-  val twitter =  TwitterFactory().instance
-  twitter.setOAuthConsumer(consumerKey, consumerSecret)
-  twitter.oAuthAccessToken=loadAccessToken()
-  return twitter
-}
 
 
 fun updateUserProfile(twitter:Twitter){
