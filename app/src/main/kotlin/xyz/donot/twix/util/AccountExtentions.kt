@@ -1,15 +1,16 @@
 package xyz.donot.twix.util;
 
 import android.content.Context
-import com.twitter.sdk.android.core.TwitterApiErrorConstants
 import io.realm.Realm
 import rx.lang.kotlin.observable
+import twitter4j.Status
 import twitter4j.Twitter
 import twitter4j.TwitterFactory
 import twitter4j.User
 import twitter4j.auth.AccessToken
 import xyz.donot.twix.R
 import xyz.donot.twix.model.DBAccount
+import xyz.donot.twix.model.DBMuteUser
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -22,15 +23,18 @@ fun Context.getTwitterInstance(): twitter4j.Twitter {
   twitter.oAuthAccessToken=loadAccessToken()
   return twitter
 }
-@Suppress
-fun Context.getNamedTwitterInstance(id:Long): twitter4j.Twitter {
-  val consumerKey =this.getString(R.string.twitter_consumer_key)
-  val consumerSecret = this.getString(R.string.twitter_consumer_secret)
-  val twitter =  TwitterFactory().instance
-  twitter.setOAuthConsumer(consumerKey, consumerSecret)
-  twitter.oAuthAccessToken=loadAccessToken()
-  return twitter
+
+
+
+fun isIgnore(id: Long): Boolean {
+ return  Realm.getDefaultInstance().where(DBMuteUser::class.java)
+  .equalTo("id",id).count()>0
 }
+
+fun isMentionToMe(status: Status): Boolean {
+  return  status.userMentionEntities.map { it.id }.filter { it==getMyId() }.isNotEmpty()
+}
+
 
 
 fun updateUserProfile(twitter:Twitter){
@@ -55,8 +59,8 @@ fun updateUserProfile(twitter:Twitter){
 
 fun getMyId(): Long{
   Realm.getDefaultInstance().use {
-    val ac= it.where(DBAccount::class.java).equalTo("isMain",true).findFirst()
-    return ac.id
+
+    return  it.where(DBAccount::class.java).equalTo("isMain",true).findFirst().id
   }
 }
 

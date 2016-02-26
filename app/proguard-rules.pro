@@ -15,7 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--dontwarn com.malinskiy.superrecyclerview.SwipeDismissRecyclerViewTouchListener*
+
 -dontwarn sun.misc.Unsafe
 
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
@@ -32,19 +32,17 @@
 -keep class com.crashlytics.android.**
 -keepattributes SourceFile,LineNumberTable,*Annotation*
 
-# class:
--verbose
 #twitter4j
 -dontwarn twitter4j.**
 -keep class twitter4j.** { *; }
 
-# Kotlin
--dontwarn kotlin.**
 
 # for EventBus
+-keepattributes *Annotation*
 -keepclassmembers class ** {
-    public void onEvent*(**);
+    @org.greenrobot.eventbus.Subscribe <methods>;
 }
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
 -keep class io.realm.annotations.RealmModule
 -keep @io.realm.annotations.RealmModule class *
@@ -52,3 +50,9 @@
 -keep @io.realm.internal.Keep class *
 -dontwarn javax.**
 -dontwarn io.realm.**
+
+-keep class xyz.donot.view.activity.MainActivity { *; }
+-dontwarn xyz.donot.**
+
+
+

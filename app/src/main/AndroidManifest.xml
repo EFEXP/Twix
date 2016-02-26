@@ -3,6 +3,8 @@
   package="xyz.donot.twix">
 
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.VIBRATE" />
 
   <application
     android:name=".Twix"
@@ -24,9 +26,10 @@
       android:name=".view.activity.MainActivity"
       android:label="@string/title_activity_main"
       android:theme="@style/AppTheme.NoActionBar">
-      <intent-filter>
+      <intent-filter
+        android:label="@string/app_name"
+        >
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
@@ -44,7 +47,18 @@
     <activity
       android:name=".view.activity.UserActivity"
       android:label="@string/title_activity_scrolling"
-      android:theme="@style/AppTheme.NoActionBar"></activity>
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.TweetDetailActivity"
+      android:label="@string/title_activity_tweet_detail"
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.VideoActivity"
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.HelpActivity"
+      android:label="@string/title_activity_help"
+      android:theme="@style/AppTheme.NoActionBar"/>
   </application>
 
 </manifest>
