@@ -24,6 +24,8 @@ fun Context.getTwitterInstance(): twitter4j.Twitter {
   return twitter
 }
 
+
+
 fun isIgnore(id: Long): Boolean {
  return  Realm.getDefaultInstance().where(DBMuteUser::class.java)
   .equalTo("id",id).count()>0
