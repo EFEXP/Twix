@@ -35,7 +35,36 @@ class TwitterUpdateObservable(val twitter: Twitter){
        it.onError(ex)
      }}.basicNetworkTask()
    }
+
+  fun createLikeAsync(statusId:Long): Observable<Status> {
+    return  observable<Status> {
+      try{it.onNext(twitter.createFavorite(statusId))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
   }
+  fun createRetweetAsync(statusId:Long): Observable<Status> {
+    return  observable<Status> {
+      try{it.onNext(twitter.retweetStatus(statusId))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
+  }
+  fun deleteLikeAsync(statusId:Long):Observable<Status>{
+    return observable<Status> {
+      try  {
+        it.onNext( twitter.destroyFavorite(statusId))
+        it.onCompleted()
+      }
+      catch(ex:Exception){
+        it.onError(ex)
+      }}.basicNetworkTask()
+  }
+}
+
+
 
 
 

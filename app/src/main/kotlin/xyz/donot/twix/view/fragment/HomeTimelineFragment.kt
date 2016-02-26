@@ -48,8 +48,7 @@ class HomeTimelineFragment : BaseFragment() {
 
   @Subscribe
   fun onEvent(deleteEvent: OnDeleteEvent){
-    val statusData= data.filter { it.id==deleteEvent.component1().statusId }.first()
- mAdapter.remove(statusData)
+    data.filter { it.id==deleteEvent.component1().statusId }.mapNotNull { mAdapter.remove(it) }
   }
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)

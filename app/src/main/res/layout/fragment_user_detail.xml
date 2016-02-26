@@ -7,7 +7,7 @@
   >
   <RelativeLayout android:layout_height="match_parent"
     android:layout_width="match_parent">
-  <ImageView
+  <android.support.v7.widget.AppCompatImageView
     android:layout_width="120dp"
     android:layout_height="120dp"
     android:id="@+id/icon_user"
@@ -38,6 +38,8 @@
     android:id="@+id/description"
     android:layout_below="@+id/screen_name"
     android:layout_centerHorizontal="true" />
+
+
   </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

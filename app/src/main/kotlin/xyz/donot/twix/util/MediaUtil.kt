@@ -107,13 +107,6 @@ class MediaUtil {
     }
 
     companion object {
-        /*
-        _URL     : 置換前文字列
-        _REPLACE : 置換後文字列
-        _ADD     : 末尾に追加
-        _THUMB   : サムネイル
-    */
-
         // pic.twitter.com
         val PIC_TWITTER = "https?://pbs\\.twimg\\.com/media/[a-zA-Z0-9_\\-]+\\.\\w+"
         val PIC_TWITTER_THUMB_ADD = ":thumb"

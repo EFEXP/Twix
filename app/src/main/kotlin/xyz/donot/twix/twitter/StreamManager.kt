@@ -27,7 +27,7 @@ import xyz.donot.twix.util.logd
     when(type){
       StreamType.USER_STREAM->{stream.user()}
       StreamType.FILTER_STREAM->{}
-        StreamType.RETWEET_STREAM->{}
+      StreamType.RETWEET_STREAM->{}
       StreamType.SAMPLE_STREAM->{stream.sample()}
     }
 
