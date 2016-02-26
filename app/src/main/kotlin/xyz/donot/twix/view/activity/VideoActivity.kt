@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.MediaController
 import android.widget.VideoView
+import kotlinx.android.synthetic.main.activity_video.*
 import xyz.donot.twix.R
 
 class VideoActivity : AppCompatActivity() {
@@ -14,10 +15,11 @@ class VideoActivity : AppCompatActivity() {
       val video=findViewById(R.id.video_view)as VideoView
       val url = intent.getStringExtra("video_url")
       val mp =MediaController(this@VideoActivity)
+      toolbar.setNavigationOnClickListener { finish() }
       video.apply {
         setVideoURI(Uri.parse(url))
         setMediaController(mp)
-      setOnCompletionListener {start() }
+       setOnCompletionListener {start() }
        start()
       }
 

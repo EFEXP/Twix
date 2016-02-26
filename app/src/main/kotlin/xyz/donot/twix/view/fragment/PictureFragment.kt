@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
-import org.greenrobot.eventbus.EventBus
 import uk.co.senab.photoview.PhotoViewAttacher
 import xyz.donot.twix.R
 
@@ -22,14 +21,10 @@ class PictureFragment : Fragment() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_picture, container, false)
-    val eventbus=   EventBus.getDefault()
     val stringURL= arguments.getString("url")
     val img = v.findViewById(R.id.photo_view_image)as ImageView
     Picasso.with(activity).load( stringURL).into(img)
     PhotoViewAttacher(img).update()
-
-
-
     return v
   }
 

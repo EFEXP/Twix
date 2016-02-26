@@ -5,9 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_picture.*
 import kotlinx.android.synthetic.main.content_picture.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import xyz.donot.twix.R
-import xyz.donot.twix.event.OnFlickedEvent
 import xyz.donot.twix.view.adapter.PicturePagerAdapter
 
 class PictureActivity : AppCompatActivity() {
@@ -20,10 +18,6 @@ class PictureActivity : AppCompatActivity() {
         val strings = intent.extras.getStringArrayList("picture_urls")
         pager.adapter = PicturePagerAdapter(supportFragmentManager, strings)
     }
-  @Subscribe
-  fun onEventMainThread(flickedEvent: OnFlickedEvent){
-    finish()
-  }
   override fun onPause() {
     super.onPause()
     eventBus.unregister(this)

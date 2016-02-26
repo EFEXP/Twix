@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<layout >
 <RelativeLayout android:id="@+id/tweet_back"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -17,7 +17,6 @@
       android:layout_marginBottom="10dp"
       android:layout_alignParentLeft="true"
       android:scaleType="centerCrop"
-
       />
 
     <TextView
@@ -93,7 +92,6 @@
       android:id="@+id/media_container_grid"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-
       android:numColumns="4"
       android:columnWidth="100dp"
       android:verticalSpacing="2dp"
@@ -112,5 +110,38 @@
       android:textAppearance="?android:attr/textAppearanceSmall"
       android:textColor="?android:attr/textColorHighlight"
       android:layout_alignLeft="@+id/tweet_text" />
+<android.support.v7.widget.LinearLayoutCompat
+  android:layout_alignParentBottom="true"
+  android:layout_below="@+id/textView_isRT"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="@dimen/tw__composer_tweet_btn_height"
+  android:layout_alignLeft="@id/textView_isRT"
+  android:layout_alignStart="@id/textView_isRT"
+  >
+<android.support.v7.widget.AppCompatImageButton
+  android:id="@+id/reply"
+  android:layout_width="24dp"
+  android:layout_height="24dp"
+  android:layout_weight="1"
+  android:background="@android:color/transparent"
+  android:src="@drawable/ic_reply_grey"
+  />
+  <com.twitter.sdk.android.tweetui.ToggleImageButton
+    android:id="@+id/retweet"
+    android:layout_weight="1"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:src="@drawable/ic_redo_grey"
+    />
+  <com.twitter.sdk.android.tweetui.ToggleImageButton
+    android:id="@+id/like"
+    android:layout_weight="1"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:src="@drawable/ic_favorite_grey"
+    />
+</android.support.v7.widget.LinearLayoutCompat>
   </RelativeLayout>
 
+</layout>

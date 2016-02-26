@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.support.v7.widget.AppCompatImageButton
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,13 +17,16 @@ import android.widget.TextView
 import com.klinker.android.link_builder.LinkBuilder
 import com.klinker.android.link_builder.LinkConsumableTextView
 import com.squareup.picasso.Picasso
+import org.greenrobot.eventbus.EventBus
 import twitter4j.Status
 import xyz.donot.twix.R
+import xyz.donot.twix.event.OnCardViewTouchEvent
 import xyz.donot.twix.util.MediaUtil
 import xyz.donot.twix.util.getLinkList
 import xyz.donot.twix.util.getRelativeTime
+import xyz.donot.twix.util.logd
 import xyz.donot.twix.view.activity.PictureActivity
-import xyz.donot.twix.view.activity.TweetDetailActivity
+import xyz.donot.twix.view.activity.TweetEditActivity
 import xyz.donot.twix.view.activity.UserActivity
 import xyz.donot.twix.view.activity.VideoActivity
 import java.util.*
@@ -34,7 +38,6 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     // 表示するレイアウトを設定
     return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
   }
-
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
     if (statusList.size > i ) {
       val item= if (statusList[i].isRetweet){
@@ -46,7 +49,6 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         statusList[i]
       }
       //画像関連
-
       if(item.extendedMediaEntities.size>0){
         val list =item.extendedMediaEntities.map { it.mediaURLHttps }
         val gridAdapter=TweetPictureGridAdapter(mContext,0)
@@ -75,10 +77,17 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         dateText.text = getRelativeTime(item.createdAt)
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
-        cardView.setOnClickListener({ mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id",item.id)) })
+        cardView.setOnClickListener({
+          EventBus.getDefault().post(OnCardViewTouchEvent(item))
+        //mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id",item.id))
+        })
         icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}
         status_text.text=item.text
         LinkBuilder.on(status_text).addLinks(mContext.getLinkList()).build()
+        reply.setOnClickListener{
+          logd("click","reply")
+          mContext.startActivity(Intent(mContext, TweetEditActivity::class.java).putExtra("status_id",item.id).putExtra("user_screen_name",item.user.screenName))
+        }
 
       }}
   }
@@ -96,6 +105,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     Handler(Looper.getMainLooper()).post { statusList.addFirst(status)
     this.notifyItemInserted(0)}
   }
+
   fun clear(){
     Handler(Looper.getMainLooper()).post {  statusList.clear()
     this.notifyDataSetChanged()}
@@ -110,12 +120,13 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     val retweetText: TextView
     val userName: TextView
     val screenName: TextView
-    val  dateText: TextView
+    val dateText: TextView
     val countText: TextView
     val icon: ImageView
     val status_text: LinkConsumableTextView
     val mediaContainerGrid: GridView
     val cardView:CardView
+    val reply :  AppCompatImageButton
     init {
       cardView=itemView.findViewById(R.id.cardView)as CardView
       status_text=itemView.findViewById(R.id.tweet_text)as LinkConsumableTextView
@@ -126,6 +137,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
       countText = itemView.findViewById(R.id.count) as TextView
       dateText = itemView.findViewById(R.id.textView_date) as TextView
       icon =itemView.findViewById(R.id.icon) as ImageView
+      reply=itemView.findViewById(R.id.reply) as AppCompatImageButton
     }
 
   }
