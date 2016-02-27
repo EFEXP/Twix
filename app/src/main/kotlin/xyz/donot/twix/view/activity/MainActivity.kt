@@ -1,6 +1,7 @@
 package xyz.donot.twix.view.activity
 
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -95,7 +96,26 @@ class MainActivity : RxAppCompatActivity() {
   @Subscribe(threadMode = ThreadMode.POSTING)
  fun onCardviewTouched(onCardViewTouchEvent: OnCardViewTouchEvent)
   {
+   AlertDialog.Builder(this@MainActivity)
+    .setItems(R.array.tweet_menu,  { dialogInterface, i ->
+      when(resources.getStringArray(R.array.tweet_menu)[i]){
+        "削除"->{TwitterUpdateObservable(twitter).deleteStatusAsync(onCardViewTouchEvent.status.id).subscribe (object:TwitterSubscriber(){
+          override fun onError(e: Throwable) {
+            super.onError(e)
+            Snackbar.make(coordinatorLayout,"失敗しました",Snackbar.LENGTH_LONG).show()
+          }
 
+          override fun onStatus(status: Status) {
+            super.onStatus(status)
+            Snackbar.make(coordinatorLayout,"削除しました",Snackbar.LENGTH_LONG).show()
+          }
+        })}
+        "会話"->{
+          startActivity(Intent(this@MainActivity,TweetDetailActivity::class.java).putExtra("status_id",onCardViewTouchEvent.status.id))
+        }
+      }
+    })
+     .show()
 
 
   }
@@ -104,6 +124,7 @@ class MainActivity : RxAppCompatActivity() {
  fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
     CustomTabsIntent.Builder()
       .setShowTitle(true)
+      .addDefaultShareMenuItem()
       .setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
       .setStartAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
       .setExitAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right).build()

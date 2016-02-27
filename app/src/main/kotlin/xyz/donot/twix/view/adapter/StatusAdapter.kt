@@ -17,7 +17,6 @@ import android.widget.TextView
 import com.klinker.android.link_builder.LinkBuilder
 import com.klinker.android.link_builder.LinkConsumableTextView
 import com.squareup.picasso.Picasso
-import com.twitter.sdk.android.tweetui.ToggleImageButton
 import org.greenrobot.eventbus.EventBus
 import twitter4j.Status
 import twitter4j.Twitter
@@ -87,7 +86,6 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
         cardView.setOnClickListener({
           EventBus.getDefault().post(OnCardViewTouchEvent(item))
-        //mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id",item.id))
         })
         icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}
         status_text.text=item.text
@@ -165,8 +163,8 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
 
 
   inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
-    val  like : ToggleImageButton
-    val  retweet : ToggleImageButton
+    val  like : AppCompatImageButton
+    val  retweet : AppCompatImageButton
     val retweetText: TextView
     val userName: TextView
     val screenName: TextView
@@ -178,8 +176,8 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     val cardView:CardView
     val reply :  AppCompatImageButton
     init {
-      retweet=itemView.findViewById(R.id.retweet)as ToggleImageButton
-      like=itemView.findViewById(R.id.like)as ToggleImageButton
+      retweet=itemView.findViewById(R.id.retweet)as AppCompatImageButton
+      like=itemView.findViewById(R.id.like)as AppCompatImageButton
       cardView=itemView.findViewById(R.id.cardView)as CardView
       status_text=itemView.findViewById(R.id.tweet_text)as LinkConsumableTextView
       mediaContainerGrid=itemView.findViewById(R.id.media_container_grid)as GridView

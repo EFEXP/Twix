@@ -6,15 +6,15 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import xyz.donot.twix.util.getMyId
 import xyz.donot.twix.view.fragment.HomeTimelineFragment
-import xyz.donot.twix.view.fragment.LikeTimelineFragment
+import xyz.donot.twix.view.fragment.MentionFragment
 import xyz.donot.twix.view.fragment.UserTimelineFragment
 
 class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when(position){
           0->Factory.home
-          1->Factory.user
-          2->Factory.like
+          1->Factory.mention
+          2->Factory.user
           else->throw  IllegalStateException()
         }}
 
@@ -22,8 +22,8 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence {
         return when(position){
           0->"Home"
-          1->"User"
-          2->"Like"
+          1->"Mention"
+          2->"User"
           else->throw  IllegalStateException()
     }}
 
@@ -34,5 +34,5 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 object Factory{
   val home:HomeTimelineFragment by  lazy { HomeTimelineFragment()  }
   val user by lazy { UserTimelineFragment(getMyId())}
-  val like by lazy { LikeTimelineFragment(getMyId()) }
+  val mention by lazy { MentionFragment() }
 }

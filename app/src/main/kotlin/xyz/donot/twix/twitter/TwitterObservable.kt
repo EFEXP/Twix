@@ -17,7 +17,6 @@ class TwitterObservable(val twitter : Twitter)
         statuses.withIndex().forEachIndexed { int, indexedValue ->
           subscriber.onNext(indexedValue.value)
           if(int==paging.count-1){
-            logi("Loaded","${int}Tweets")
             subscriber.onCompleted()}
         }
       } catch (e: TwitterException) {
@@ -36,30 +35,13 @@ class TwitterObservable(val twitter : Twitter)
         val  statuses = twitter.getHomeTimeline(paging)
         statuses.withIndex().forEachIndexed { int, indexedValue ->
           subscriber.onNext(indexedValue.value)
-          logi("Loaded","1Tweet")
           if(int==paging.count-1){
-            logi("Loaded","${int+1}Tweets")
             subscriber.onCompleted()}
         }
       } catch (e: TwitterException) {
         subscriber.onError(e)
       }
 
-    }
-      .basicNetworkTask()
-  }
-
-  fun getHomeTimelineListAsync(paging: Paging): Observable<ResponseList<Status>>
-  {
-    return  Observable.create<ResponseList<Status>> { subscriber ->
-      try {
-          subscriber.onNext(twitter.getHomeTimeline(paging))
-
-      } catch (e: TwitterException) {
-        logi("error",e.errorMessage)
-        subscriber.onError(e)
-      }
-      subscriber.onCompleted()
     }
       .basicNetworkTask()
   }
@@ -108,7 +90,6 @@ class TwitterObservable(val twitter : Twitter)
         statuses.withIndex().forEachIndexed { int, indexedValue ->
           subscriber.onNext(indexedValue.value)
           if(int-1==paging.count-1){
-            logi("Loaded","${int+1}Tweets")
             subscriber.onCompleted()}
         }
       } catch (e: TwitterException) {

@@ -34,7 +34,7 @@ abstract class BaseFragment : RxFragment() {
         val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
         val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
         recycler.apply{
-          itemAnimator= OvershootInRightAnimator(1f)
+          itemAnimator= OvershootInRightAnimator(0.1f)
           adapter = AlphaInAnimationAdapter(mAdapter)
           layoutManager = LinearLayoutManager(this@BaseFragment.context)
           addOnScrollListener(object:OnLoadMoreListener(){
