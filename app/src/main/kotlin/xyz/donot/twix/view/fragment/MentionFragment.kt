@@ -6,7 +6,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import twitter4j.Paging
 import twitter4j.Status
-import xyz.donot.twix.event.OnStatusEvent
+import xyz.donot.twix.event.OnReplyEvent
 import xyz.donot.twix.event.TwitterSubscriber
 import xyz.donot.twix.twitter.TwitterObservable
 
@@ -22,8 +22,7 @@ class MentionFragment() : BaseFragment() {
     } )
   }
   @Subscribe
-  fun onEventMainThread(statusEvent: OnStatusEvent){
-    mAdapter.insert(statusEvent.status) }
+  fun onEventMainThread(statusEvent: OnReplyEvent){ mAdapter.insert(statusEvent.status) }
 
   val eventBus by lazy { EventBus.getDefault() }
   override fun onCreate(savedInstanceState: Bundle?){
