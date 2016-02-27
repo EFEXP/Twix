@@ -37,7 +37,7 @@ return  arrayOf(
     .setBold(true)
     .setOnClickListener{
       logd("MENTION_PATTERN","MENTION_PATTERN")
-      startActivity(Intent(this,UserActivity::class.java).putExtra("user_name",it))
+      startActivity(Intent(this,UserActivity::class.java).putExtra("user_name",it.replace("@","")))
     }
   ,
   Link(Regex.WEB_URL_PATTERN)

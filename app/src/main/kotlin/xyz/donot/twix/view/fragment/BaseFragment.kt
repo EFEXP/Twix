@@ -26,7 +26,7 @@ abstract class BaseFragment : RxFragment() {
         return field
       }
     open val data by lazy { LinkedList<Status>() }
-    open val  mAdapter by lazy { StatusAdapter(context, data) }
+    open val  mAdapter by lazy { StatusAdapter(activity, data) }
     open var swipeLayout :SwipeRefreshLayout?=null
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)

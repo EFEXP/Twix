@@ -1,5 +1,7 @@
 package xyz.donot.twix.view.activity
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
@@ -18,6 +20,31 @@ import xyz.donot.twix.util.getTwitterInstance
 class EditProfileActivity : AppCompatActivity() {
 
 val twitter by lazy { getTwitterInstance()}
+  val intentGallery=
+    if (Build.VERSION.SDK_INT < 19) {
+      Intent(Intent.ACTION_GET_CONTENT)
+        .setType("image/*")
+
+    } else {
+      Intent(Intent.ACTION_OPEN_DOCUMENT)
+        .addCategory(Intent.CATEGORY_OPENABLE)
+        .setType("image/jpeg")
+    }
+  override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
+    if (resultCode == RESULT_OK&&data!=null) {
+      when(requestCode)
+      {
+        //banner
+      1->{
+        Picasso.with(this@EditProfileActivity).load(data.data.path).into(profile_banner)
+      }
+        2->{
+          Picasso.with(this@EditProfileActivity).load(data.data.path).into(icon)
+        }
+
+      }
+    }
+  }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
@@ -27,6 +54,11 @@ val twitter by lazy { getTwitterInstance()}
           override fun onNext(user: User) {
             Picasso.with(this@EditProfileActivity).load(user.profileBannerIPadURL).into(profile_banner)
             Picasso.with(this@EditProfileActivity).load(user.originalProfileImageURLHttps).into(icon)
+            profile_banner.setOnClickListener{
+              startActivityForResult(intentGallery,1) }
+            icon.setOnClickListener{
+              startActivityForResult(intentGallery,2) }
+
             web.text.insert(0,user.urlEntity.expandedURL)
             user_name.text.insert(0,user.name)
             geo.text.insert(0,user.location)
@@ -40,6 +72,11 @@ val twitter by lazy { getTwitterInstance()}
             override fun onCompleted() {
               super.onCompleted()
               Toast.makeText(this@EditProfileActivity,"更新しました",Toast.LENGTH_LONG).show()
+            }
+
+            override fun onError(e: Throwable) {
+              super.onError(e)
+              Toast.makeText(this@EditProfileActivity,"失敗しました",Toast.LENGTH_LONG).show()
             }
           })
           finish()

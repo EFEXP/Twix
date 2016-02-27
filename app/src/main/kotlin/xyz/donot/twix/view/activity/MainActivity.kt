@@ -65,6 +65,7 @@ class MainActivity : RxAppCompatActivity() {
           }
           true
         })
+
         button_tweet.setOnLongClickListener {
           TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
           true

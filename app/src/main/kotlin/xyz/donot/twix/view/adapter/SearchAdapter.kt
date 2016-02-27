@@ -10,16 +10,16 @@ import xyz.donot.twix.view.fragment.TrendFragment
 class SearchAdapter(val txt:String,fm: FragmentManager) : FragmentPagerAdapter(fm) {
   override fun getItem(position: Int): Fragment {
     return when(position){
-      0-> TrendFragment()
-      1->SearchTweetFragment(txt)
-      2->SearchUserFragment(txt)
+      0->SearchTweetFragment(txt)
+      1->SearchUserFragment(txt)
+      2->TrendFragment()
       else->throw  IllegalStateException()
     }}
   override fun getPageTitle(position: Int): CharSequence {
     return when(position){
-      0->"Trend"
-      1->"Tweet"
-      2->"User"
+      0->"Tweet"
+      1->"User"
+      2->"Trend"
       else->throw  IllegalStateException()
     }}
 

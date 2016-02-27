@@ -1,16 +1,16 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
-  <header
+ <!-- <header
     android:fragment="xyz.donot.twix.view.activity.SettingsActivity$GeneralPreferenceFragment"
     android:icon="@drawable/ic_info_grey"
     android:title="@string/pref_header_general" />
 
   <header
+    android:fragment="xyz.donot.twix.view.activity.SettingsActivity$DesignPreferenceFragment"
+    android:icon="@drawable/ic_settings_system_design"
+    android:title="@string/pref_header_app_design" />-->
+  <header
     android:fragment="xyz.donot.twix.view.activity.SettingsActivity$NotificationPreferenceFragment"
     android:icon="@drawable/ic_notifications"
     android:title="@string/pref_header_notifications" />
 
-  <header
-    android:fragment="xyz.donot.twix.view.activity.SettingsActivity$DesignPreferenceFragment"
-    android:icon="@drawable/ic_settings_system_design"
-    android:title="@string/pref_header_app_design" />
 </preference-headers>

@@ -26,9 +26,7 @@ class UserActivity : RxAppCompatActivity() {
         TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
       .subscribe(object :TwitterUserSubscriber(){
         override fun onUser(user: User) {
-          Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
-          toolbar.title=user.name
-          toolbar.subtitle=user.screenName
+          setUp(user)
         }
       })
       }
@@ -36,17 +34,22 @@ class UserActivity : RxAppCompatActivity() {
         TwitterObservable(twitter).showUser(userName).bindToLifecycle(this@UserActivity)
           .subscribe(object :TwitterUserSubscriber(){
             override fun onUser(user: User) {
-              Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
-              toolbar.title=user.name
-              toolbar.subtitle=user.screenName
+              setUp(user)
             }
           })
       }
-        viewpager_user.adapter=AnyUserTimeLineAdapter(supportFragmentManager,userId)
-        tabs_user.setupWithViewPager(viewpager_user)
+
 
 
 
 
     }
+
+  fun setUp(user: User){
+    Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
+    toolbar.title=user.name
+    toolbar.subtitle=user.screenName
+    viewpager_user.adapter=AnyUserTimeLineAdapter(supportFragmentManager,user.id)
+    tabs_user.setupWithViewPager(viewpager_user)
+  }
 }

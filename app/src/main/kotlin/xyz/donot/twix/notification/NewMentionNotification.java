@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import xyz.donot.twix.R;
@@ -24,11 +26,13 @@ public class NewMentionNotification {
   public static void notify(final Context context,
                             final String txtString, final int number) {
     final Resources res = context.getResources();
+
     final Bitmap picture = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
     final String title ="返信";
     final String text = res.getString(R.string.new_mention_notification_placeholder_text_template, txtString);
+    final String ringtone= PreferenceManager.getDefaultSharedPreferences(context).getString("notifications_ringtone","");
     final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-      .setDefaults(Notification.DEFAULT_ALL)
+      .setSound(Uri.parse(ringtone))
       .setSmallIcon(R.drawable.ic_stat_new_mention)
       .setContentTitle(title)
       .setContentText(text)

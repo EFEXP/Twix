@@ -1,6 +1,7 @@
 package xyz.donot.twix.view.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.CardView
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import twitter4j.Trend
 import xyz.donot.twix.R
+import xyz.donot.twix.view.activity.SearchActivity
 import java.util.*
 
 class TrendAdapter(private val mContext: Context, private val trendList: LinkedList<Trend>) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.TrendAdapter.ViewHolder>() {
@@ -25,7 +27,9 @@ class TrendAdapter(private val mContext: Context, private val trendList: LinkedL
       //ビューホルダー
       viewHolder.apply {
         trendTxt.text=item.name
-        cardView.setOnClickListener({})
+        cardView.setOnClickListener({
+          mContext.startActivity(Intent(mContext,SearchActivity::class.java).putExtra("query_txt",item.query))
+        })
         }
       }
 

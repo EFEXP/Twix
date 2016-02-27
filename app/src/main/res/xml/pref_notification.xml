@@ -16,7 +16,8 @@
     android:key="notifications_ringtone"
     android:ringtoneType="notification"
     android:title="@string/pref_title_ringtone" />
-  <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
+
+  <!-- NOTE: This preference will be enabled only when the checkbox above is checked.
   <SwitchPreference
     android:defaultValue="true"
     android:dependency="notifications"
@@ -37,5 +38,5 @@
     android:dependency="notifications"
     android:key="notifications_vibrate_reply"
     android:title="@string/pref_title_reply" />
-
+ -->
 </PreferenceScreen>

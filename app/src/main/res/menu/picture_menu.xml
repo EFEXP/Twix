@@ -2,6 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
     android:id="@+id/save_it"
-    android:icon="@drawable/ic_save_grey"
     android:title="@string/save_it"/>
 </menu>
