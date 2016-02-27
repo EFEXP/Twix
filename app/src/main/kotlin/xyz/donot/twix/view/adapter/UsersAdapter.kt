@@ -11,16 +11,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import twitter4j.Twitter
 import twitter4j.User
 import xyz.donot.twix.R
-import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.view.activity.UserActivity
 import java.util.*
 
 class UsersAdapter(private val mContext: Context, private val userList: LinkedList<User>) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.UsersAdapter.ViewHolder>() {
   private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
-  private val twitter: Twitter by  lazy { mContext.getTwitterInstance() }
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     // 表示するレイアウトを設定
     return ViewHolder(mInflater.inflate(R.layout.item_user, viewGroup, false))
@@ -34,8 +31,9 @@ class UsersAdapter(private val mContext: Context, private val userList: LinkedLi
         description.text=item.description
         userName.text=item.name
         Picasso.with(mContext).load(item.biggerProfileImageURLHttps).into(icon)
-        icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",it.id))}
+        cardView.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.id))}
         }
+
 
     }
   }

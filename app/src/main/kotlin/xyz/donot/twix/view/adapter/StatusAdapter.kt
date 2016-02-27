@@ -1,7 +1,7 @@
 package xyz.donot.twix.view.adapter
 
-import android.content.Context
-import android.content.Intent
+import android.app.AlertDialog
+import android.content.*
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.AppCompatImageButton
@@ -10,10 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.GridView
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.klinker.android.link_builder.LinkBuilder
 import com.klinker.android.link_builder.LinkConsumableTextView
 import com.squareup.picasso.Picasso
@@ -24,14 +21,8 @@ import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCardViewTouchEvent
 import xyz.donot.twix.event.TwitterSubscriber
 import xyz.donot.twix.twitter.TwitterUpdateObservable
-import xyz.donot.twix.util.MediaUtil
-import xyz.donot.twix.util.getLinkList
-import xyz.donot.twix.util.getRelativeTime
-import xyz.donot.twix.util.getTwitterInstance
-import xyz.donot.twix.view.activity.PictureActivity
-import xyz.donot.twix.view.activity.TweetEditActivity
-import xyz.donot.twix.view.activity.UserActivity
-import xyz.donot.twix.view.activity.VideoActivity
+import xyz.donot.twix.util.*
+import xyz.donot.twix.view.activity.*
 import java.util.*
 
 class StatusAdapter(private val mContext: Context, private val statusList: LinkedList<Status>) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.StatusAdapter.ViewHolder>() {
@@ -85,6 +76,37 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
         cardView.setOnClickListener({
+          val tweetItem=if(getMyId() ==item.user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
+          AlertDialog.Builder(mContext)
+            .setItems(tweetItem, { dialogInterface, i ->
+              val selectedItem=mContext.resources.getStringArray(tweetItem)[i]
+              when (selectedItem) {
+                "削除" -> {
+                  TwitterUpdateObservable(twitter).deleteStatusAsync(item.id).subscribe (object : TwitterSubscriber() {
+                    override fun onError(e: Throwable) {
+                      super.onError(e)
+                      Toast.makeText(mContext, "失敗しました", Toast.LENGTH_LONG).show()
+                    }
+                    override fun onStatus(status: Status) {
+                      super.onStatus(status)
+                      Toast.makeText(mContext, "削除しました",  Toast.LENGTH_LONG).show()
+                    }
+                  })
+                }
+                "会話" -> {
+                  mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id", item.id))
+                }
+                "コピー" -> {
+                  val t= mContext.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
+                  t.primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
+                }
+              }
+
+
+            })
+            .show()
+
+
           EventBus.getDefault().post(OnCardViewTouchEvent(item))
         })
         icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}

@@ -26,25 +26,28 @@ abstract class BaseFragment : RxFragment() {
       }
     open val data by lazy { LinkedList<Status>() }
     open val  mAdapter by lazy { StatusAdapter(context, data) }
+    open val linerLayoutManger by lazy { LinearLayoutManager(this@BaseFragment.context) }
 
-   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
-        val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
-        recycler.apply{
-          itemAnimator= OvershootInRightAnimator(0.1f)
-          adapter = AlphaInAnimationAdapter(mAdapter)
-          layoutManager = LinearLayoutManager(this@BaseFragment.context)
-          addOnScrollListener(object:OnLoadMoreListener(){
-            override fun onScrolledToBottom() {
-              TimelineLoader()
-            }
 
-          }
-
-          )
-
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
+    val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
+    recycler.apply{
+      layoutManager = linerLayoutManger
+      itemAnimator= OvershootInRightAnimator(1f)
+      itemAnimator.addDuration = 500
+      itemAnimator.removeDuration = 1000
+      itemAnimator.moveDuration = 1000
+      itemAnimator.changeDuration =0
+      adapter = AlphaInAnimationAdapter(mAdapter)
+      addOnScrollListener(object: OnLoadMoreListener(){
+        override fun onScrolledToBottom() {
           TimelineLoader()
-     }
+        }
+      }
+      )
+      TimelineLoader()
+    }
      return v}
 
 

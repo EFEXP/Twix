@@ -5,9 +5,9 @@ import android.support.v7.widget.Toolbar
 import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_user.*
-import rx.Subscriber
 import twitter4j.User
 import xyz.donot.twix.R
+import xyz.donot.twix.event.TwitterUserSubscriber
 import xyz.donot.twix.twitter.TwitterObservable
 import xyz.donot.twix.util.bindToLifecycle
 import xyz.donot.twix.util.getTwitterInstance
@@ -22,17 +22,11 @@ class UserActivity : RxAppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
         TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
-      .subscribe(object : Subscriber<User>() {
-        override fun onCompleted() {
-
-        }
-        override fun onError(p0: Throwable) {
-        p0.printStackTrace()
-        }
-        override fun onNext(p0: User) {
-          Picasso.with(this@UserActivity).load(p0.profileBannerIPadURL).into(banner)
-          toolbar.title=p0.name
-          toolbar.subtitle=p0.screenName
+      .subscribe(object :TwitterUserSubscriber(){
+        override fun onUser(user: User) {
+          Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
+          toolbar.title=user.name
+          toolbar.subtitle=user.screenName
         }
       })
         viewpager_user.adapter=AnyUserTimeLineAdapter(supportFragmentManager,userId)

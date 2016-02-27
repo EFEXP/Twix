@@ -9,50 +9,40 @@ import android.view.ViewGroup
 import com.trello.rxlifecycle.components.support.RxFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
-import twitter4j.User
+import twitter4j.Trend
 import xyz.donot.twix.R
+import xyz.donot.twix.twitter.TwitterTrendObservable
 import xyz.donot.twix.util.getTwitterInstance
-import xyz.donot.twix.view.adapter.UsersAdapter
-import xyz.donot.twix.view.listener.OnLoadMoreListener
+import xyz.donot.twix.view.adapter.TrendAdapter
 import java.util.*
 
-abstract class BaseUserFragment : RxFragment() {
-  open var page : Int = 0
+class TrendFragment():RxFragment(){
+   val twitter by lazy { activity.getTwitterInstance() }
+   var page : Int = 0
     get() {
       field++
       return field
     }
-  open val data by lazy { LinkedList<User>() }
-  open val  mAdapter by lazy { UsersAdapter(activity,data) }
-  open val  twitter by lazy {activity.getTwitterInstance() }
-
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-  }
-
+   val data by lazy { LinkedList<Trend>() }
+   val  mAdapter by lazy { TrendAdapter(context, data) }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
     recycler.apply{
       itemAnimator= OvershootInRightAnimator(0.1f)
       adapter = AlphaInAnimationAdapter(mAdapter)
-      layoutManager = LinearLayoutManager(activity)
-      addOnScrollListener(object: OnLoadMoreListener(){
-        override fun onScrolledToBottom() {
-          TimelineLoader()
-        }
-
-      }
-
-      )
-
+      layoutManager = LinearLayoutManager(this@TrendFragment.context)
       TimelineLoader()
     }
     return v}
 
+  fun TimelineLoader(){
+    TwitterTrendObservable(twitter).getTrend().subscribe {
+      it.forEach {
+        mAdapter.add(it)
+      }
+    }
 
-  abstract fun TimelineLoader()
-
+  }
 
 }

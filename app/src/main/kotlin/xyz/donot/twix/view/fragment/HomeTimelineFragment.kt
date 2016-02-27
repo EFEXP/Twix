@@ -3,8 +3,10 @@ package xyz.donot.twix.view.fragment
 
 import android.os.Bundle
 import android.view.View
+import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import twitter4j.Paging
 import twitter4j.Status
 import xyz.donot.twix.event.OnDeleteEvent
@@ -34,9 +36,12 @@ class HomeTimelineFragment : BaseFragment() {
   Factory.getStreamObject(activity,twitter, StreamType.USER_STREAM).run()
     }
 
-  @Subscribe
+  @Subscribe(threadMode = ThreadMode.MAIN)
   fun onEventMainThread(statusEvent: OnStatusEvent){
-    mAdapter.insert(statusEvent.status) }
+    data.addFirst(statusEvent.status)
+    if(linerLayoutManger.findFirstCompletelyVisibleItemPosition()==0){recycler_view.smoothScrollToPosition(0)}
+    mAdapter.notifyItemInserted(0)
+  }
 
 
   @Subscribe

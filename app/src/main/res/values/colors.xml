@@ -3,9 +3,5 @@
   <color name="colorPrimary">#00bc98</color>
   <color name="colorAccent">#c87a97</color>
   <color name="colorPrimaryDark">#38a994</color>
-  <color name="colorPrimaryDark_old">#303F9F</color>
-  <color name="colorPrimary_old">#3F51B5</color>
-  <color name="colorAccent_old">#FF4081</color>
-
   <color name="black_overlay">#66000000</color>
 </resources>

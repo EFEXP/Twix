@@ -8,7 +8,6 @@ class SearchTweetFragment(val query_txt:String):BaseFragment(){
   override fun TimelineLoader() {
     TwitterObservable(twitter).getSearchAsync(query).subscribe {
       if(it.hasNext()){
-
         query=it.nextQuery()
       }
       it.tweets.forEach { mAdapter.add(it) }

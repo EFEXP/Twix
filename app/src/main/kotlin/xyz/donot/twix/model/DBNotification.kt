@@ -10,6 +10,6 @@ open  class DBNotification : RealmObject() {
     open var isReTweet: Boolean = false
     open  var source: String? = null
     open  var text: String? = null
-    open var tweetID: Long? = 0
+    open var tweetID: Long = 0
     open  var createdAt: Date? = null
 }

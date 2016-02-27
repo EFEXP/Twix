@@ -30,9 +30,10 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
         return 3
     }
+  companion object Factory{
+    val home:HomeTimelineFragment by  lazy { HomeTimelineFragment()  }
+    val user by lazy { UserTimelineFragment(getMyId())}
+    val mention by lazy { MentionFragment() }
+  }
 }
-object Factory{
-  val home:HomeTimelineFragment by  lazy { HomeTimelineFragment()  }
-  val user by lazy { UserTimelineFragment(getMyId())}
-  val mention by lazy { MentionFragment() }
-}
+
