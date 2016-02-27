@@ -1,5 +1,6 @@
 package xyz.donot.twix.view.adapter
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.CardView
@@ -14,6 +15,7 @@ import twitter4j.Twitter
 import twitter4j.User
 import xyz.donot.twix.R
 import xyz.donot.twix.util.getTwitterInstance
+import xyz.donot.twix.view.activity.UserActivity
 import java.util.*
 
 class UsersAdapter(private val mContext: Context, private val userList: LinkedList<User>) : RecyclerView.Adapter<xyz.donot.twix.view.adapter.UsersAdapter.ViewHolder>() {
@@ -32,6 +34,7 @@ class UsersAdapter(private val mContext: Context, private val userList: LinkedLi
         description.text=item.description
         userName.text=item.name
         Picasso.with(mContext).load(item.biggerProfileImageURLHttps).into(icon)
+        icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",it.id))}
         }
 
     }

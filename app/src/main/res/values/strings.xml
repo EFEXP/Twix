@@ -58,9 +58,14 @@
     <item>360</item>
     <item>-1</item>
   </string-array>
-  <string-array name="tweet_menu">
+  <string-array name="tweet_my_menu">
     <item>削除</item>
     <item>会話</item>
+    <item>コピー</item>
+  </string-array>
+  <string-array name="tweet_menu">
+    <item>会話</item>
+    <item>コピー</item>
   </string-array>
 
   <string name="pref_title_system_sync_settings">System sync settings</string>

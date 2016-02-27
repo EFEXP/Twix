@@ -2,8 +2,7 @@ package xyz.donot.twix.view.activity
 
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
@@ -23,6 +22,7 @@ import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCardViewTouchEvent
 import xyz.donot.twix.event.OnCustomtabEvent
+import xyz.donot.twix.event.OnHashtagEvent
 import xyz.donot.twix.event.TwitterSubscriber
 import xyz.donot.twix.twitter.TwitterUpdateObservable
 import xyz.donot.twix.util.*
@@ -32,6 +32,7 @@ import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
 class MainActivity : RxAppCompatActivity() {
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy {  getTwitterInstance() }
+  val searchView by lazy{toolbar.menu.findItem(R.id.menu_search).actionView as SearchView}
     override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       if(!haveToken())
@@ -42,7 +43,6 @@ class MainActivity : RxAppCompatActivity() {
       else if(haveNetworkConnection()) {
         setContentView(R.layout.activity_main)
         toolbar.inflateMenu(R.menu.search)
-        val searchView=toolbar.menu.findItem(R.id.menu_search).actionView as SearchView
         viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
         toolbar.setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
         tabs.setupWithViewPager(viewpager)
@@ -90,6 +90,8 @@ class MainActivity : RxAppCompatActivity() {
           override fun onQueryTextSubmit(p0: String): Boolean {
             if(!p0.isNullOrBlank()){
               startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",p0))
+              searchView.clearFocus()
+
             }
             return true
           }
@@ -114,30 +116,47 @@ class MainActivity : RxAppCompatActivity() {
   @Subscribe(threadMode = ThreadMode.POSTING)
  fun onCardviewTouched(onCardViewTouchEvent: OnCardViewTouchEvent)
   {
-   AlertDialog.Builder(this@MainActivity)
-    .setItems(R.array.tweet_menu,  { dialogInterface, i ->
-      when(resources.getStringArray(R.array.tweet_menu)[i]){
-        "削除"->{TwitterUpdateObservable(twitter).deleteStatusAsync(onCardViewTouchEvent.status.id).subscribe (object:TwitterSubscriber(){
-          override fun onError(e: Throwable) {
-            super.onError(e)
-            Snackbar.make(coordinatorLayout,"失敗しました",Snackbar.LENGTH_LONG).show()
-          }
 
-          override fun onStatus(status: Status) {
-            super.onStatus(status)
-            Snackbar.make(coordinatorLayout,"削除しました",Snackbar.LENGTH_LONG).show()
+    val tweetItem=if(getMyId()==onCardViewTouchEvent.status.user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
+    AlertDialog.Builder(this@MainActivity)
+      .setItems(tweetItem, { dialogInterface, i ->
+        val selectedItem=resources.getStringArray(tweetItem)[i]
+        when (selectedItem) {
+          "削除" -> {
+            TwitterUpdateObservable(twitter).deleteStatusAsync(onCardViewTouchEvent.status.id).subscribe (object : TwitterSubscriber() {
+              override fun onError(e: Throwable) {
+                super.onError(e)
+                Snackbar.make(coordinatorLayout, "失敗しました", Snackbar.LENGTH_LONG).show()
+              }
+              override fun onStatus(status: Status) {
+                super.onStatus(status)
+                Snackbar.make(coordinatorLayout, "削除しました", Snackbar.LENGTH_LONG).show()
+              }
+            })
           }
-        })}
-        "会話"->{
-          startActivity(Intent(this@MainActivity,TweetDetailActivity::class.java).putExtra("status_id",onCardViewTouchEvent.status.id))
+          "会話" -> {
+            startActivity(Intent(this@MainActivity, TweetDetailActivity::class.java).putExtra("status_id", onCardViewTouchEvent.status.id))
+          }
+          "コピー" -> {
+        val t= getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
+            t.primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,onCardViewTouchEvent.status.text)
+          }
         }
-      }
-    })
-     .show()
 
+
+      })
+      .show()
+  }
+
+  @Subscribe(threadMode = ThreadMode.POSTING)
+  fun onHashTagTouched(onHashtagEvent: OnHashtagEvent)
+  {
+
+    startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",onHashtagEvent.tag))
+    searchView.clearFocus()
 
   }
-  @Suppress
+
   @Subscribe
  fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
     CustomTabsIntent.Builder()

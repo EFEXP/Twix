@@ -12,11 +12,13 @@ import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import twitter4j.Status
 import xyz.donot.twix.R
+import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.view.adapter.StatusAdapter
 import xyz.donot.twix.view.listener.OnLoadMoreListener
 import java.util.*
 
 abstract class BaseFragment : RxFragment() {
+  open val twitter by lazy { activity.getTwitterInstance() }
     open var page : Int = 0
       get() {
         field++
@@ -24,11 +26,6 @@ abstract class BaseFragment : RxFragment() {
       }
     open val data by lazy { LinkedList<Status>() }
     open val  mAdapter by lazy { StatusAdapter(context, data) }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
@@ -49,6 +46,8 @@ abstract class BaseFragment : RxFragment() {
           TimelineLoader()
      }
      return v}
+
+
 
 
   abstract fun TimelineLoader()

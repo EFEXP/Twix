@@ -24,6 +24,7 @@ import xyz.donot.twix.util.logd
       this.isConnected= true
    val stream= TwitterStreamFactory().getInstance(twitter.authorization)
     StreamCreateUtil.addStatusListener(stream,MyNotificationAdapter())
+
     when(type){
       StreamType.USER_STREAM->{stream.user()}
       StreamType.FILTER_STREAM->{}

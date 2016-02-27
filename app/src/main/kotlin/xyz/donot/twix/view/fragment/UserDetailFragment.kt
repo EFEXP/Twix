@@ -38,10 +38,10 @@ class UserDetailFragment(val userId:Long) : RxFragment()
       following_text.text="Friends:${user.friendsCount}"
       LinkBuilder.on(description).addLinks(activity.getLinkList()).build()
       following_text.setOnClickListener{
-        activity.startActivity(Intent(activity,UsersActivity::class.java).putExtra("mode","friend").putExtra("userid",user.id))
+        activity.startActivity(Intent(activity,UsersActivity::class.java).putExtra("user_id",user.id))
       }
       followed_text.setOnClickListener{
-        activity.startActivity(Intent(activity,UsersActivity::class.java).putExtra("mode","follower").putExtra("userid",user.id))
+        activity.startActivity(Intent(activity,UsersActivity::class.java).putExtra("user_id",user.id))
       }
 
     }

@@ -22,6 +22,7 @@ abstract class BaseUserFragment : RxFragment() {
       field++
       return field
     }
+
   open val data by lazy { LinkedList<User>() }
   open val  mAdapter by lazy { UsersAdapter(activity,data) }
   open val  twitter by lazy {activity.getTwitterInstance() }

@@ -9,7 +9,6 @@ import xyz.donot.twix.twitter.TwitterObservable
 import xyz.donot.twix.util.getTwitterInstance
 
 class UserTimelineFragment(val userId:Long) : BaseFragment() {
-
   override fun TimelineLoader() {
     val twitter=activity.getTwitterInstance()
     val paging = Paging(page, 30)
