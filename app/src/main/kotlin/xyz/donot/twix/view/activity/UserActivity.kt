@@ -20,6 +20,7 @@ class UserActivity : RxAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
+      toolbar.setNavigationOnClickListener { finish() }
         TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
       .subscribe(object : Subscriber<User>() {
         override fun onCompleted() {

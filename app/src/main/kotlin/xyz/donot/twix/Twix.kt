@@ -2,6 +2,7 @@ package xyz.donot.twix
 
 import android.app.Application
 import com.twitter.sdk.android.Twitter
+
 import com.twitter.sdk.android.core.TwitterAuthConfig
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm

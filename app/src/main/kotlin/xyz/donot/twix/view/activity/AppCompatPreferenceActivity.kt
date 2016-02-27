@@ -15,7 +15,7 @@ import android.view.ViewGroup
  * A [android.preference.PreferenceActivity] which implements and proxies the necessary calls
  * to be used with AppCompat.
  */
-abstract class AppCompatPreferenceActivity : PreferenceActivity() {
+abstract class AppCompatPreferenceActivity :PreferenceActivity() {
 
     private var mDelegate: AppCompatDelegate? = null
 

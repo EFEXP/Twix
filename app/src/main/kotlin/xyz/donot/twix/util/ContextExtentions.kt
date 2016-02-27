@@ -6,7 +6,7 @@ import com.klinker.android.link_builder.Link
 import org.greenrobot.eventbus.EventBus
 import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
-import java.util.regex.Pattern
+import xyz.donot.twix.event.OnHashtagEvent
 
 
 fun Context.getTimeLineLayoutId():Int
@@ -28,6 +28,15 @@ fun Context.getDetailHeaderLayoutId():Int
 fun Context.getLinkList() :MutableList<Link>{
 
 return  arrayOf(
+
+  Link(Regex.MENTION_PATTERN)
+    .setUnderlined(false)
+    .setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
+    .setBold(true)
+    .setOnClickListener{
+      logd("MENTION_PATTERN","MENTION_PATTERN")
+    }
+  ,
   Link(Regex.WEB_URL_PATTERN)
     .setUnderlined(false)
     .setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
@@ -36,16 +45,12 @@ return  arrayOf(
       EventBus.getDefault().post(OnCustomtabEvent(it))
     }
   ,
-
-  Link(Pattern.compile("(@\\w+)"))
-    .setUnderlined(false)
+  Link(Regex.HASHTAG_PATTERN)
     .setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
     .setBold(true)
     .setOnClickListener{
+      logd("HASHTAG_PATTERN","HASHTAG_PATTERN")
+      EventBus.getDefault().post(OnHashtagEvent(it))
     }
-  ,
-  Link(Pattern.compile("(#\\w+)"))
-    .setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
-    .setBold(true)
 ).toMutableList()
 }

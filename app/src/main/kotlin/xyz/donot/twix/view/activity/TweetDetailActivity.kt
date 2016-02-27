@@ -32,7 +32,7 @@ class TweetDetailActivity : AppCompatActivity() {
   fun loadReply(long: Long){
     val observer= TwitterObservable(twitter).showStatusAsync(long)
     observer.subscribe {
-      mAdapter.add(it) }
+      mAdapter.insert(it) }
     observer.subscribe {
       val voo=it.inReplyToStatusId>0
       if(voo){

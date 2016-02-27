@@ -2,11 +2,8 @@ package xyz.donot.twix.util;
 
 import android.content.Context
 import io.realm.Realm
-import rx.lang.kotlin.observable
 import twitter4j.Status
-import twitter4j.Twitter
 import twitter4j.TwitterFactory
-import twitter4j.User
 import twitter4j.auth.AccessToken
 import xyz.donot.twix.R
 import xyz.donot.twix.model.DBAccount
@@ -24,7 +21,9 @@ fun Context.getTwitterInstance(): twitter4j.Twitter {
   return twitter
 }
 
-
+fun Context.getFabricTwitterInstance(): com.twitter.sdk.android.Twitter {
+  return com.twitter.sdk.android.Twitter.getInstance()
+}
 
 fun isIgnore(id: Long): Boolean {
  return  Realm.getDefaultInstance().where(DBMuteUser::class.java)
@@ -37,25 +36,7 @@ fun isMentionToMe(status: Status): Boolean {
 
 
 
-fun updateUserProfile(twitter:Twitter){
-  observable<User> {twitter.showUser(getMyId())  }
-    .basicNetworkTask()
-    .subscribe {
-      user->
-      Realm.getDefaultInstance().use {
-        it.executeTransaction{
-          val account=  it.where(DBAccount::class.java).equalTo("id",user.id).findFirst()
-          account.apply {
-            name=user.name
-            profileImageUrl=user.originalProfileImageURL
-            screenName=user.screenName
-          }
 
-        }
-
-      }
-    }
-}
 
 fun getMyId(): Long{
   Realm.getDefaultInstance().use {
@@ -86,18 +67,7 @@ fun loadAccessToken(): AccessToken {
   }
 }
 
-fun Context.profileUpdate()
-{
- /* Realm.getDefaultInstance().use {realm->
-    val ac= realm.where(DBAccount::class.java).equalTo("isMain",true).findAllAsync().asObservable()
-    .map { it.forEach { return@map this.getNamedTwitterInstance(it.id) } }
-    .map { it as Twitter }
-    .map { it.verifyCredentials() }
-    .subscribe {
-      re
-    }
-  }*/
-}
+
 fun haveToken(): Boolean {
   Realm.getDefaultInstance().use {
    logi( "AddedAccounts","You have ${it.where(DBAccount::class.java).count()} accounts!")
