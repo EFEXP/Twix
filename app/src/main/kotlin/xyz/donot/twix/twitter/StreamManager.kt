@@ -4,6 +4,7 @@ import android.content.Context
 import org.greenrobot.eventbus.EventBus
 import twitter4j.*
 import xyz.donot.twix.event.OnDeleteEvent
+import xyz.donot.twix.event.OnReplyEvent
 import xyz.donot.twix.event.OnStatusEvent
 import xyz.donot.twix.notification.NewMentionNotification
 import xyz.donot.twix.util.isIgnore
@@ -42,7 +43,9 @@ import xyz.donot.twix.util.logd
   inner class MyNotificationAdapter:UserStreamAdapter(){
     override fun onStatus(status: Status) {
       if(!isIgnore(status.user.id)){
-        if(isMentionToMe(status)){  NewMentionNotification.notify(context,status.text,0)}
+        if(isMentionToMe(status)){
+          eventBus.post(OnReplyEvent(status))
+          NewMentionNotification.notify(context,status.text,0)}
         when(type){
           StreamType.USER_STREAM->{eventBus.post(OnStatusEvent(status))}
           StreamType.FILTER_STREAM->{}
