@@ -19,7 +19,9 @@ class VideoActivity : AppCompatActivity() {
       video.apply {
         setVideoURI(Uri.parse(url))
         setMediaController(mp)
-       setOnCompletionListener {start() }
+       setOnCompletionListener {video.seekTo(0)
+         start()
+       }
        start()
       }
 

@@ -101,4 +101,5 @@
   <string name="loading_user">読込中@ちょっと待てい</string>
   <string name="action_delete">削除</string>
   <string name="action_conversation">会話</string>
+  <string name="title_activity_users">UsersActivity</string>
 </resources>

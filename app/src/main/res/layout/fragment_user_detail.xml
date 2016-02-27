@@ -15,7 +15,9 @@
     android:layout_height="120dp"
     android:id="@+id/icon_user"
     android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true" />
+    android:layout_centerHorizontal="true"
+    android:scaleType="centerCrop"
+    />
 
   <TextView
     android:layout_width="wrap_content"
@@ -35,7 +37,7 @@
     android:layout_centerHorizontal="true"
     />
 
-  <TextView
+  <com.klinker.android.link_builder.LinkConsumableTextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/description"
@@ -48,20 +50,18 @@
       android:layout_height="@dimen/tw__login_btn_height"
       android:layout_centerHorizontal="true"
       >
-      <com.klinker.android.link_builder.LinkConsumableTextView
+      <TextView
         android:id="@+id/following_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:clickable="true"
         android:gravity="center"
         />
-      <com.klinker.android.link_builder.LinkConsumableTextView
+      <TextView
         android:id="@+id/followed_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:clickable="true"
         android:gravity="center"
         />
     </android.support.v7.widget.LinearLayoutCompat>

@@ -5,8 +5,9 @@
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.VIBRATE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
   <application
     android:name=".Twix"
     android:allowBackup="true"
@@ -20,6 +21,7 @@
       android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
+
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
@@ -31,6 +33,7 @@
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
+
     <activity
       android:name=".view.activity.AccountSettingActivity"
       android:label="@string/title_activity_account_setting"
@@ -52,8 +55,7 @@
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.VideoActivity"
-      android:theme="@style/FullscreenTheme"
-      />
+      android:theme="@style/FullscreenTheme" />
     <activity
       android:name=".view.activity.HelpActivity"
       android:label="@string/title_activity_help"
@@ -61,7 +63,11 @@
     <activity
       android:name=".view.activity.TweetEditActivity"
       android:label="@string/title_activity_tweet_edit"
-      android:theme="@style/AppTheme.NoActionBar"/>
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.UsersActivity"
+      android:label="@string/title_activity_users"
+      android:theme="@style/AppTheme.NoActionBar"></activity>
   </application>
 
 </manifest>

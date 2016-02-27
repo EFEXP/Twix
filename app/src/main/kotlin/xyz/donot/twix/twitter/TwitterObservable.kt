@@ -46,7 +46,26 @@ class TwitterObservable(val twitter : Twitter)
       .basicNetworkTask()
   }
 
+ fun getFriendsAsync(userid:Long,cursor:Long): Observable<PagableResponseList<User>>{
+   return Observable.create<PagableResponseList<User>> {subscriber->
+  try{
+       subscriber.onNext(twitter.getFriendsList(userid,cursor))
+     }
+  catch(ex:Exception){subscriber.onError(ex)}
+     subscriber.onCompleted()
+   }
+     .basicNetworkTask()
+ }
+  fun getFollowerAsync(userid:Long,cursor:Long): Observable<PagableResponseList<User>>{
+    return Observable.create<PagableResponseList<User>> {subscriber->
+      try{
+        subscriber.onNext(twitter.getFollowersList(userid,cursor))
+      }
+      catch(ex:Exception){subscriber.onError(ex)}
+      subscriber.onCompleted()
+    }.basicNetworkTask()
 
+  }
   fun getMentionsTimelineAsync(paging: Paging): Observable<Status>
   {
     return  Observable.create<Status> { subscriber ->
