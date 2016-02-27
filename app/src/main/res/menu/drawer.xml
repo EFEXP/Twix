@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-      android:id="@+id/setting"
-      android:icon="@drawable/ic_settings_grey"
-      android:title="@string/setting"/>
-    <item
-      android:id="@+id/account"
-      android:icon="@drawable/ic_contacts_grey"
-      android:title="@string/account"/>
+  <item
+    android:id="@+id/my_profile"
+    android:icon="@drawable/ic_edit_grey"
+    android:title="@string/my_profile"/>
+  <item
+    android:id="@+id/setting"
+    android:icon="@drawable/ic_settings_grey"
+    android:title="@string/setting"/>
+  <item
+    android:id="@+id/account"
+    android:icon="@drawable/ic_contacts_grey"
+    android:title="@string/account"/>
 </menu>

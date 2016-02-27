@@ -109,4 +109,6 @@
   <string name="title_activity_users">UsersActivity</string>
   <string name="search">Search</string>
   <string name="title_activity_search">SearchActivity</string>
+  <string name="title_activity_edit_profile">EditProfileActivity</string>
+  <string name="my_profile">プロフィール編集</string>
 </resources>

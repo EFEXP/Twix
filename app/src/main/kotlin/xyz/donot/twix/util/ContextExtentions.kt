@@ -1,12 +1,14 @@
 package xyz.donot.twix.util
 
 import android.content.Context
+import android.content.Intent
 import android.support.v4.content.ContextCompat
 import com.klinker.android.link_builder.Link
 import org.greenrobot.eventbus.EventBus
 import xyz.donot.twix.R
 import xyz.donot.twix.event.OnCustomtabEvent
 import xyz.donot.twix.event.OnHashtagEvent
+import xyz.donot.twix.view.activity.UserActivity
 
 
 fun Context.getTimeLineLayoutId():Int
@@ -35,6 +37,7 @@ return  arrayOf(
     .setBold(true)
     .setOnClickListener{
       logd("MENTION_PATTERN","MENTION_PATTERN")
+      startActivity(Intent(this,UserActivity::class.java).putExtra("user_name",it))
     }
   ,
   Link(Regex.WEB_URL_PATTERN)

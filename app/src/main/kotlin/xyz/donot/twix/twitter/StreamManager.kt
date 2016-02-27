@@ -1,6 +1,9 @@
 package xyz.donot.twix.twitter
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import org.greenrobot.eventbus.EventBus
 import twitter4j.*
 import xyz.donot.twix.event.OnDeleteEvent
@@ -15,23 +18,32 @@ import xyz.donot.twix.util.logd
 
  class StreamManager( val context: Context, val twitter : Twitter, val type:StreamType)
 {
+  object Factory {
+    var instance :StreamManager?=null
+    fun getStreamObject(context: Context,twitter : Twitter, type:StreamType):StreamManager{
+      if (instance == null) {
+        instance=StreamManager(context,twitter,type)
+      }
+      return instance?:throw IllegalStateException()
+    }
+  }
   val eventBus by lazy { EventBus.getDefault() }
    var isConnected:Boolean
+  val stream by lazy { TwitterStreamFactory().getInstance(twitter.authorization) }
   init {isConnected =false }
 
   fun run()
   {
     if(!this.isConnected){
       this.isConnected= true
-   val stream= TwitterStreamFactory().getInstance(twitter.authorization)
     StreamCreateUtil.addStatusListener(stream,MyNotificationAdapter())
-
     when(type){
       StreamType.USER_STREAM->{stream.user()}
       StreamType.FILTER_STREAM->{}
       StreamType.RETWEET_STREAM->{}
       StreamType.SAMPLE_STREAM->{stream.sample()}
     }
+      Handler(Looper.getMainLooper()).post {Toast.makeText(context,"ストリームに接続しました",Toast.LENGTH_LONG).show()}
 
   }
     else{
@@ -54,8 +66,17 @@ import xyz.donot.twix.util.logd
         }}
     }
 
+    fun reconnect()
+    {
+      isConnected=false
+      stream.cleanUp()
+      run()
+    }
+
     override fun onException(ex: Exception) {
       super.onException(ex)
+      Handler(Looper.getMainLooper()).post { Toast.makeText(context,"ストリームが切断されました",Toast.LENGTH_LONG).show()}
+      reconnect()
       isConnected=false
     }
 
@@ -73,15 +94,7 @@ import xyz.donot.twix.util.logd
 
 
   }
-object Factory {
-  var instance :StreamManager?=null
-  fun getStreamObject(context: Context,twitter : Twitter, type:StreamType):StreamManager{
-    if (instance == null) {
-      instance=StreamManager(context,twitter,type)
-    }
-    return instance?:throw IllegalStateException()
-  }
-}
+
 enum  class StreamType{
   USER_STREAM,
   SAMPLE_STREAM,

@@ -14,51 +14,41 @@ import android.text.TextUtils
 import android.view.MenuItem
 import xyz.donot.twix.R
 
-/**
- * A [PreferenceActivity] that presents a set of application settings. On
- * handset devices, settings are presented as a single list. On tablets,
- * settings are split by category, with category headers shown to the left of
- * the list of settings.
- *
- *
- * See [
-   * Android Design: Settings](http://developer.android.com/design/patterns/settings.html) for design guidelines and the [Settings
-   * API Guide](http://developer.android.com/guide/topics/ui/settings.html) for more information on developing a Settings UI.
- */
+
 class SettingsActivity : AppCompatPreferenceActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActionBar()
+
+
     }
 
-    /**
-     * Set up the [android.app.ActionBar], if the API is available.
-     */
-    private fun setupActionBar() {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when(item.itemId) {
+      android.R.id.home->finish()
+    }
+    return true
+  }
+
+
+  private fun setupActionBar() {
         val actionBar = supportActionBar
       actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+
     override fun onIsMultiPane(): Boolean {
         return isXLargeTablet(this)
     }
 
-    /**
-     * {@inheritDoc}
-     */
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onBuildHeaders(target: List<PreferenceActivity.Header>) {
         loadHeadersFromResource(R.xml.pref_headers, target)
     }
 
-    /**
-     * This method stops fragment injection in malicious applications.
-     * Make sure to deny any unknown fragments here.
-     */
+
     override fun isValidFragment(fragmentName: String): Boolean {
         return PreferenceFragment::class.java.name == fragmentName
                 || GeneralPreferenceFragment::class.java.name == fragmentName
@@ -66,10 +56,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                 ||DesignPreferenceFragment::class.java.name == fragmentName
     }
 
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class GeneralPreferenceFragment : PreferenceFragment() {
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,10 +83,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     }
 
 
-  /**
-   * This fragment shows general preferences only. It is used when the
-   * activity is showing a two-pane settings UI.
-   */
+
   @TargetApi(Build.VERSION_CODES.HONEYCOMB)
   class DesignPreferenceFragment : PreferenceFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,13 +109,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     }
   }
 
-
-
-
-    /**
-     * This fragment shows notification preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class NotificationPreferenceFragment : PreferenceFragment() {
         override fun onCreate(savedInstanceState: Bundle?) {

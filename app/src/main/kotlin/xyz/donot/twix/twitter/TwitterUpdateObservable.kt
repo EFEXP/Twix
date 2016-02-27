@@ -5,6 +5,7 @@ import rx.lang.kotlin.observable
 import twitter4j.Status
 import twitter4j.StatusUpdate
 import twitter4j.Twitter
+import twitter4j.User
 import xyz.donot.twix.util.basicNetworkTask
 
 class TwitterUpdateObservable(val twitter: Twitter){
@@ -61,6 +62,15 @@ class TwitterUpdateObservable(val twitter: Twitter){
       catch(ex:Exception){
         it.onError(ex)
       }}.basicNetworkTask()
+  }
+
+  fun updateProfileAsync(name:String,url:String,location:String,description:String): Observable<User> {
+    return  observable<User> {
+      try{it.onNext(twitter.updateProfile(name,url,location,description))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
   }
 }
 

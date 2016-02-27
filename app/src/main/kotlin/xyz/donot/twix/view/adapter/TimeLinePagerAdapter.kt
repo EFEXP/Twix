@@ -9,7 +9,7 @@ import xyz.donot.twix.view.fragment.HomeTimelineFragment
 import xyz.donot.twix.view.fragment.MentionFragment
 import xyz.donot.twix.view.fragment.UserTimelineFragment
 
-class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class TimeLinePagerAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when(position){
           0->Factory.home
@@ -30,10 +30,15 @@ class TimeLinePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
         return 3
     }
+
   companion object Factory{
     val home:HomeTimelineFragment by  lazy { HomeTimelineFragment()  }
     val user by lazy { UserTimelineFragment(getMyId())}
     val mention by lazy { MentionFragment() }
   }
+  fun  destroyAllItem() {
+    for(i in 0..2){
+    fm.beginTransaction().remove(this.getItem(i)).commitAllowingStateLoss()
+  }}
 }
 

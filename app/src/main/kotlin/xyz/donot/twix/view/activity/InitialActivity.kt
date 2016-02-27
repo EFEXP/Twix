@@ -38,6 +38,7 @@ class InitialActivity : AppCompatActivity() {
              return
              }
              realm.executeTransaction {
+               it.where(DBAccount::class.java).equalTo("isMain", true).findFirst().isMain=false
                it.createObject(DBAccount::class.java).apply {
                 key = authToken.token
                 secret = authToken.secret

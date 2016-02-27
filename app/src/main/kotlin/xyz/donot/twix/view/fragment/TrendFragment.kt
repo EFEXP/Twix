@@ -17,7 +17,7 @@ import xyz.donot.twix.view.adapter.TrendAdapter
 import java.util.*
 
 class TrendFragment():RxFragment(){
-   val twitter by lazy { activity.getTwitterInstance() }
+   val twitter by lazy { context.getTwitterInstance() }
    var page : Int = 0
     get() {
       field++
@@ -29,9 +29,9 @@ class TrendFragment():RxFragment(){
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
     recycler.apply{
-      itemAnimator= OvershootInRightAnimator(0.1f)
+      itemAnimator= OvershootInRightAnimator(1f)
       adapter = AlphaInAnimationAdapter(mAdapter)
-      layoutManager = LinearLayoutManager(this@TrendFragment.context)
+      layoutManager = LinearLayoutManager(context)
       TimelineLoader()
     }
     return v}

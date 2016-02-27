@@ -165,5 +165,17 @@ class TwitterObservable(val twitter : Twitter)
    } .basicNetworkTask()
  }
 
+  fun showUser(string: String) :Observable<User>{
+    return  Observable.create<User> {
+      try{
+        it.onNext(twitter.showUser(string))
+        it.onCompleted()
+      }
+      catch(ex:Exception){
+        it.onError(ex)
+      }
+
+    } .basicNetworkTask()
+  }
 
 }

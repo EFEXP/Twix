@@ -15,12 +15,14 @@ import xyz.donot.twix.view.adapter.AnyUserTimeLineAdapter
 
 class UserActivity : RxAppCompatActivity() {
   val userId by lazy { intent.getLongExtra("user_id",0) }
+  val userName by lazy { intent.getStringExtra("user_name") }
   val twitter by lazy {getTwitterInstance()}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
+      if(userName.isNullOrEmpty()){
         TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
       .subscribe(object :TwitterUserSubscriber(){
         override fun onUser(user: User) {
@@ -29,6 +31,17 @@ class UserActivity : RxAppCompatActivity() {
           toolbar.subtitle=user.screenName
         }
       })
+      }
+      else{
+        TwitterObservable(twitter).showUser(userName).bindToLifecycle(this@UserActivity)
+          .subscribe(object :TwitterUserSubscriber(){
+            override fun onUser(user: User) {
+              Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
+              toolbar.title=user.name
+              toolbar.subtitle=user.screenName
+            }
+          })
+      }
         viewpager_user.adapter=AnyUserTimeLineAdapter(supportFragmentManager,userId)
         tabs_user.setupWithViewPager(viewpager_user)
 

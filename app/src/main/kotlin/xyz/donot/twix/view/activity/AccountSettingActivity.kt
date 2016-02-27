@@ -10,7 +10,9 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_account_setting.*
 
 import kotlinx.android.synthetic.main.content_account_setting.*
+import org.greenrobot.eventbus.EventBus
 import xyz.donot.twix.R
+import xyz.donot.twix.event.OnAccountChanged
 import xyz.donot.twix.model.DBAccount
 import xyz.donot.twix.view.adapter.MyUserAccountAdapter
 
@@ -35,9 +37,11 @@ class AccountSettingActivity : AppCompatActivity() {
             val st= it.where(DBAccount::class.java).equalTo("id", item.id).findFirst().apply {
               isMain=true
             }
+              EventBus.getDefault().post(OnAccountChanged())
               Snackbar.make(coordinatorLayout,"${st.screenName}をメインに設定しました",Snackbar.LENGTH_SHORT).show()
             }
           }
+
 
         }
     }

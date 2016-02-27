@@ -2,6 +2,7 @@ package xyz.donot.twix.view.fragment
 
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,7 +19,7 @@ import xyz.donot.twix.view.listener.OnLoadMoreListener
 import java.util.*
 
 abstract class BaseFragment : RxFragment() {
-  open val twitter by lazy { activity.getTwitterInstance() }
+  open val twitter by lazy {context.getTwitterInstance()}
     open var page : Int = 0
       get() {
         field++
@@ -26,14 +27,13 @@ abstract class BaseFragment : RxFragment() {
       }
     open val data by lazy { LinkedList<Status>() }
     open val  mAdapter by lazy { StatusAdapter(context, data) }
-    open val linerLayoutManger by lazy { LinearLayoutManager(this@BaseFragment.context) }
-
-
+    open var swipeLayout :SwipeRefreshLayout?=null
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
+    swipeLayout=v.findViewById(R.id.swipe_layout)as SwipeRefreshLayout
     recycler.apply{
-      layoutManager = linerLayoutManger
+      layoutManager = LinearLayoutManager(context)
       itemAnimator= OvershootInRightAnimator(1f)
       itemAnimator.addDuration = 500
       itemAnimator.removeDuration = 1000
@@ -46,10 +46,23 @@ abstract class BaseFragment : RxFragment() {
         }
       }
       )
+      swipeLayout?.isRefreshing=true
       TimelineLoader()
+    }
+    swipeLayout?.setOnRefreshListener {
+        refreshTimeline()
     }
      return v}
 
+  fun loadingDismiss(){
+    swipeLayout?.isRefreshing=false
+  }
+
+ fun refreshTimeline() {
+   page=0
+    mAdapter.clear()
+    TimelineLoader()
+  }
 
 
 

@@ -40,7 +40,6 @@ fun isMentionToMe(status: Status): Boolean {
 
 fun getMyId(): Long{
   Realm.getDefaultInstance().use {
-
     return  it.where(DBAccount::class.java).equalTo("isMain",true).findFirst().id
   }
 }

@@ -16,12 +16,9 @@ import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import twitter4j.Status
 import xyz.donot.twix.R
-import xyz.donot.twix.event.OnCustomtabEvent
-import xyz.donot.twix.event.OnHashtagEvent
-import xyz.donot.twix.event.TwitterSubscriber
+import xyz.donot.twix.event.*
 import xyz.donot.twix.twitter.TwitterUpdateObservable
 import xyz.donot.twix.util.*
 import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
@@ -30,7 +27,9 @@ import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
 class MainActivity : RxAppCompatActivity() {
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy {  getTwitterInstance() }
-
+  private var accountChanged=true
+  private var restartFlag=false
+  val pagerAdapter by lazy { TimeLinePagerAdapter(supportFragmentManager) }
     override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       if(!haveToken())
@@ -41,14 +40,20 @@ class MainActivity : RxAppCompatActivity() {
       else if(haveNetworkConnection()) {
         setContentView(R.layout.activity_main)
         viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
-        toolbar.inflateMenu(R.menu.menu_main)
-        toolbar.setOnMenuItemClickListener { startActivity(Intent(this@MainActivity,SearchActivity::class.java))
-        true
+        toolbar.apply {
+          inflateMenu(R.menu.menu_main)
+          setOnMenuItemClickListener { startActivity(Intent(this@MainActivity,SearchActivity::class.java))
+            true
+          }
+          setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
         }
-        toolbar.setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
         tabs.setupWithViewPager(viewpager)
         design_navigation_view.setNavigationItemSelectedListener({
           when (it.itemId) {
+            R.id.my_profile-> {
+              startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+              drawer_layout.closeDrawers()
+            }
             R.id.setting -> {
               startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
               drawer_layout.closeDrawers()
@@ -64,43 +69,72 @@ class MainActivity : RxAppCompatActivity() {
           TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
           true
         }
-         button_tweet.setOnClickListener(
-         {  if(!editText_status.editableText.isNullOrBlank())
-           {
-          val tObserver= TwitterUpdateObservable(twitter);
-          tObserver.updateStatusAsync(editText_status.editableText.toString())
-            .bindToLifecycle(this@MainActivity)
-            .subscribe(object: TwitterSubscriber(){
-            override fun onStatus(status: Status) {
-            val   inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-              inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-              Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
-                tObserver.deleteStatusAsync(status.id).subscribe {
-                Toast.makeText(this@MainActivity,"削除しました",Toast.LENGTH_LONG).show()
+        button_tweet.setOnClickListener(
+          {  if(!editText_status.editableText.isNullOrBlank())
+          {
+            val tObserver= TwitterUpdateObservable(twitter);
+            tObserver.updateStatusAsync(editText_status.editableText.toString())
+              .bindToLifecycle(this@MainActivity)
+              .subscribe(object: TwitterSubscriber(){
+                override fun onStatus(status: Status) {
+                  val   inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                  inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                  Snackbar.make(coordinatorLayout,"投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
+                    tObserver.deleteStatusAsync(status.id).subscribe {
+                      Toast.makeText(this@MainActivity,"削除しました", Toast.LENGTH_LONG).show()
+                    }
+                  }).show()
                 }
-                 }).show()
-                          }
 
-          })
-          editText_status.setText("")
-        }})
-        eventbus.register(this@MainActivity)
+              })
+            editText_status.setText("")
+          }})
+        accountChanged=false
+
       }
       else{
+        setContentView(R.layout.activity_main)
         showSnackbar(coordinatorLayout,R.string.description_a_network_error_occurred)
       }
-
+      eventbus.register(this@MainActivity)
 }
+
+  override fun onStart() {
+    super.onStart()
+    if(accountChanged){
+     restartFlag=true
+      pagerAdapter.destroyAllItem()
+      viewpager.adapter=null
+      viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
+      tabs.setupWithViewPager(viewpager)
+    }
+  }
 
   override fun onDestroy() {
     super.onDestroy()
     eventbus.unregister(this@MainActivity)
+    if (restartFlag) {
+      restartFlag = false
+      val intent_= Intent().setClass(this,MainActivity::class.java);
+      this.startActivity(intent_);
+    }
   }
 
-  @Subscribe(threadMode = ThreadMode.POSTING)
+  @Subscribe
+  fun onAccountChanged(onAccountChanged: OnAccountChanged)
+  {
+    accountChanged=true
+  }
+
+  @Subscribe
   fun onHashTagTouched(onHashtagEvent: OnHashtagEvent)
   {
     startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",onHashtagEvent.tag))
+  }
+  @Subscribe
+  fun onStreamDisconnected(onExceptionEvent: OnExceptionEvent)
+  {
+
   }
 
   @Subscribe
