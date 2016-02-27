@@ -13,6 +13,7 @@ import twitter4j.PagableResponseList
 import twitter4j.User
 import xyz.donot.twix.R
 import xyz.donot.twix.twitter.TwitterObservable
+import xyz.donot.twix.util.bindToLifecycle
 import xyz.donot.twix.util.getTwitterInstance
 import xyz.donot.twix.view.adapter.UsersAdapter
 import xyz.donot.twix.view.listener.OnLoadMoreListener
@@ -29,7 +30,7 @@ class UsersActivity() : RxAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-      recycler_view_users.apply{
+       recycler_view_users.apply{
         itemAnimator= OvershootInRightAnimator(0.1f)
         adapter = AlphaInAnimationAdapter(mAdapter)
         recycler_view_users.adapter=mAdapter
@@ -38,15 +39,11 @@ class UsersActivity() : RxAppCompatActivity() {
           override fun onScrolledToBottom() {
             timelineLoader()
           }
-
         }
-
         )
 
         timelineLoader()
       }
-
-
     }
   internal fun addAdapter(list: PagableResponseList<User>) {
     Handler(Looper.getMainLooper()).post {
@@ -58,11 +55,15 @@ class UsersActivity() : RxAppCompatActivity() {
 fun timelineLoader(){
   when(mode){
     "friend"->{
-      TwitterObservable(twitter).getFriendsAsync(userid,cursor).subscribe {
+      TwitterObservable(twitter).getFriendsAsync(userid,cursor)
+        .bindToLifecycle(this@UsersActivity)
+        .subscribe {
           addAdapter(it)
       }}
       "follower"->{
-        TwitterObservable(twitter).getFollowerAsync(userid,cursor).subscribe {
+        TwitterObservable(twitter).getFollowerAsync(userid,cursor)
+          .bindToLifecycle(this@UsersActivity)
+          .subscribe {
           addAdapter(it)
         }}
 

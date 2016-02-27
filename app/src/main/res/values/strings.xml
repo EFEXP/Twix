@@ -102,4 +102,6 @@
   <string name="action_delete">削除</string>
   <string name="action_conversation">会話</string>
   <string name="title_activity_users">UsersActivity</string>
+  <string name="search">Search</string>
+  <string name="title_activity_search">SearchActivity</string>
 </resources>

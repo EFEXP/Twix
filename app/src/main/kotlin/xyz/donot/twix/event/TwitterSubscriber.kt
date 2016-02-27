@@ -15,7 +15,7 @@ open class TwitterSubscriber : Subscriber<Status>() {
     }
 
   override fun onNext(status: Status) {
-      onStatus(status)
+    onStatus(status)
     }
   open fun onStatus(status: Status){}
   open fun onLoaded(){}

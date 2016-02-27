@@ -73,7 +73,7 @@ class TwitterObservable(val twitter : Twitter)
       val  statuses=  twitter.getMentionsTimeline(paging)
         statuses.withIndex().forEachIndexed { int, indexedValue ->
           subscriber.onNext(indexedValue.value)
-          if(indexedValue.index==paging.count){subscriber.onCompleted()}
+          if(indexedValue.index==paging.count-1){subscriber.onCompleted()}
         }
       } catch (e: TwitterException) {
         logi("error",e.errorMessage)
@@ -83,7 +83,39 @@ class TwitterObservable(val twitter : Twitter)
     }
       .basicNetworkTask()
   }
+  fun getSearchAsync(query:Query): Observable<QueryResult>
+  {
+    return  Observable.create<QueryResult> { subscriber ->
+      try {
+          subscriber.onNext(twitter.search(query))
+          subscriber.onCompleted()
 
+      } catch (e: TwitterException) {
+        logi("error",e.errorMessage)
+        subscriber.onError(e)
+      }
+      subscriber.onCompleted()
+    }
+      .basicNetworkTask()
+  }
+  fun getUserSearchAsync(query:String,page:Int): Observable<User>
+  {
+    return  Observable.create<User> { subscriber ->
+      try {
+        twitter.searchUsers(query,page).forEach {
+          subscriber.onNext(it)
+        }
+
+        subscriber.onCompleted()
+
+      } catch (e: TwitterException) {
+        logi("error",e.errorMessage)
+        subscriber.onError(e)
+      }
+      subscriber.onCompleted()
+    }
+      .basicNetworkTask()
+  }
   fun showStatusAsync(statusId:Long) :Observable<Status>{
     return observable <Status>{
         try{it.onNext(twitter.showStatus(statusId))

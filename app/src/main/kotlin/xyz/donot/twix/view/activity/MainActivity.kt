@@ -10,6 +10,7 @@ import android.support.customtabs.CustomTabsIntent
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
+import android.support.v7.widget.SearchView
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
@@ -40,6 +41,8 @@ class MainActivity : RxAppCompatActivity() {
       }
       else if(haveNetworkConnection()) {
         setContentView(R.layout.activity_main)
+        toolbar.inflateMenu(R.menu.search)
+        val searchView=toolbar.menu.findItem(R.id.menu_search).actionView as SearchView
         viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
         toolbar.setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
         tabs.setupWithViewPager(viewpager)
@@ -78,8 +81,23 @@ class MainActivity : RxAppCompatActivity() {
           })
           editText_status.setText("")
         })
+        searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+          override fun onQueryTextChange(p0: String): Boolean {
+
+            return true
+          }
+
+          override fun onQueryTextSubmit(p0: String): Boolean {
+            if(!p0.isNullOrBlank()){
+              startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",p0))
+            }
+            return true
+          }
+        })
 
         eventbus.register(this@MainActivity)
+
+
       }
       else{
         showSnackbar(coordinatorLayout,R.string.description_a_network_error_occurred)
