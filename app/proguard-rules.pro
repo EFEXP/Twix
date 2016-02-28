@@ -18,6 +18,8 @@
 
 -dontwarn sun.misc.Unsafe
 
+-keep class android.support.v7.widget.SearchView { *; }
+
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
    long consumerIndex;

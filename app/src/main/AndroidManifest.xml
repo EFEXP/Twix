@@ -33,7 +33,6 @@
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
-
     <activity
       android:name=".view.activity.AccountSettingActivity"
       android:label="@string/title_activity_account_setting"

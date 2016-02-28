@@ -5,13 +5,19 @@ import xyz.donot.twix.twitter.TwitterObservable
 
 class SearchTweetFragment(val query_txt:String):BaseFragment(){
   internal var query =Query("$query_txt -rt")
+  internal var load =true
   override fun TimelineLoader() {
+    if(load){
     TwitterObservable(twitter).getSearchAsync(query).subscribe {
       if(it.hasNext()){
         query=it.nextQuery()
       }
+      else{
+        load=false
+      }
       it.tweets.forEach { mAdapter.add(it) }
     }
-  }
-
+  }}
 }
+
+

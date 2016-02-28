@@ -15,8 +15,7 @@ class Twix : Application() {
     override fun onCreate() {
         super.onCreate()
         val authConfig = TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret))
-        Fabric.with(this, Twitter(authConfig), Twitter(authConfig))
-      Fabric.with(this, Crashlytics())
+        Fabric.with(this, Twitter(authConfig),Crashlytics())
         Realm.setDefaultConfiguration(RealmConfiguration.Builder(applicationContext).build())
         EventBus.builder().installDefaultEventBus()
 
