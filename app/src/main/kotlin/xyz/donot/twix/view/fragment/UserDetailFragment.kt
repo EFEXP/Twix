@@ -37,7 +37,6 @@ class UserDetailFragment(val userId:Long) : RxFragment()
             follow_button.apply {
               if (it.isSourceFollowingTarget) {
                 text = "フォロー中"
-                setBackgroundColor(R.color.colorButton)
                 setOnClickListener {
                   TwitterUpdateObservable(twitter).destroyFriendShipAsync(userId).subscribe {
                     text = "フォロー"
