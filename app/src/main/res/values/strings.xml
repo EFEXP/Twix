@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Twix</string>
+  <string name="app_name">Quetzal</string>
   <string name="title_activity_initial">InitialActivity</string>
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="setting">設定</string>
@@ -38,6 +38,8 @@
     <item>0</item>
     <item>-1</item>
   </string-array>
+
+
 
   <!-- Example settings for Data & Sync -->
   <string name="pref_header_data_sync">Data &amp; sync</string>
@@ -112,4 +114,6 @@
   <string name="title_activity_edit_profile">EditProfileActivity</string>
   <string name="my_profile">プロフィール編集</string>
   <string name="follow">フォロー</string>
+
+
 </resources>

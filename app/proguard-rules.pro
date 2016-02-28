@@ -53,7 +53,7 @@
 -dontwarn javax.**
 -dontwarn io.realm.**
 
--keep class xyz.donot.view.activity.MainActivity { *; }
+-keep class xyz.donot.quetzal.view.activity.MainActivity { *; }
 -dontwarn xyz.donot.**
 
 
