@@ -1,10 +1,10 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:card_view="http://schemas.android.com/tools"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:padding="@dimen/tw__card_spacing_small"
-  >
+  android:padding="@dimen/tw__card_spacing_small">
   <RelativeLayout
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
@@ -18,6 +18,19 @@
     android:layout_centerHorizontal="true"
     android:scaleType="centerCrop"
     />
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/follow_button"
+      android:layout_toEndOf="@+id/icon_user"
+      android:layout_toRightOf="@+id/icon_user"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_alignBottom="@+id/icon_user"
+      android:text="@string/follow"
+      android:background="@color/cardview_light_background"
+      />
+
 
   <TextView
     android:layout_width="wrap_content"
@@ -37,6 +50,7 @@
     android:layout_centerHorizontal="true"
     />
 
+
   <com.klinker.android.link_builder.LinkConsumableTextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -44,6 +58,28 @@
     android:layout_below="@+id/screen_name"
     android:layout_centerHorizontal="true"
     />
+    <com.klinker.android.link_builder.LinkConsumableTextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/web_txt"
+      android:layout_below="@+id/description"
+      android:layout_centerHorizontal="true"
+      />
+    <com.klinker.android.link_builder.LinkConsumableTextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/geo_txt"
+      android:layout_below="@+id/web_txt"
+      android:layout_centerHorizontal="true"
+      />
+    <android.support.v7.widget.CardView
+      android:foreground="?android:attr/selectableItemBackground"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      card_view:cardCornerRadius="@dimen/cardview_default_radius"
+      android:layout_margin="3dp"
+      android:layout_below="@id/geo_txt"
+      android:id="@+id/cardView">
     <android.support.v7.widget.LinearLayoutCompat
       android:layout_below="@id/description"
       android:layout_width="match_parent"
@@ -65,6 +101,7 @@
         android:gravity="center"
         />
     </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.CardView>
   </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>

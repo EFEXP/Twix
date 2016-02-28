@@ -3,7 +3,6 @@ package xyz.donot.twix.view.fragment
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -29,7 +28,7 @@ class HomeTimelineFragment : BaseFragment() {
     .subscribe(object:
       TwitterSubscriber(){
       override fun onCompleted() {
-        loadingDismiss()
+
       }
 
       override fun onStatus(status: Status) {
@@ -38,9 +37,7 @@ class HomeTimelineFragment : BaseFragment() {
     } )
   }
 
-  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-  StreamManager.Factory.getStreamObject(context,twitter, StreamType.USER_STREAM).run()
-    }
+
 
   @Subscribe(threadMode = ThreadMode.MAIN)
   fun onEventMainThread(statusEvent: OnStatusEvent){

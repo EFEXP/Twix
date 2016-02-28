@@ -22,7 +22,7 @@ class AccountSettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_setting)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
+      toolbar.setNavigationOnClickListener { finish() }
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { startActivity(Intent(this@AccountSettingActivity,InitialActivity::class.java))
         finish()
@@ -34,11 +34,11 @@ class AccountSettingActivity : AppCompatActivity() {
           Realm.getDefaultInstance().use {
             it.executeTransaction {
             it.where(DBAccount::class.java).equalTo("isMain", true).findFirst().isMain=false
-            val st= it.where(DBAccount::class.java).equalTo("id", item.id).findFirst().apply {
+            it.where(DBAccount::class.java).equalTo("id", item.id).findFirst().apply {
               isMain=true
             }
               EventBus.getDefault().post(OnAccountChanged())
-              Snackbar.make(coordinatorLayout,"${st.screenName}をメインに設定しました",Snackbar.LENGTH_SHORT).show()
+              Snackbar.make(coordinatorLayout,"メインに設定しました、再起動してください",Snackbar.LENGTH_SHORT).show()
             }
           }
 

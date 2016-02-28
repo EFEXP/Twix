@@ -1,5 +1,6 @@
 package xyz.donot.twix.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import com.squareup.picasso.Picasso
@@ -47,6 +48,7 @@ class UserActivity : RxAppCompatActivity() {
 
   fun setUp(user: User){
     Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
+    banner.setOnClickListener{startActivity(Intent(this@UserActivity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
     viewpager_user.adapter=AnyUserTimeLineAdapter(supportFragmentManager,user.id)

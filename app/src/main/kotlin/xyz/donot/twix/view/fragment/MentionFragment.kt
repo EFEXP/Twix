@@ -21,7 +21,7 @@ class MentionFragment() : BaseFragment() {
     TwitterObservable(twitter).getMentionsTimelineAsync(paging).subscribe (object:
       TwitterSubscriber(){
       override fun onCompleted() {
-        loadingDismiss()
+
       }
       override fun onStatus(status: Status) {
         mAdapter.add(status)

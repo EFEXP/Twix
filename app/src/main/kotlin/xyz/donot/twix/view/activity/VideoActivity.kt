@@ -12,6 +12,7 @@ class VideoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
+      toolbar.setNavigationOnClickListener { finish() }
       val video=findViewById(R.id.video_view)as VideoView
       val url = intent.getStringExtra("video_url")
       val mp =MediaController(this@VideoActivity)

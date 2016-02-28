@@ -7,6 +7,7 @@ import twitter4j.StatusUpdate
 import twitter4j.Twitter
 import twitter4j.User
 import xyz.donot.twix.util.basicNetworkTask
+import java.io.File
 
 class TwitterUpdateObservable(val twitter: Twitter){
 
@@ -67,6 +68,31 @@ class TwitterUpdateObservable(val twitter: Twitter){
   fun updateProfileAsync(name:String,url:String,location:String,description:String): Observable<User> {
     return  observable<User> {
       try{it.onNext(twitter.updateProfile(name,url,location,description))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
+  }
+  fun profileImageUpdateAsync(file: File): Observable<User> {
+    return  observable<User> {
+      try{it.onNext(twitter.updateProfileImage(file))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
+  }
+
+  fun createFriendShipAsync(long: Long): Observable<User> {
+    return  observable<User> {
+      try{it.onNext(twitter.createFriendship(long))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
+  }
+  fun destroyFriendShipAsync(long: Long): Observable<User> {
+    return  observable<User> {
+      try{it.onNext(twitter.destroyFriendship(long))
         it.onCompleted()
       }
       catch(ex:Exception){it.onError(ex)}

@@ -17,7 +17,7 @@ class UserTimelineFragment(val userId:Long) : BaseFragment() {
     TwitterObservable(twitter).getUserTimelineAsync(userId,paging).subscribe (object:
       TwitterSubscriber(){
       override fun onCompleted() {
-        loadingDismiss()
+
       }
       override fun onStatus(status: Status) {
         mAdapter.add(status)

@@ -50,10 +50,10 @@ class PictureFragment : Fragment() {
       }
 
       override fun onBitmapLoaded(p0: Bitmap, p1: Picasso.LoadedFrom?) {
-      val file  = Environment.getExternalStorageDirectory()
+      val file  = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         try{
           val name= Date().time
-          val attachName:File= File(file.absolutePath,"$name.jpg")
+          val attachName:File= File("$file/${context.getString(R.string.app_name)}/","$name.jpg")
           FileOutputStream(attachName).use {
             p0.compress(Bitmap.CompressFormat.JPEG,100,it)
             it.flush()

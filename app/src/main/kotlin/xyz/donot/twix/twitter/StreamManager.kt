@@ -3,6 +3,7 @@ package xyz.donot.twix.twitter
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.preference.PreferenceManager
 import android.widget.Toast
 import org.greenrobot.eventbus.EventBus
 import twitter4j.*
@@ -57,7 +58,8 @@ import xyz.donot.twix.util.logd
       if(!isIgnore(status.user.id)){
         if(isMentionToMe(status)){
           eventBus.post(OnReplyEvent(status))
-          NewMentionNotification.notify(context,status.text,0)}
+          if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false)){
+          NewMentionNotification.notify(context,status.text,0)}}
         when(type){
           StreamType.USER_STREAM->{eventBus.post(OnStatusEvent(status))}
           StreamType.FILTER_STREAM->{}
@@ -75,9 +77,8 @@ import xyz.donot.twix.util.logd
 
     override fun onException(ex: Exception) {
       super.onException(ex)
-      Handler(Looper.getMainLooper()).post { Toast.makeText(context,"ストリームが切断されました",Toast.LENGTH_LONG).show()}
-      reconnect()
-      isConnected=false
+      ex.printStackTrace()
+
     }
 
     override fun onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {

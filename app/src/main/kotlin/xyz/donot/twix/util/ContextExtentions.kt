@@ -2,6 +2,9 @@ package xyz.donot.twix.util
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import com.klinker.android.link_builder.Link
 import org.greenrobot.eventbus.EventBus
@@ -23,14 +26,26 @@ fun Context.getTimeLineLayoutId():Int
    }
 }
 
-fun Context.getDetailHeaderLayoutId():Int
+fun Context.getPath(uri : Uri):String
 {
-  return R.layout.item_detail_tweet
+  contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
+  val id = DocumentsContract.getDocumentId(uri)
+  val selection = "_id=?"
+  val selectionArgs = arrayOf(id.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1])
+  contentResolver.query(
+    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+    arrayOf(MediaStore.MediaColumns.DATA),
+    selection, selectionArgs, null).use {
+    it.moveToFirst()
+    val path=  it.getString(0)
+    return path
 }
+
+}
+
 fun Context.getLinkList() :MutableList<Link>{
 
 return  arrayOf(
-
   Link(Regex.MENTION_PATTERN)
     .setUnderlined(false)
     .setTextColor(ContextCompat.getColor(this,R.color.colorAccent))

@@ -4,6 +4,7 @@ import rx.Observable
 import rx.lang.kotlin.observable
 import twitter4j.*
 import xyz.donot.twix.util.basicNetworkTask
+import xyz.donot.twix.util.getMyId
 import xyz.donot.twix.util.logi
 
 class TwitterObservable(val twitter : Twitter)
@@ -177,5 +178,18 @@ class TwitterObservable(val twitter : Twitter)
 
     } .basicNetworkTask()
   }
+  fun showFriendShip(long: Long) :Observable<Relationship>{
+    return  Observable.create<Relationship> {
+      try{
+        it.onNext(twitter.showFriendship(getMyId(),long))
+        it.onCompleted()
+      }
+      catch(ex:Exception){
+        it.onError(ex)
+      }
+
+    } .basicNetworkTask()
+  }
+
 
 }

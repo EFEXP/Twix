@@ -19,6 +19,8 @@ import org.greenrobot.eventbus.Subscribe
 import twitter4j.Status
 import xyz.donot.twix.R
 import xyz.donot.twix.event.*
+import xyz.donot.twix.twitter.StreamManager
+import xyz.donot.twix.twitter.StreamType
 import xyz.donot.twix.twitter.TwitterUpdateObservable
 import xyz.donot.twix.util.*
 import xyz.donot.twix.view.adapter.TimeLinePagerAdapter
@@ -70,6 +72,7 @@ class MainActivity : RxAppCompatActivity() {
           TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
           true
         }
+        StreamManager.Factory.getStreamObject(applicationContext,twitter, StreamType.USER_STREAM).run()
         button_tweet.setOnClickListener(
           {  if(!editText_status.editableText.isNullOrBlank())
           {
@@ -106,6 +109,7 @@ class MainActivity : RxAppCompatActivity() {
      restartFlag=true
       pagerAdapter.destroyAllItem()
       viewpager.adapter=null
+      tabs.removeAllTabs()
       viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
       tabs.setupWithViewPager(viewpager)
     }

@@ -54,14 +54,13 @@ abstract class BaseFragment : RxFragment() {
     }
      return v}
 
-  fun loadingDismiss(){
-    swipeLayout?.isRefreshing=false
-  }
+
 
  fun refreshTimeline() {
    page=0
     mAdapter.clear()
     TimelineLoader()
+   swipeLayout?.isRefreshing=false
   }
 
 
