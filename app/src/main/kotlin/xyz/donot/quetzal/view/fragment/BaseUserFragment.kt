@@ -48,7 +48,6 @@ abstract class BaseUserFragment : RxFragment() {
       }
 
       )}
-      swipeLayout?.isRefreshing=true
       TimelineLoader()
     swipeLayout?.setOnRefreshListener {
       refreshTimeline()

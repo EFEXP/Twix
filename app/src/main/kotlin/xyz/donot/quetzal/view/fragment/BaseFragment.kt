@@ -29,16 +29,19 @@ abstract class BaseFragment : RxFragment() {
     open val  mAdapter by lazy { StatusAdapter(activity, data) }
     open var swipeLayout :SwipeRefreshLayout?=null
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
     swipeLayout=v.findViewById(R.id.swipe_layout)as SwipeRefreshLayout
     recycler.apply{
       layoutManager = LinearLayoutManager(context)
-      itemAnimator= OvershootInRightAnimator(1f)
-      itemAnimator.addDuration = 500
-      itemAnimator.removeDuration = 1000
-      itemAnimator.moveDuration = 1000
-      itemAnimator.changeDuration =0
+     itemAnimator.apply {
+       OvershootInRightAnimator(1f)
+       addDuration = 500
+       removeDuration = 1000
+       moveDuration = 1000
+       changeDuration =0
+     }
       adapter = AlphaInAnimationAdapter(mAdapter)
       addOnScrollListener(object: OnLoadMoreListener(){
         override fun onScrolledToBottom() {
@@ -46,12 +49,13 @@ abstract class BaseFragment : RxFragment() {
         }
       }
       )
-      swipeLayout?.isRefreshing=true
-      TimelineLoader()
-    }
+      }
     swipeLayout?.setOnRefreshListener {
         refreshTimeline()
     }
+    TimelineLoader()
+
+
      return v}
 
 

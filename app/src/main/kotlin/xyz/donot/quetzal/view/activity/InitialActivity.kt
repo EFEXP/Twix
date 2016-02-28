@@ -30,7 +30,6 @@ class InitialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_initial)
         twitter_login_button.callback=object : Callback<TwitterSession>() {
           override fun success(result: Result<TwitterSession>) {
-
             val authToken = Twitter.getSessionManager().activeSession.authToken
            Realm.getDefaultInstance().use {
              realm->

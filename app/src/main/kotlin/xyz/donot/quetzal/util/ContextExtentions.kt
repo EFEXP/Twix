@@ -14,18 +14,6 @@ import xyz.donot.quetzal.event.OnHashtagEvent
 import xyz.donot.quetzal.view.activity.UserActivity
 
 
-fun Context.getTimeLineLayoutId():Int
-{
-   return if(getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE).getBoolean("use_card_view",false))
-   {
-     R.layout.item_tweet
-   }
-  else{
-   //  R.layout.item_tweet
-  R.layout.item_tweet_card
-   }
-}
-
 fun Context.getPath(uri : Uri):String
 {
   contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION)

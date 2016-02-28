@@ -2,10 +2,7 @@ package xyz.donot.quetzal.twitter
 
 import rx.Observable
 import rx.lang.kotlin.observable
-import twitter4j.Status
-import twitter4j.StatusUpdate
-import twitter4j.Twitter
-import twitter4j.User
+import twitter4j.*
 import xyz.donot.quetzal.util.basicNetworkTask
 import java.io.File
 
@@ -93,6 +90,14 @@ class TwitterUpdateObservable(val twitter: Twitter){
   fun destroyFriendShipAsync(long: Long): Observable<User> {
     return  observable<User> {
       try{it.onNext(twitter.destroyFriendship(long))
+        it.onCompleted()
+      }
+      catch(ex:Exception){it.onError(ex)}
+    }.basicNetworkTask()
+  }
+  fun createList(name: String,isPublic:Boolean,description: String): Observable<UserList> {
+    return  observable<UserList> {
+      try{it.onNext(twitter.createUserList(name,isPublic,description))
         it.onCompleted()
       }
       catch(ex:Exception){it.onError(ex)}

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.support.v7.widget.AppCompatImageButton
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import twitter4j.Status
 import twitter4j.Twitter
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.OnCardViewTouchEvent
+import xyz.donot.quetzal.event.OnCustomtabEvent
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
@@ -70,19 +72,20 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         else{ like.setImageResource(R.drawable.ic_favorite_grey)}
         if(statusList[i].isRetweeted){retweet.setImageResource(R.drawable.ic_redo_pressed)}
         else{ retweet.setImageResource(R.drawable.ic_redo_grey)}
+        via.text=Html.fromHtml(item.source)
         userName.text = item.user.name
         screenName.text = "@${item.user.screenName}"
         dateText.text = getRelativeTime(item.createdAt)
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
         cardView.setOnClickListener({
-          val tweetItem=if(getMyId() ==item.user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
+          val tweetItem=if(getMyId() ==statusList[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
           AlertDialog.Builder(mContext)
             .setItems(tweetItem, { dialogInterface, i ->
               val selectedItem=mContext.resources.getStringArray(tweetItem)[i]
               when (selectedItem) {
                 "削除" -> {
-                  TwitterUpdateObservable(twitter).deleteStatusAsync(item.id).subscribe (object : TwitterSubscriber() {
+                  TwitterUpdateObservable(twitter).deleteStatusAsync(statusList[i].id).subscribe (object : TwitterSubscriber() {
                     override fun onError(e: Throwable) {
                       super.onError(e)
                       Toast.makeText(mContext, "失敗しました", Toast.LENGTH_LONG).show()
@@ -94,11 +97,14 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
                   })
                 }
                 "会話" -> {
-                  mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id", item.id))
+                  mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id", statusList[i].id))
                 }
                 "コピー" -> {
                   val t= mContext.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
                   t.primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
+                }
+                "RTした人"-> {
+                  EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/statuses/${item.id}"))
                 }
               }
 
@@ -185,6 +191,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
 
 
   inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
+    val via :TextView
     val  like : AppCompatImageButton
     val  retweet : AppCompatImageButton
     val retweetText: TextView
@@ -198,6 +205,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     val cardView:CardView
     val reply :  AppCompatImageButton
     init {
+      via=itemView.findViewById(R.id.via)as TextView
       retweet=itemView.findViewById(R.id.retweet)as AppCompatImageButton
       like=itemView.findViewById(R.id.like)as AppCompatImageButton
       cardView=itemView.findViewById(R.id.cardView)as CardView

@@ -19,6 +19,7 @@
       android:background="?attr/colorPrimary"
       app:navigationIcon="@drawable/ic_arrow_back"
       app:popupTheme="@style/AppTheme.PopupOverlay"
+      app:title="@string/users_activity"
       />
 
   </android.support.design.widget.AppBarLayout>

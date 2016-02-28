@@ -33,6 +33,7 @@
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
+
     <activity
       android:name=".view.activity.AccountSettingActivity"
       android:label="@string/title_activity_account_setting"
@@ -74,7 +75,15 @@
     <activity
       android:name=".view.activity.EditProfileActivity"
       android:label="@string/title_activity_edit_profile"
-      android:theme="@style/AppTheme.NoActionBar"/>
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.ListsActivity"
+      android:label="@string/title_activity_lists"
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".view.activity.SeeMyListActivity"
+      android:label="@string/title_activity_see_my_list"
+      android:theme="@style/AppTheme.NoActionBar"></activity>
   </application>
 
 </manifest>

@@ -68,17 +68,9 @@ import xyz.donot.quetzal.util.logd
         }}
     }
 
-    fun reconnect()
-    {
-      isConnected=false
-      stream.cleanUp()
-      run()
-    }
-
     override fun onException(ex: Exception) {
       super.onException(ex)
       ex.printStackTrace()
-
     }
 
     override fun onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {
@@ -88,12 +80,8 @@ import xyz.donot.quetzal.util.logd
 
     override fun onFavorite(source: User, target: User, favoritedStatus: Status) {
       super.onFavorite(source, target, favoritedStatus)
-
     }
   }
-
-
-
   }
 
 enum  class StreamType{

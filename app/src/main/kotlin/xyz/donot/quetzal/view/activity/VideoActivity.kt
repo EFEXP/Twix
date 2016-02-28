@@ -24,10 +24,7 @@ class VideoActivity : AppCompatActivity() {
          start()
        }
        start()
+
       }
-
-     // video.setMediaController(mControlsView)
-    //  mContentView.start()
-
     }
 }

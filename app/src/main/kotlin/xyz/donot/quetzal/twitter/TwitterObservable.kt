@@ -117,6 +117,27 @@ class TwitterObservable(val twitter : Twitter)
     }
       .basicNetworkTask()
   }
+  fun getMyListAsync(listid:Long,page:Paging): Observable<Status>
+  {
+    return  Observable.create<Status> { subscriber ->
+      try {
+        val statuses=twitter.getUserListStatuses(listid,page)
+        statuses.withIndex().forEachIndexed { int, indexedValue ->
+          subscriber.onNext(indexedValue.value)
+          if(indexedValue.index==page.count-1){subscriber.onCompleted()}
+        }
+      } catch (e: TwitterException) {
+        logi("error",e.errorMessage)
+        subscriber.onError(e)
+      }
+      subscriber.onCompleted()
+    }
+      .basicNetworkTask()
+  }
+
+
+
+
   fun showStatusAsync(statusId:Long) :Observable<Status>{
     return observable <Status>{
         try{it.onNext(twitter.showStatus(statusId))
@@ -178,7 +199,7 @@ class TwitterObservable(val twitter : Twitter)
 
     } .basicNetworkTask()
   }
-  fun showFriendShip(long: Long) :Observable<Relationship>{
+   fun showFriendShip(long: Long) :Observable<Relationship>{
     return  Observable.create<Relationship> {
       try{
         it.onNext(twitter.showFriendship(getMyId(),long))
@@ -190,6 +211,30 @@ class TwitterObservable(val twitter : Twitter)
 
     } .basicNetworkTask()
   }
+  fun showUsersList(long: Long) :Observable<ResponseList<UserList>>{
+    return  Observable.create<ResponseList<UserList>> {
+      try{
+        it.onNext(twitter.list().getUserLists(long))
+        it.onCompleted()
+      }
+      catch(ex:Exception){
+        it.onError(ex)
+      }
 
+    } .basicNetworkTask()
+  }
+
+  fun showOwnUsersList(userid: Long,cursor: Long) :Observable<PagableResponseList<UserList>>{
+    return  Observable.create<PagableResponseList<UserList>> {
+      try{
+        it.onNext(twitter.list().getUserListsOwnerships(userid,cursor))
+        it.onCompleted()
+      }
+      catch(ex:Exception){
+        it.onError(ex)
+      }
+
+    } .basicNetworkTask()
+  }
 
 }

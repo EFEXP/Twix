@@ -19,26 +19,22 @@ import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.bindToLifecycle
 
 class HomeTimelineFragment : BaseFragment() {
-
   override fun TimelineLoader() {
     val paging = Paging(page, 30)
     TwitterObservable(twitter)
       .getHomeTimelineAsync(paging)
       .bindToLifecycle(this@HomeTimelineFragment)
-    .subscribe(object:
+      .subscribe(object:
       TwitterSubscriber(){
       override fun onCompleted() {
-
       }
 
       override fun onStatus(status: Status) {
         mAdapter.add(status)
       }
     } )
+
   }
-
-
-
   @Subscribe(threadMode = ThreadMode.MAIN)
   fun onEventMainThread(statusEvent: OnStatusEvent){
     data.addFirst(statusEvent.status)

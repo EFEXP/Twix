@@ -64,6 +64,10 @@ class MainActivity : RxAppCompatActivity() {
               startActivity(Intent(this@MainActivity, AccountSettingActivity::class.java))
               drawer_layout.closeDrawers()
             }
+            R.id.list-> {
+              startActivity(Intent(this@MainActivity, ListsActivity::class.java))
+              drawer_layout.closeDrawers()
+            }
           }
           true
         })
@@ -73,6 +77,7 @@ class MainActivity : RxAppCompatActivity() {
           true
         }
         StreamManager.Factory.getStreamObject(applicationContext,twitter, StreamType.USER_STREAM).run()
+
         button_tweet.setOnClickListener(
           {  if(!editText_status.editableText.isNullOrBlank())
           {
@@ -94,13 +99,13 @@ class MainActivity : RxAppCompatActivity() {
             editText_status.setText("")
           }})
         accountChanged=false
-
       }
       else{
         setContentView(R.layout.activity_main)
         showSnackbar(coordinatorLayout,R.string.description_a_network_error_occurred)
       }
       eventbus.register(this@MainActivity)
+
 }
 
   override fun onStart() {
