@@ -50,26 +50,28 @@ class MainActivity : RxAppCompatActivity() {
         }
         tabs.setupWithViewPager(viewpager)
         design_navigation_view.setNavigationItemSelectedListener({
-          when (it.itemId) {
-            R.id.my_profile-> {
-              startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
-              drawer_layout.closeDrawers()
-            }
-            R.id.setting -> {
-              startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-              drawer_layout.closeDrawers()
-            }
-            R.id.account -> {
-              startActivity(Intent(this@MainActivity, AccountSettingActivity::class.java))
-              drawer_layout.closeDrawers()
-            }
-            R.id.list-> {
-              startActivity(Intent(this@MainActivity, ListsActivity::class.java))
-              drawer_layout.closeDrawers()
-            }
-            R.id. whats_new->{
-              EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new"))
-              drawer_layout.closeDrawers()
+          if(haveNetworkConnection()) {
+            when (it.itemId) {
+              R.id.my_profile -> {
+                startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
+                drawer_layout.closeDrawers()
+              }
+              R.id.setting -> {
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                drawer_layout.closeDrawers()
+              }
+              R.id.account -> {
+                startActivity(Intent(this@MainActivity, AccountSettingActivity::class.java))
+                drawer_layout.closeDrawers()
+              }
+              R.id.list -> {
+                startActivity(Intent(this@MainActivity, ListsActivity::class.java))
+                drawer_layout.closeDrawers()
+              }
+              R.id.whats_new -> {
+                EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new.html"))
+                drawer_layout.closeDrawers()
+              }
             }
           }
           true
@@ -113,7 +115,6 @@ class MainActivity : RxAppCompatActivity() {
 
   override fun onStart() {
     super.onStart()
-
     if(accountChanged){
       pagerAdapter.destroyAllItem()
       viewpager.adapter=null
@@ -144,7 +145,6 @@ class MainActivity : RxAppCompatActivity() {
   {
 
   }
-
   @Subscribe
  fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
     CustomTabsIntent.Builder()

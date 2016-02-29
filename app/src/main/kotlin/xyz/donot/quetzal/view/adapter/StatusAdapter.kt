@@ -5,6 +5,7 @@ import android.content.*
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.AppCompatImageButton
+import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -232,10 +233,10 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
       status_text=itemView.findViewById(R.id.tweet_text)as LinkConsumableTextView
       mediaContainerGrid=itemView.findViewById(R.id.media_container_grid)as GridView
       retweetText=itemView.findViewById(R.id.textView_isRT)as TextView
-      userName = itemView.findViewById(R.id.user_name_text) as TextView
-      screenName = itemView.findViewById(R.id.screen_name) as TextView
+      userName = itemView.findViewById(R.id.user_name_text) as AppCompatTextView
+      screenName = itemView.findViewById(R.id.screen_name) as AppCompatTextView
       countText = itemView.findViewById(R.id.count) as TextView
-      dateText = itemView.findViewById(R.id.textView_date) as TextView
+      dateText = itemView.findViewById(R.id.textView_date) as AppCompatTextView
       icon =itemView.findViewById(R.id.icon) as ImageView
       reply=itemView.findViewById(R.id.reply) as AppCompatImageButton
     }

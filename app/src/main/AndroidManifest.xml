@@ -84,7 +84,7 @@
     <activity
       android:name=".view.activity.SeeMyListActivity"
       android:label="@string/title_activity_see_my_list"
-      android:theme="@style/AppTheme.NoActionBar"></activity>
+      android:theme="@style/AppTheme.NoActionBar"/>
   </application>
 
 </manifest>

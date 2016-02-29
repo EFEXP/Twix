@@ -2,6 +2,7 @@ package xyz.donot.quetzal
 
 
 import android.app.Application
+import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
@@ -18,6 +19,7 @@ class Quetzal : Application() {
         Fabric.with(this, Twitter(authConfig),Crashlytics())
         Realm.setDefaultConfiguration(RealmConfiguration.Builder(applicationContext).build())
         EventBus.builder().installDefaultEventBus()
+      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
 
     }
 

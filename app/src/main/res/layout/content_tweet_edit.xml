@@ -10,6 +10,15 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.design.widget.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:id="@+id/editText_status_"
+      app:counterEnabled="true"
+      app:counterMaxLength="140"
+      >
 <android.support.v7.widget.AppCompatEditText
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -17,11 +26,12 @@
   android:id="@+id/editText_status"
   android:minLines="5"
   />
+</android.support.design.widget.TextInputLayout>
   <android.support.v7.widget.AppCompatButton
     android:id="@+id/send_status"
     android:text="@string/send"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/editText_status"/>
+    android:layout_below="@+id/editText_status_"/>
   </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
