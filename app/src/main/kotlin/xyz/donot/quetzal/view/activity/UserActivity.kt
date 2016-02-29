@@ -25,7 +25,7 @@ class UserActivity : RxAppCompatActivity() {
       toolbar.setNavigationOnClickListener { finish() }
       if(userName.isNullOrEmpty()){
         TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
-      .subscribe(object :TwitterUserSubscriber(){
+      .subscribe(object :TwitterUserSubscriber(this@UserActivity){
         override fun onUser(user: User) {
           setUp(user)
         }
@@ -33,7 +33,7 @@ class UserActivity : RxAppCompatActivity() {
       }
       else{
         TwitterObservable(twitter).showUser(userName).bindToLifecycle(this@UserActivity)
-          .subscribe(object :TwitterUserSubscriber(){
+          .subscribe(object :TwitterUserSubscriber(this@UserActivity){
             override fun onUser(user: User) {
               setUp(user)
             }

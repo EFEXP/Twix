@@ -25,10 +25,8 @@ class HomeTimelineFragment : BaseFragment() {
       .getHomeTimelineAsync(paging)
       .bindToLifecycle(this@HomeTimelineFragment)
       .subscribe(object:
-      TwitterSubscriber(){
-      override fun onCompleted() {
-      }
-
+      TwitterSubscriber(activity){
+      override fun onCompleted() { }
       override fun onStatus(status: Status) {
         mAdapter.add(status)
       }

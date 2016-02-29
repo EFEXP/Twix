@@ -1,5 +1,7 @@
 package xyz.donot.quetzal.event
 
+import android.content.Context
+import android.widget.Toast
 import rx.Subscriber
 import twitter4j.PagableResponseList
 import twitter4j.Status
@@ -7,12 +9,13 @@ import twitter4j.User
 import xyz.donot.quetzal.util.loge
 
 
-open class TwitterSubscriber : Subscriber<Status>() {
+open class TwitterSubscriber(val context: Context) : Subscriber<Status>() {
     override fun onCompleted() {
       onLoaded()
     }
 
   override fun onError(e: Throwable) {
+      Toast.makeText(context,"エラーが発生しました",Toast.LENGTH_LONG).show()
       loge(e.cause.toString(),e.message.toString())
     }
 
@@ -23,12 +26,13 @@ open class TwitterSubscriber : Subscriber<Status>() {
   open fun onLoaded(){}
 }
 
-open class TwitterUserSubscriber : Subscriber<User>() {
+open class TwitterUserSubscriber(val context: Context) : Subscriber<User>() {
   override fun onCompleted() {
     onLoaded()
   }
 
   override fun onError(e: Throwable) {
+    Toast.makeText(context,"エラーが発生しました",Toast.LENGTH_LONG).show()
     loge(e.cause.toString(),e.message.toString())
   }
 
@@ -39,7 +43,7 @@ open class TwitterUserSubscriber : Subscriber<User>() {
   open fun onLoaded(){}
 }
 
-open class TwitterUsersSubscriber : Subscriber<PagableResponseList<User>>() {
+open class TwitterUsersSubscriber (val context: Context): Subscriber<PagableResponseList<User>>() {
   override fun onCompleted() {
     onLoaded()
   }

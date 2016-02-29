@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar
 import kotlinx.android.synthetic.main.content_tweet_detail.*
 import twitter4j.Status
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.adapter.StatusAdapter
@@ -21,9 +22,9 @@ class TweetDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_detail)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-    toolbar.setNavigationOnClickListener { finish() }
+      toolbar.setNavigationOnClickListener {finish()}
       loadReply(intent.extras.getLong("status_id"))
-    detail_recycler_view.adapter = mAdapter
+      detail_recycler_view.adapter = mAdapter
       detail_recycler_view.layoutManager = LinearLayoutManager(this@TweetDetailActivity)
 
 
@@ -31,13 +32,17 @@ class TweetDetailActivity : AppCompatActivity() {
     }
   fun loadReply(long: Long){
     val observer= TwitterObservable(twitter).showStatusAsync(long)
-    observer.subscribe {
-      mAdapter.insert(it) }
-    observer.subscribe {
-      val voo=it.inReplyToStatusId>0
-      if(voo){
-      loadReply(it.inReplyToStatusId)
-    } }
+    observer.subscribe (object : TwitterSubscriber(this@TweetDetailActivity) {
+      override fun onStatus(status: Status) {
+        super.onStatus(status)
+        mAdapter.insert(status)
+        observer.subscribe {
+          val voo=it.inReplyToStatusId>0
+          if(voo){
+            loadReply(it.inReplyToStatusId)
+          } }
+      }
+    })
   }
 
 

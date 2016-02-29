@@ -19,10 +19,7 @@ class MentionFragment() : BaseFragment() {
   override fun TimelineLoader() {
     val paging = Paging(page, 30)
     TwitterObservable(twitter).getMentionsTimelineAsync(paging).subscribe (object:
-      TwitterSubscriber(){
-      override fun onCompleted() {
-
-      }
+      TwitterSubscriber(activity){
       override fun onStatus(status: Status) {
         mAdapter.add(status)
       }

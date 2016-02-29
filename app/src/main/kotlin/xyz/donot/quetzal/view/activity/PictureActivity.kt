@@ -17,8 +17,7 @@ class PictureActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
         val strings = intent.extras.getStringArrayList("picture_urls")
         pager.adapter = PicturePagerAdapter(supportFragmentManager, strings)
-
-      toolbar.setOnMenuItemClickListener {
+        toolbar.setOnMenuItemClickListener {
         when(it.itemId){
           R.id.save_it->{
             EventBus.getDefault().post(OnSaveIt())

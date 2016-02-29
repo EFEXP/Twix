@@ -1,10 +1,12 @@
 package xyz.donot.quetzal.view.fragment
 
 
+import android.content.ContentValues
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +40,7 @@ class PictureFragment : Fragment() {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_picture, container, false)
     val img = v.findViewById(R.id.photo_view_image)as ImageView
-    Picasso.with(activity).load( stringURL).into(img)
+    Picasso.with(activity).load(stringURL).into(img)
     PhotoViewAttacher(img).update()
     return v
   }
@@ -46,7 +48,6 @@ class PictureFragment : Fragment() {
   fun SavePics(onsave: OnSaveIt){
     Picasso.with(activity).load( stringURL).into(object :com.squareup.picasso.Target{
       override fun onBitmapFailed(p0: Drawable?) {
-
       }
 
       override fun onBitmapLoaded(p0: Bitmap, p1: Picasso.LoadedFrom?) {
@@ -59,6 +60,14 @@ class PictureFragment : Fragment() {
             it.flush()
             Toast.makeText(context,"保存しました",Toast.LENGTH_LONG).show()
           }
+
+        val values=  ContentValues().apply {
+           put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+           put(MediaStore.Images.Media.TITLE,"$file/$name.jpg")
+           put("_data",attachName.absolutePath )
+
+          }
+          activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         }
         catch(ex: IOException){
           ex.printStackTrace()

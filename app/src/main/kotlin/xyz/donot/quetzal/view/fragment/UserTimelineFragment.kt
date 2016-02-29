@@ -15,7 +15,7 @@ class UserTimelineFragment(val userId:Long) : BaseFragment() {
     val twitter=activity.getTwitterInstance()
     val paging = Paging(page, 30)
     TwitterObservable(twitter).getUserTimelineAsync(userId,paging).subscribe (object:
-      TwitterSubscriber(){
+      TwitterSubscriber(activity){
       override fun onCompleted() {
 
       }

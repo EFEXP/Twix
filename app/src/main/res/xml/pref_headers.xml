@@ -9,7 +9,7 @@
     android:icon="@drawable/ic_settings_system_design"
     android:title="@string/pref_header_app_design" />-->
   <header
-    android:fragment="xyz.donot.twix.view.activity.SettingsActivity$NotificationPreferenceFragment"
+    android:fragment="xyz.donot.quetzal.view.activity.SettingsActivity$NotificationPreferenceFragment"
     android:icon="@drawable/ic_notifications"
     android:title="@string/pref_header_notifications" />
 

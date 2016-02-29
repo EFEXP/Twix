@@ -45,11 +45,11 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         statusList[i]
       }
       //画像関連
-      if(item.extendedMediaEntities.size>0){
-        val list =item.extendedMediaEntities.map { it.mediaURLHttps }
+      if(item.mediaEntities.isNotEmpty()){
+        val list =item.mediaEntities.map {it.mediaURLHttps}
         val gridAdapter=TweetPictureGridAdapter(mContext,0)
-        item.extendedMediaEntities.iterator().forEach {
-          gridAdapter.add(it.mediaURLHttps)
+        list.forEach {
+          gridAdapter.add(it)
         }
         viewHolder.mediaContainerGrid.apply {
           adapter=gridAdapter
@@ -63,8 +63,28 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
           visibility = View.VISIBLE
         }
       }
-      else{
-        viewHolder.mediaContainerGrid.visibility = View.GONE
+      //ex
+      if(item.extendedMediaEntities.isNotEmpty()){
+        val list =item.extendedMediaEntities.map { it.mediaURLHttps }
+        val gridAdapter=TweetPictureGridAdapter(mContext,0)
+        list.forEach {
+          gridAdapter.add(it)
+        }
+        viewHolder.mediaContainerGrid.apply {
+          adapter=gridAdapter
+          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
+            val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
+            if (videourl!=null) {
+              context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
+            } else
+            { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
+          }
+          visibility = View.VISIBLE
+        }
+      }
+
+      if(item.extendedMediaEntities.isEmpty()&&item.mediaEntities.isEmpty()){
+          viewHolder.mediaContainerGrid.visibility = View.GONE
       }
       //ビューホルダー
       viewHolder.apply {
@@ -78,18 +98,16 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         dateText.text = getRelativeTime(item.createdAt)
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
+        //cardview
         cardView.setOnClickListener({
           val tweetItem=if(getMyId() ==statusList[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
+
           AlertDialog.Builder(mContext)
-            .setItems(tweetItem, { dialogInterface, i ->
-              val selectedItem=mContext.resources.getStringArray(tweetItem)[i]
+            .setItems(tweetItem, { dialogInterface, int ->
+              val selectedItem=mContext.resources.getStringArray(tweetItem)[int]
               when (selectedItem) {
                 "削除" -> {
-                  TwitterUpdateObservable(twitter).deleteStatusAsync(statusList[i].id).subscribe (object : TwitterSubscriber() {
-                    override fun onError(e: Throwable) {
-                      super.onError(e)
-                      Toast.makeText(mContext, "失敗しました", Toast.LENGTH_LONG).show()
-                    }
+                  TwitterUpdateObservable(twitter).deleteStatusAsync(statusList[i].id).subscribe (object : TwitterSubscriber(mContext) {
                     override fun onStatus(status: Status) {
                       super.onStatus(status)
                       Toast.makeText(mContext, "削除しました",  Toast.LENGTH_LONG).show()
@@ -103,8 +121,9 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
                   val t= mContext.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
                   t.primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
                 }
+
                 "RTした人"-> {
-                  EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/statuses/${item.id}"))
+                  EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))
                 }
               }
 
@@ -123,18 +142,19 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         }
         retweet.setOnClickListener{
           if(!item.isRetweeted){
-            TwitterUpdateObservable(twitter).createRetweetAsync(item.id).subscribe(
-              object : TwitterSubscriber() {
-                override fun onStatus(status: Status) {
-                  super.onStatus(status)
-                  reload(status)
-                }
-              }) }
+            TwitterUpdateObservable(twitter).createRetweetAsync(item.id).subscribe(object : TwitterSubscriber(mContext) {
+              override fun onStatus(status: Status) {
+                super.onStatus(status)
+                reload(status)
+                Toast.makeText(mContext, "RTしました",  Toast.LENGTH_LONG).show()
+              }
+            })
+          }
         }
         like.setOnClickListener{
          if(!item.isFavorited){
           TwitterUpdateObservable(twitter).createLikeAsync(item.id).subscribe(
-           object : TwitterSubscriber() {
+           object : TwitterSubscriber(mContext) {
              override fun onStatus(status: Status) {
                super.onStatus(status)
                reload(status)
@@ -142,7 +162,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
            }) }
           else{
            TwitterUpdateObservable(twitter).deleteLikeAsync(item.id).subscribe(
-             object : TwitterSubscriber() {
+             object : TwitterSubscriber(mContext) {
                override fun onStatus(status: Status) {
                  super.onStatus(status)
                  reload(status)

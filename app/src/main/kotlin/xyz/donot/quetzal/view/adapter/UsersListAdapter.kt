@@ -1,6 +1,7 @@
 package xyz.donot.quetzal.view.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.CardView
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import twitter4j.UserList
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.view.activity.SeeMyListActivity
 import java.util.*
 
 class UsersListAdapter(private val mContext: Context, private val userList: LinkedList<UserList>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.UsersListAdapter.ViewHolder>() {
@@ -30,7 +32,7 @@ class UsersListAdapter(private val mContext: Context, private val userList: Link
         author.text="${item.user.name}が作成"
         Picasso.with(mContext).load(item.user.biggerProfileImageURLHttps).into(icon)
         cardView.setOnClickListener{
-
+          mContext.startActivity(Intent(mContext,SeeMyListActivity::class.java).putExtra("list_id",item.id))
         }
       }
 

@@ -9,7 +9,7 @@ class LikeTimelineFragment(val userId:Long): BaseFragment() {
   override fun TimelineLoader() {
     val paging = Paging(page, 30)
     TwitterObservable(twitter).getFavoritesAsync(userId,paging).subscribe (object:
-      TwitterSubscriber(){
+      TwitterSubscriber(activity){
       override fun onStatus(status: Status) {
         mAdapter.add(status)
       }

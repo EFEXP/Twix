@@ -18,8 +18,10 @@ import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.getLinkList
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.view.activity.ListsActivity
 import xyz.donot.quetzal.view.activity.PictureActivity
 import xyz.donot.quetzal.view.activity.UsersActivity
+import java.text.SimpleDateFormat
 
 
 class UserDetailFragment(val userId:Long) : RxFragment()
@@ -29,7 +31,7 @@ class UserDetailFragment(val userId:Long) : RxFragment()
 
     TwitterObservable(twitter).showUser(userId)
      .bindToLifecycle(this@UserDetailFragment)
-    .subscribe (object : TwitterUserSubscriber() {
+    .subscribe (object : TwitterUserSubscriber(activity) {
       override fun onNext(user: User) {
         super.onNext(user)
         if(user.id!=getMyId()) {
@@ -53,10 +55,18 @@ class UserDetailFragment(val userId:Long) : RxFragment()
                 }
               }
             }
+
+            if(it.isTargetFollowingSource){
+              relation.text = "フォローされています"
+            }
+            else{
+              relation.text = "フォローされていません"
+            }
           }
         }
         else{
           follow_button.visibility=View.GONE
+          relation.visibility=View.GONE
         }
         val iconIntent= Intent(activity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.originalProfileImageURLHttps))
         Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
@@ -66,11 +76,16 @@ class UserDetailFragment(val userId:Long) : RxFragment()
         description.text=user.description.replace("\n","")
         web_txt.text=user.urlEntity.expandedURL
         geo_txt.text=user.location
+        created_at.text= "${SimpleDateFormat("yyyy/MM/dd").format(user.createdAt)}にTwitterを開始"
+        listed.text="${user.listedCount}個のリストに追加されています"
         followed_text.text="Followers:${user.followersCount}"
         following_text.text="Friends:${user.friendsCount}"
         LinkBuilder.on(description).addLinks(activity.getLinkList()).build()
         LinkBuilder.on(web_txt).addLinks(activity.getLinkList()).build()
-        cardView.setOnClickListener{activity.startActivity(Intent(activity, UsersActivity::class.java).putExtra("user_id",user.id))}
+        ff_count.setOnClickListener{activity.startActivity(Intent(activity, UsersActivity::class.java).putExtra("user_id",user.id))}
+        has_list.setOnClickListener{
+          startActivity(Intent(activity,ListsActivity::class.java).putExtra("user_id",user.id))
+        }
       }
     })
     return v

@@ -96,7 +96,7 @@
   <string name="What_is_happening">いまどうしてる？</string>
 
   <string name="new_mention_notification_title_template">新しい返信です: %1$s</string>
-  <string name="new_mention_notification_placeholder_text_template">Reply:%1$s</string>
+  <string name="new_mention_notification_placeholder_text_template">新しい返信です: %1$s</string>
 
   <string name="action_share">Share</string>
   <string name="action_reply">Reply</string>
@@ -126,6 +126,7 @@
   <string name="title_activity_lists">ListsActivity</string>
   <string name="edit_tweet_activity">ツイート</string>
   <string name="title_activity_see_my_list">SeeMyListActivity</string>
+  <string name="whats_new">お知らせ</string>
 
 
 </resources>

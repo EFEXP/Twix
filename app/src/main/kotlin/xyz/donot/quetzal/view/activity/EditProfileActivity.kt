@@ -60,7 +60,7 @@ val twitter by lazy { getTwitterInstance()}
         setContentView(R.layout.activity_edit_profile)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
-        TwitterObservable( twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(){
+        TwitterObservable( twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(this@EditProfileActivity){
           override fun onNext(user: User) {
             Picasso.with(this@EditProfileActivity).load(user.profileBannerIPadURL).into(profile_banner)
             Picasso.with(this@EditProfileActivity).load(user.originalProfileImageURLHttps).into(icon)
@@ -68,7 +68,6 @@ val twitter by lazy { getTwitterInstance()}
               startActivityForResult(intentGallery,1) }
             icon.setOnClickListener{
               startActivityForResult(intentGallery,2) }
-
             web.text.insert(0,user.urlEntity.expandedURL)
             user_name.text.insert(0,user.name)
             geo.text.insert(0,user.location)
@@ -78,30 +77,20 @@ val twitter by lazy { getTwitterInstance()}
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {
           TwitterUpdateObservable(twitter).updateProfileAsync(name = user_name.text.toString(),location = geo.text.toString(),description = description.text.toString(),url = web.text.toString())
-          .subscribe (object:TwitterUserSubscriber(){
+          .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
             override fun onCompleted() {
               super.onCompleted()
               Toast.makeText(this@EditProfileActivity,"更新しました",Toast.LENGTH_LONG).show()
-            }
-
-            override fun onError(e: Throwable) {
-              super.onError(e)
-              Toast.makeText(this@EditProfileActivity,"失敗しました",Toast.LENGTH_LONG).show()
             }
           })
           if (uri2 != null) {
             TwitterUpdateObservable(twitter).profileImageUpdateAsync(File(getPath(uri2!!)))
           }
           if (uri != null) {
-            TwitterUpdateObservable(twitter).profileImageUpdateAsync(File(getPath(uri!!))).subscribe (object:TwitterUserSubscriber(){
+            TwitterUpdateObservable(twitter).profileImageUpdateAsync(File(getPath(uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
               override fun onCompleted() {
                 super.onCompleted()
                 Toast.makeText(this@EditProfileActivity,"画像更新しました",Toast.LENGTH_LONG).show()
-              }
-
-              override fun onError(e: Throwable) {
-                super.onError(e)
-                Toast.makeText(this@EditProfileActivity,"画像失敗しました",Toast.LENGTH_LONG).show()
               }
             })
           }

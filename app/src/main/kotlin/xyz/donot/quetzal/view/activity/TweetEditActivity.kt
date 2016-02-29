@@ -24,7 +24,7 @@ class TweetEditActivity : RxAppCompatActivity() {
         val updateStatus= StatusUpdate(editText_status.text.toString())
         updateStatus.inReplyToStatusId=statusId
         TwitterUpdateObservable(twitter).updateStatusAsync(updateStatus)
-        .subscribe (object : TwitterSubscriber() {
+        .subscribe (object : TwitterSubscriber(this@TweetEditActivity) {
           override fun onError(e: Throwable) {
             super.onError(e)
           }

@@ -1,10 +1,11 @@
 package xyz.donot.quetzal.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.content_search.*
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.view.adapter.SearchAdapter
@@ -25,12 +26,11 @@ class SearchActivity : AppCompatActivity() {
       }
       searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
         override fun onQueryTextChange(p0: String): Boolean {
-
           return true
         }
-
         override fun onQueryTextSubmit(p0: String): Boolean {
-        setUpViews(p0)
+          startActivity(Intent(this@SearchActivity,SearchActivity::class.java).putExtra("query_txt",p0))
+          finish()
           return true
         }
       })

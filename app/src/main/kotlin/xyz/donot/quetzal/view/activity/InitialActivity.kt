@@ -56,7 +56,7 @@ class InitialActivity : AppCompatActivity() {
              //MuteUser
 
             UsersObservable(getTwitterInstance()).getMuteList(-1L).subscribe(
-              object: TwitterUsersSubscriber(){
+              object: TwitterUsersSubscriber(this@InitialActivity){
                 override fun onNext(user: PagableResponseList<User>) {
                   super.onNext(user)
                   realm.executeTransaction {

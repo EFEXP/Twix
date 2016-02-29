@@ -51,63 +51,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 
     override fun isValidFragment(fragmentName: String): Boolean {
         return PreferenceFragment::class.java.name == fragmentName
-                || GeneralPreferenceFragment::class.java.name == fragmentName
                 || NotificationPreferenceFragment::class.java.name == fragmentName
-                ||DesignPreferenceFragment::class.java.name == fragmentName
+
     }
 
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    class GeneralPreferenceFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_general)
-            setHasOptionsMenu(true)
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("example_text"))
-            bindPreferenceSummaryToValue(findPreference("example_list"))
-        }
-
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            val id = item.itemId
-            if (id == android.R.id.home) {
-                startActivity(Intent(activity, SettingsActivity::class.java))
-                return true
-            }
-            return super.onOptionsItemSelected(item)
-        }
-    }
-
-
-
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-  class DesignPreferenceFragment : PreferenceFragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      addPreferencesFromResource(R.xml.pref_app_design)
-      setHasOptionsMenu(true)
-
-      // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-      // to their values. When their values change, their summaries are
-      // updated to reflect the new value, per the Android Design
-    //  // guidelines.
-    //  bindPreferenceSummaryToValue(findPreference("example_text"))
-      //bindPreferenceSummaryToValue(findPreference("example_list"))
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      val id = item.itemId
-      if (id == android.R.id.home) {
-        startActivity(Intent(activity, SettingsActivity::class.java))
-        return true
-      }
-      return super.onOptionsItemSelected(item)
-    }
-  }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class NotificationPreferenceFragment : PreferenceFragment() {

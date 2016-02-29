@@ -16,4 +16,8 @@
     android:id="@+id/list"
     android:icon="@drawable/ic_view_list"
     android:title="@string/list"/>
+  <item
+    android:id="@+id/whats_new"
+    android:icon="@drawable/ic_info_outline"
+    android:title="@string/whats_new"/>
 </menu>

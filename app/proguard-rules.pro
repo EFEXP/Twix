@@ -30,8 +30,7 @@
    long consumerNode;
 }
 
--keep class com.crashlytics.** { *; }
--keep class com.crashlytics.android.**
+
 -keepattributes SourceFile,LineNumberTable,*Annotation*
 
 #twitter4j

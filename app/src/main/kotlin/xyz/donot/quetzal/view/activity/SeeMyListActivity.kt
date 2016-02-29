@@ -13,7 +13,6 @@ class SeeMyListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_see_my_list)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.setNavigationOnClickListener{}
       toolbar.setNavigationOnClickListener { finish() }
       supportFragmentManager.beginTransaction().add(R.id.container, SeeMyListFragment(listId)).commitAllowingStateLoss()
 

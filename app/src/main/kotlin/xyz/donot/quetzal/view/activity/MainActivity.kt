@@ -30,7 +30,6 @@ class MainActivity : RxAppCompatActivity() {
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy {  getTwitterInstance() }
   private var accountChanged=true
-  private var restartFlag=false
   val pagerAdapter by lazy { TimeLinePagerAdapter(supportFragmentManager) }
     override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -68,6 +67,10 @@ class MainActivity : RxAppCompatActivity() {
               startActivity(Intent(this@MainActivity, ListsActivity::class.java))
               drawer_layout.closeDrawers()
             }
+            R.id. whats_new->{
+              EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new"))
+              drawer_layout.closeDrawers()
+            }
           }
           true
         })
@@ -84,7 +87,7 @@ class MainActivity : RxAppCompatActivity() {
             val tObserver= TwitterUpdateObservable(twitter);
             tObserver.updateStatusAsync(editText_status.editableText.toString())
               .bindToLifecycle(this@MainActivity)
-              .subscribe(object: TwitterSubscriber(){
+              .subscribe(object: TwitterSubscriber(this@MainActivity){
                 override fun onStatus(status: Status) {
                   val   inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                   inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
@@ -110,8 +113,8 @@ class MainActivity : RxAppCompatActivity() {
 
   override fun onStart() {
     super.onStart()
+
     if(accountChanged){
-     restartFlag=true
       pagerAdapter.destroyAllItem()
       viewpager.adapter=null
       tabs.removeAllTabs()
@@ -123,11 +126,6 @@ class MainActivity : RxAppCompatActivity() {
   override fun onDestroy() {
     super.onDestroy()
     eventbus.unregister(this@MainActivity)
-    if (restartFlag) {
-      restartFlag = false
-      val intent_= Intent().setClass(this,MainActivity::class.java);
-      this.startActivity(intent_);
-    }
   }
 
   @Subscribe
