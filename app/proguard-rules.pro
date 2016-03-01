@@ -51,9 +51,10 @@
 -keep @io.realm.internal.Keep class *
 -dontwarn javax.**
 -dontwarn io.realm.**
-
+-dontwarn android.databinding.**
 -keep class xyz.donot.quetzal.view.activity.MainActivity { *; }
 -dontwarn xyz.donot.**
-
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
 
 

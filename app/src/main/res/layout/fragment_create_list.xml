@@ -13,7 +13,7 @@
   <EditText
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="リストの名前（半角英数）"
+    android:hint="リストの名前"
     android:id="@+id/name"
  />
   </android.support.design.widget.TextInputLayout>

@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
   tools:context=".view.activity.PictureActivity"
-  android:background="@android:color/black"
+  android:background="@null"
   tools:showIn="@layout/activity_picture">
 <android.support.v4.view.ViewPager
   android:id="@+id/pager"

@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import twitter4j.UserList
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.SeeMyListActivity
 import java.util.*
 
@@ -30,7 +31,7 @@ class UsersListAdapter(private val mContext: Context, private val userList: Link
       viewHolder.apply {
         listName.text=item.name
         author.text="${item.user.name}が作成"
-        Picasso.with(mContext).load(item.user.biggerProfileImageURLHttps).into(icon)
+        Picasso.with(mContext).load(item.user.biggerProfileImageURLHttps).transform(RoundCorner()).into(icon)
         cardView.setOnClickListener{
           mContext.startActivity(Intent(mContext,SeeMyListActivity::class.java).putExtra("list_id",item.id))
         }

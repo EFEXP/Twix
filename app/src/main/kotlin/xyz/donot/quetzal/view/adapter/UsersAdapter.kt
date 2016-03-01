@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import twitter4j.User
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.UserActivity
 import java.util.*
 
@@ -30,7 +31,7 @@ class UsersAdapter(private val mContext: Context, private val userList: LinkedLi
         screenName.text=item.screenName
         description.text=item.description
         userName.text=item.name
-        Picasso.with(mContext).load(item.biggerProfileImageURLHttps).into(icon)
+        Picasso.with(mContext).load(item.biggerProfileImageURLHttps).transform(RoundCorner()).into(icon)
         cardView.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.id))}
         }
 

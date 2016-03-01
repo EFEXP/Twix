@@ -19,6 +19,7 @@ class Quetzal : Application() {
         Realm.setDefaultConfiguration(RealmConfiguration.Builder(applicationContext).build())
         EventBus.builder().installDefaultEventBus()
 
+
     }
 
 }

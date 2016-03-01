@@ -4,14 +4,15 @@ import android.app.AlertDialog
 import android.content.*
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.widget.AppCompatImageButton
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.*
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.GridView
+import android.widget.TextView
+import android.widget.Toast
 import com.klinker.android.link_builder.LinkBuilder
 import com.klinker.android.link_builder.LinkConsumableTextView
 import com.squareup.picasso.Picasso
@@ -34,6 +35,11 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     // 表示するレイアウトを設定
     return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
   }
+  enum class media{
+    EX_MEDIA,
+    MEDIA,
+    NONE
+  }
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
     if (statusList.size > i ) {
       val item= if (statusList[i].isRetweet){
@@ -44,52 +50,42 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         viewHolder.retweetText.visibility=View.GONE
         statusList[i]
       }
-      //画像関連
-      if(item.mediaEntities.isNotEmpty()){
-        val list =item.mediaEntities.map {it.mediaURLHttps}
-        val gridAdapter=TweetPictureGridAdapter(mContext,0)
-        list.forEach {
-          gridAdapter.add(it)
-        }
-        viewHolder.mediaContainerGrid.apply {
-          adapter=gridAdapter
-          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
-            val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
-            if (videourl!=null) {
-              context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
-            } else
-            { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
-          }
-          visibility = View.VISIBLE
-        }
-      }
-      //ex
-      if(item.extendedMediaEntities.isNotEmpty()){
-        val list =item.extendedMediaEntities.map { it.mediaURLHttps }
-        val gridAdapter=TweetPictureGridAdapter(mContext,0)
-        list.forEach {
-          gridAdapter.add(it)
-        }
-        viewHolder.mediaContainerGrid.apply {
-          adapter=gridAdapter
-          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
-            val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
-            if (videourl!=null) {
-              context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
-            } else
-            { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", list as ArrayList<String>)) }
-          }
-          visibility = View.VISIBLE
-        }
-      }
+      val type=if(item.extendedMediaEntities.isNotEmpty()){ media.EX_MEDIA }
+      else if(item.mediaEntities.isNotEmpty()){ media.MEDIA }
+      else{ media.NONE }
 
-      if(item.extendedMediaEntities.isEmpty()&&item.mediaEntities.isEmpty()){
-          viewHolder.mediaContainerGrid.visibility = View.GONE
+      var statusText=item.text
+      val mediaDisplayIds=ArrayList<String>()
+      val statusMediaIds=ArrayList<String>()
+      when(type){
+        media.NONE->{viewHolder.mediaContainerGrid.visibility = View.GONE}
+        media.EX_MEDIA->{statusMediaIds.addAll(item.extendedMediaEntities.map { it.mediaURLHttps })
+          mediaDisplayIds.addAll(item.extendedMediaEntities.map { it.displayURL })
+        }
+        media.MEDIA-> {statusMediaIds.addAll(item.mediaEntities.map { it.mediaURLHttps })
+          mediaDisplayIds.addAll(item.mediaEntities.map { it.displayURL })
+        }
+      }
+      if(type!= media.NONE){
+        mediaDisplayIds.forEach {statusText.replace(it,"")}
+        val gridAdapter=TweetPictureGridAdapter(mContext,0)
+        gridAdapter.addAll(statusMediaIds)
+        viewHolder.mediaContainerGrid.apply {
+          adapter=gridAdapter
+          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
+            val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
+            if (videourl!=null) {
+              context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
+            } else
+            { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
+          }
+          visibility = View.VISIBLE
+        }
       }
       //ビューホルダー
       viewHolder.apply {
         if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed)}
-        else{ like.setImageResource(R.drawable.ic_favorite_grey)}
+        else{like.setImageResource(R.drawable.ic_favorite_grey)}
         if(statusList[i].isRetweeted){retweet.setImageResource(R.drawable.ic_redo_pressed)}
         else{ retweet.setImageResource(R.drawable.ic_redo_grey)}
         via.text=Html.fromHtml(item.source)
@@ -97,11 +93,10 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         screenName.text = "@${item.user.screenName}"
         dateText.text = getRelativeTime(item.createdAt)
         countText.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
-        Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).into(icon)
+        Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
         //cardview
         cardView.setOnClickListener({
           val tweetItem=if(getMyId() ==statusList[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
-
           AlertDialog.Builder(mContext)
             .setItems(tweetItem, { dialogInterface, int ->
               val selectedItem=mContext.resources.getStringArray(tweetItem)[int]
@@ -130,12 +125,10 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
 
             })
             .show()
-
-
           EventBus.getDefault().post(OnCardViewTouchEvent(item))
         })
         icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}
-        status_text.text=item.text
+        status_text.text=statusText
         LinkBuilder.on(status_text).addLinks(mContext.getLinkList()).build()
         reply.setOnClickListener{
           mContext.startActivity(Intent(mContext, TweetEditActivity::class.java).putExtra("status_id",item.id).putExtra("user_screen_name",item.user.screenName))
@@ -219,7 +212,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
     val screenName: TextView
     val dateText: TextView
     val countText: TextView
-    val icon: ImageView
+    val icon: AppCompatImageView
     val status_text: LinkConsumableTextView
     val mediaContainerGrid: GridView
     val cardView:CardView
@@ -232,11 +225,11 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
       status_text=itemView.findViewById(R.id.tweet_text)as LinkConsumableTextView
       mediaContainerGrid=itemView.findViewById(R.id.media_container_grid)as GridView
       retweetText=itemView.findViewById(R.id.textView_isRT)as TextView
-      userName = itemView.findViewById(R.id.user_name_text) as TextView
-      screenName = itemView.findViewById(R.id.screen_name) as TextView
+      userName = itemView.findViewById(R.id.user_name_text) as AppCompatTextView
+      screenName = itemView.findViewById(R.id.screen_name) as AppCompatTextView
       countText = itemView.findViewById(R.id.count) as TextView
-      dateText = itemView.findViewById(R.id.textView_date) as TextView
-      icon =itemView.findViewById(R.id.icon) as ImageView
+      dateText = itemView.findViewById(R.id.textView_date) as AppCompatTextView
+      icon =itemView.findViewById(R.id.icon) as AppCompatImageView
       reply=itemView.findViewById(R.id.reply) as AppCompatImageButton
     }
   }

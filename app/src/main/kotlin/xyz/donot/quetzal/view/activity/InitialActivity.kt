@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.SignUpEvent
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
@@ -31,6 +33,10 @@ class InitialActivity : AppCompatActivity() {
         twitter_login_button.callback=object : Callback<TwitterSession>() {
           override fun success(result: Result<TwitterSession>) {
             val authToken = Twitter.getSessionManager().activeSession.authToken
+            Answers.getInstance().logSignUp(SignUpEvent()
+              .putMethod("Twitter")
+              .putCustomAttribute("UserName",result.data.userName)
+              .putSuccess(true));
            Realm.getDefaultInstance().use {
              realm->
              if(! realm.where(DBAccount::class.java).equalTo("id",result.data.userId).isValid){
@@ -45,7 +51,6 @@ class InitialActivity : AppCompatActivity() {
                 secret = authToken.secret
                 id =result.data.userId
                 screenName =result.data.userName
-
                    isMain = true
 
               }}
@@ -77,6 +82,7 @@ class InitialActivity : AppCompatActivity() {
           }
           override fun failure(exception: TwitterException?) {
         showSnackbar( initial_activity_coordinator,R.string.description_a_network_error_occurred)
+
           }
         }
     }
