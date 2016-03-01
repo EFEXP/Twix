@@ -5,7 +5,7 @@
   android:layout_height="wrap_content"
   android:descendantFocusability="blocksDescendants"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
       android:id="@+id/icon"
       android:layout_width="60dp"
       android:layout_height="60dp"
@@ -96,7 +96,10 @@
       android:layout_alignParentEnd="true"
       android:layout_below="@+id/tweet_text"
       android:textAppearance="?android:attr/textAppearanceSmall"
-      android:layout_alignParentRight="true" />
+      android:layout_alignParentRight="true"
+      android:ellipsize="end"
+      android:singleLine="true"
+      />
     <GridView
       android:id="@+id/media_container_grid"
       android:layout_width="match_parent"

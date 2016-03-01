@@ -28,10 +28,15 @@ class CreateListDialog : RxDialogFragment() {
         if(!name.editableText.isNullOrBlank()&&!name.editableText.isNullOrEmpty()){
           TwitterUpdateObservable(twitter).createList(name.text.toString(),isPublic.isChecked,description.editableText.toString())
             .bindToLifecycle(this)
-            .subscribe {
+            .subscribe ({
             Toast.makeText(activity,"作成しました",Toast.LENGTH_LONG).show()
               dismiss()
-          }
+          },{
+              Toast.makeText(activity,"失敗しました",Toast.LENGTH_LONG).show()
+              dismiss()
+            }
+
+            )
         }
     }
     close.setOnClickListener{

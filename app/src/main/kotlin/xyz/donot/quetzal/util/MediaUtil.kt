@@ -7,73 +7,7 @@ import java.util.*
 
 
 class MediaUtil {
-
-    fun isMediaURL(url: String): Boolean {
-        return url.matches(PIC_TWITTER.toRegex())
-                || url.matches(TWITPIC.toRegex())
-                || url.matches(YFROG.toRegex())
-                || url.matches(INSTAGRAM.toRegex())
-                || url.matches(TWIPPLE.toRegex())
-                || url.matches(IMGUR.toRegex())
-                || url.matches(IMG_LY.toRegex())
-                || url.matches(VIA_ME.toRegex())
-                || url.matches(FLICKR.toRegex())
-                || url.matches(FLICKR_SHORT.toRegex())
-                || url.endsWith(".jpg")
-                || url.endsWith(".jpeg")
-                || url.endsWith(".png")
-                || url.endsWith(".gif")
-                || url.endsWith(".mp4")
-    }
-
-
-    fun getThumbUrl(url: String): String? {
-        if (url.matches(PIC_TWITTER.toRegex())) {
-            return url + PIC_TWITTER_THUMB_ADD
-
-        } else if (url.matches(TWITPIC.toRegex())) {
-            return url.replace(TWITPIC_URL.toRegex(), TWITPIC_THUMB_REPLACE) + TWITPIC_ADD
-
-        } else if (url.matches(YFROG.toRegex())) {
-            return url + YFROG_THUMB_ADD
-
-        } else if (url.matches(INSTAGRAM.toRegex())) {
-            if (url.endsWith("/")) {
-                return url + INSTAGRAM_THUMB_ADD
-            } else {
-                return url + "/" + INSTAGRAM_THUMB_ADD
-            }
-
-        } else if (url.matches(TWIPPLE.toRegex())) {
-            return url.replace(TWIPPLE_URL.toRegex(), TWIPPLE_THUMB_REPLACE)
-
-        } else if (url.matches(IMGUR.toRegex())) {
-            return url.replace(IMGUR_URL.toRegex(), IMGUR_REPLACE) + IMGUR_THUMB_ADD
-
-        } else if (url.matches(IMG_LY.toRegex())) {
-            return url.replace(IMG_LY_URL.toRegex(), IMG_LY_THUMB_REPLACE)
-
-        } else if (url.matches(VIA_ME.toRegex())) {
-            return url
-
-        } else if (url.matches(FLICKR.toRegex()) || url.matches(FLICKR_SHORT.toRegex())) {
-            return url
-
-        } else if (url.endsWith(".jpg")
-                || url.endsWith(".jpeg")
-                || url.endsWith(".png")
-                || url.endsWith(".gif")) {
-
-            return url
-
-        } else {
-            return null
-        }
-    }
-
     fun getVideoURL(mediaEntities: Array<MediaEntity>, extendedMediaEntities: Array<ExtendedMediaEntity>): String? {
-
-        // Animation GIF
         if (mediaEntities.size > 0) {
             val mediaEntity = mediaEntities[0]
             val url = mediaEntity.mediaURLHttps
@@ -81,7 +15,6 @@ class MediaUtil {
                 return url.replace(PIC_TWITTER_GIF_URL_1, PIC_TWITTER_GIF_REPLACE_1).replace(PIC_TWITTER_GIF_URL_2, PIC_TWITTER_GIF_REPLACE_2)
             }
         }
-
         // MP4 Video
         if (extendedMediaEntities.size > 0) {
             for (entity in extendedMediaEntities) {
@@ -159,4 +92,65 @@ class MediaUtil {
         val FLICKR = "https?://www\\.flickr\\.com/photos/[a-zA-Z0-9_@\\-/]+"
         val FLICKR_SHORT = "https?://flic\\.kr/\\w/\\w+"
     }
+}
+
+fun isMediaURL(url: String): Boolean {
+  return url.matches(MediaUtil.PIC_TWITTER.toRegex())
+    || url.matches(MediaUtil.TWITPIC.toRegex())
+    || url.matches(MediaUtil.YFROG.toRegex())
+    || url.matches(MediaUtil.INSTAGRAM.toRegex())
+    || url.matches(MediaUtil.TWIPPLE.toRegex())
+    || url.matches(MediaUtil.IMGUR.toRegex())
+    || url.matches(MediaUtil.IMG_LY.toRegex())
+    || url.matches(MediaUtil.VIA_ME.toRegex())
+    || url.matches(MediaUtil.FLICKR.toRegex())
+    || url.matches(MediaUtil.FLICKR_SHORT.toRegex())
+    || url.endsWith(".jpg")
+    || url.endsWith(".jpeg")
+    || url.endsWith(".png")
+    || url.endsWith(".gif")
+    || url.endsWith(".mp4")
+}
+fun getThumbUrl(url: String): String? {
+  if (url.matches(MediaUtil.PIC_TWITTER.toRegex())) {
+    return url + MediaUtil.PIC_TWITTER_THUMB_ADD
+
+  } else if (url.matches(MediaUtil.TWITPIC.toRegex())) {
+    return url.replace(MediaUtil.TWITPIC_URL.toRegex(), MediaUtil.TWITPIC_THUMB_REPLACE) + MediaUtil.TWITPIC_ADD
+
+  } else if (url.matches(MediaUtil.YFROG.toRegex())) {
+    return url + MediaUtil.YFROG_THUMB_ADD
+
+  } else if (url.matches(MediaUtil.INSTAGRAM.toRegex())) {
+    if (url.endsWith("/")) {
+      return url + MediaUtil.INSTAGRAM_THUMB_ADD
+    } else {
+      return url + "/" + MediaUtil.INSTAGRAM_THUMB_ADD
+    }
+
+  } else if (url.matches(MediaUtil.TWIPPLE.toRegex())) {
+    return url.replace(MediaUtil.TWIPPLE_URL.toRegex(), MediaUtil.TWIPPLE_THUMB_REPLACE)
+
+  } else if (url.matches(MediaUtil.IMGUR.toRegex())) {
+    return url.replace(MediaUtil.IMGUR_URL.toRegex(), MediaUtil.IMGUR_REPLACE) + MediaUtil.IMGUR_THUMB_ADD
+
+  } else if (url.matches(MediaUtil.IMG_LY.toRegex())) {
+    return url.replace(MediaUtil.IMG_LY_URL.toRegex(), MediaUtil.IMG_LY_THUMB_REPLACE)
+
+  } else if (url.matches(MediaUtil.VIA_ME.toRegex())) {
+    return url
+
+  } else if (url.matches(MediaUtil.FLICKR.toRegex()) || url.matches(MediaUtil.FLICKR_SHORT.toRegex())) {
+    return url
+
+  } else if (url.endsWith(".jpg")
+    || url.endsWith(".jpeg")
+    || url.endsWith(".png")
+    || url.endsWith(".gif")) {
+
+    return url
+
+  } else {
+    return null
+  }
 }

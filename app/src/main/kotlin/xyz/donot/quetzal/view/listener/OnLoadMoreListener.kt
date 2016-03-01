@@ -15,15 +15,11 @@ abstract class OnLoadMoreListener : RecyclerView.OnScrollListener() {
             onScrolledDown()
         }
     }
-
     fun onScrolledUp() {
     }
-
     fun onScrolledDown() {
     }
-
     fun onScrolledToTop() {
     }
-
    abstract  fun onScrolledToBottom()
 }

@@ -54,6 +54,7 @@
 -dontwarn android.databinding.**
 -keep class xyz.donot.quetzal.view.activity.MainActivity { *; }
 -dontwarn xyz.donot.**
-
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
 
 

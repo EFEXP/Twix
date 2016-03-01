@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.SearchEvent
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.content_search.*
 import xyz.donot.quetzal.R
@@ -19,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
       val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.inflateMenu(R.menu.search)
       toolbar.setNavigationOnClickListener { finish() }
-      setUpViews("浪人")
+      setUpViews("Quetzal")
 
       if (query_txt != null) {
         setUpViews(query_txt)
@@ -29,6 +31,7 @@ class SearchActivity : AppCompatActivity() {
           return true
         }
         override fun onQueryTextSubmit(p0: String): Boolean {
+          Answers.getInstance().logSearch(SearchEvent().putQuery(p0))
           startActivity(Intent(this@SearchActivity,SearchActivity::class.java).putExtra("query_txt",p0))
           finish()
           return true
