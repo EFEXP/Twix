@@ -8,7 +8,7 @@
   tools:context=".view.activity.PictureActivity"
   android:background="@null"
   tools:showIn="@layout/activity_picture">
-<android.support.v4.view.ViewPager
+<xyz.donot.quetzal.view.customview.FixedViewPager
   android:id="@+id/pager"
   android:layout_width="match_parent"
   android:layout_height="match_parent"/>

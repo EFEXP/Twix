@@ -28,7 +28,6 @@ class UserDetailFragment(val userId:Long) : RxFragment()
 {val twitter by lazy { activity.getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
-
     TwitterObservable(twitter).showUser(userId)
      .bindToLifecycle(this@UserDetailFragment)
     .subscribe (object : TwitterUserSubscriber(activity) {
@@ -72,6 +71,7 @@ class UserDetailFragment(val userId:Long) : RxFragment()
         Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
         icon_user.setOnClickListener{startActivity(iconIntent)}
         user_name.text=user.name
+        if(!user.isProtected){user_name.setCompoundDrawables(null,null,null,null)}
         screen_name.text="@${user.screenName}"
         description.text=user.description.replace("\n","")
         web_txt.text=user.urlEntity.expandedURL

@@ -57,6 +57,12 @@ return  arrayOf(
     .setOnClickListener{
       logd("HASHTAG_PATTERN","HASHTAG_PATTERN")
       EventBus.getDefault().post(OnHashtagEvent(it))
+    },
+    Link(Regex.EMAIL_ADDRESS_PATTERN)
+    .setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
+    .setBold(true)
+    .setOnClickListener{
+      EventBus.getDefault().post(OnHashtagEvent(it))
     }
 ).toMutableList()
 }

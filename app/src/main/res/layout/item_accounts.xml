@@ -6,7 +6,6 @@
   android:layout_width="match_parent"
   android:descendantFocusability="blocksDescendants"
   android:layout_height="match_parent">
-
   <TextView
     android:id="@+id/screen_name"
     android:layout_width="wrap_content"
