@@ -60,7 +60,7 @@ val twitter by lazy { getTwitterInstance()}
         setContentView(R.layout.activity_edit_profile)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
-        TwitterObservable( twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(this@EditProfileActivity){
+        TwitterObservable(applicationContext,twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(this@EditProfileActivity){
           override fun onNext(user: User) {
             Picasso.with(this@EditProfileActivity).load(user.profileBannerIPadURL).into(profile_banner)
             Picasso.with(this@EditProfileActivity).load(user.originalProfileImageURLHttps).into(icon)

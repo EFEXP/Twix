@@ -1,13 +1,22 @@
 package xyz.donot.quetzal.util;
 
 import android.content.Context
+import android.preference.PreferenceManager
 import io.realm.Realm
+import org.greenrobot.eventbus.EventBus
 import twitter4j.Status
 import twitter4j.TwitterFactory
 import twitter4j.auth.AccessToken
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.event.OnReplyEvent
+import xyz.donot.quetzal.event.OnStatusEvent
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.model.DBMuteUser
+import xyz.donot.quetzal.notification.NewMentionNotification
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -33,10 +42,41 @@ fun isIgnore(id: Long): Boolean {
 fun isMentionToMe(status: Status): Boolean {
   return  status.userMentionEntities.map { it.id }.filter { it==getMyId() }.isNotEmpty()
 }
+/*Usage
+*0=status
+* 1=reply
+* 2=notifications
+*/
+fun Status.save(context:Context){
+  val status=this
+  if(!isIgnore(status.user.id)){
+    if(isMentionToMe(status)){
+      EventBus.getDefault().post(OnReplyEvent(status))
+      if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
+      {
+        NewMentionNotification.notify(context,status.text,0)
+      }
+      }
+
+      EventBus.getDefault().post(OnStatusEvent(status))
+   }//execute
+  }
 
 
 
-
+fun Status.getSerialized():ByteArray{
+  ByteArrayOutputStream().use {
+  val out = ObjectOutputStream(it);
+  out.writeObject(this);
+  val bytes = it.toByteArray();
+  out.close();
+  it.close();
+  return bytes;
+  }
+}
+fun ByteArray.getStatusDeserialized():Status{
+  return ObjectInputStream(ByteArrayInputStream(this)).readObject()as Status
+}
 
 fun getMyId(): Long{
   Realm.getDefaultInstance().use {

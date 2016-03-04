@@ -21,6 +21,7 @@
       app:navigationIcon="@drawable/ic_arrow_back"
       app:popupTheme="@style/AppTheme.PopupOverlay"
       app:menu="@menu/picture_menu"
+      app:title="@string/picture_activity"
       />
 
   </android.support.design.widget.AppBarLayout>

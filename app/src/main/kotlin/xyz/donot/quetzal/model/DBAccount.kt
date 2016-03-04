@@ -15,4 +15,5 @@ open class DBAccount : RealmObject() {
     open  var secret: String? = null
     open  var screenName: String? = null
     open  var profileImageUrl: String? = null
+    open var user:ByteArray?=null
 }

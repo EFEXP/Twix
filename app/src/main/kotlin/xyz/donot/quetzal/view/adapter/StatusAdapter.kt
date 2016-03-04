@@ -5,6 +5,7 @@ import android.content.*
 import android.databinding.DataBindingUtil
 import android.os.Handler
 import android.os.Looper
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.LayoutInflater
@@ -25,9 +26,10 @@ import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.view.activity.*
+import xyz.donot.quetzal.view.dialog.RetweeterDialog
 import java.util.*
 
-class StatusAdapter(private val mContext: Context, private val statusList: LinkedList<Status>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder>() {
+class StatusAdapter(private val mContext: Context, private val statusList: MutableList<Status>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder>() {
   private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
   private val twitter: Twitter by  lazy { mContext.getTwitterInstance() }
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -91,7 +93,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
         textViewDate.text = getRelativeTime(item.createdAt)
         count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
-       
+
         //cardview
         cardView.setOnClickListener({
           val tweetItem=if(getMyId() ==statusList[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
@@ -116,8 +118,10 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
                 }
 
                 "RTした人"-> {
-                  EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))
+                  RetweeterDialog(item.id).show((mContext as AppCompatActivity).supportFragmentManager ,"")
+
                 }
+                "いいねした人"-> {EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))}
               }
 
 
@@ -168,6 +172,16 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
   override fun getItemCount(): Int {
     return statusList.size
   }
+  fun addAll(statuses :Iterable<Status>)
+  {
+    Handler(Looper.getMainLooper()).post()
+    {
+      statuses.forEach { statusList.add(it)
+        this.notifyItemInserted(statusList.size)
+      }
+    }
+  }
+
   fun add(status :Status)
   {
     Handler(Looper.getMainLooper()).post {  statusList.add(status)
@@ -187,10 +201,9 @@ class StatusAdapter(private val mContext: Context, private val statusList: Linke
   }
   fun insert(status: Status)
   {
-    Handler(Looper.getMainLooper()).post { statusList.addFirst(status)
+    Handler(Looper.getMainLooper()).post { statusList.add(0,status)
     this.notifyItemInserted(0)}
   }
-
   fun clear(){
     Handler(Looper.getMainLooper()).post {  statusList.clear()
     this.notifyDataSetChanged()}

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
-    android:id="@+id/my_profile"
+    android:id="@+id/action_my_profile"
     android:icon="@drawable/ic_edit_grey"
     android:title="@string/my_profile"/>
   <item
-    android:id="@+id/setting"
+    android:id="@+id/action_setting"
     android:icon="@drawable/ic_settings_grey"
     android:title="@string/setting"/>
   <item
-    android:id="@+id/account"
+    android:id="@+id/action_account"
     android:icon="@drawable/ic_contacts_grey"
     android:title="@string/account"/>
   <item
-    android:id="@+id/list"
+    android:id="@+id/action_list"
     android:icon="@drawable/ic_view_list"
     android:title="@string/list"/>
   <item
-    android:id="@+id/whats_new"
+    android:id="@+id/action_whats_new"
     android:icon="@drawable/ic_info_outline"
     android:title="@string/whats_new"/>
 </menu>

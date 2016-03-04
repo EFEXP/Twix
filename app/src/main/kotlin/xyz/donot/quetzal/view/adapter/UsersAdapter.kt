@@ -15,9 +15,8 @@ import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.UserActivity
-import java.util.*
 
-class UsersAdapter(private val mContext: Context, private val userList: LinkedList<User>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.UsersAdapter.ViewHolder>() {
+class UsersAdapter(private val mContext: Context, private val userList: MutableList<User>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.UsersAdapter.ViewHolder>() {
   private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     // 表示するレイアウトを設定
@@ -61,7 +60,7 @@ class UsersAdapter(private val mContext: Context, private val userList: LinkedLi
   }
   fun insert(user: User)
   {
-    Handler(Looper.getMainLooper()).post { userList.addFirst(user)
+    Handler(Looper.getMainLooper()).post { userList[0] = user
       this.notifyItemInserted(0)}
   }
 

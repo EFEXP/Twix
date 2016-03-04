@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import xyz.donot.quetzal.util.getMyId
-import xyz.donot.quetzal.view.fragment.HomeTimelineFragment
-import xyz.donot.quetzal.view.fragment.MentionFragment
-import xyz.donot.quetzal.view.fragment.UserTimelineFragment
+import xyz.donot.quetzal.view.fragment.HomeTimeLine
+import xyz.donot.quetzal.view.fragment.MentionTimeLine
+import xyz.donot.quetzal.view.fragment.TimeLine
 
 class TimeLinePagerAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
@@ -31,10 +31,14 @@ class TimeLinePagerAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return 3
     }
 
-  companion object Factory{
-    val home:HomeTimelineFragment by  lazy { HomeTimelineFragment()  }
-    val user by lazy { UserTimelineFragment(getMyId())}
-    val mention by lazy { MentionFragment() }
+ private  object Factory{
+    val home by  lazy {HomeTimeLine()}
+    val user by lazy {object : TimeLine(){
+      override fun loadMore() {
+        twitterObservable.getUserTimelineAsync(getMyId(),paging).subscribe {mAdapter.addAll(it)}
+      }
+    }}
+    val mention by lazy { MentionTimeLine() }
   }
   fun  destroyAllItem() {
     for(i in 0..2){

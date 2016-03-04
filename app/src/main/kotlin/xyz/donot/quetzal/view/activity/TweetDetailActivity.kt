@@ -26,12 +26,9 @@ class TweetDetailActivity : AppCompatActivity() {
       loadReply(intent.extras.getLong("status_id"))
       detail_recycler_view.adapter = mAdapter
       detail_recycler_view.layoutManager = LinearLayoutManager(this@TweetDetailActivity)
-
-
-
     }
   fun loadReply(long: Long){
-    val observer= TwitterObservable(twitter).showStatusAsync(long)
+    val observer= TwitterObservable(applicationContext,twitter).showStatusAsync(long)
     observer.subscribe (object : TwitterSubscriber(this@TweetDetailActivity) {
       override fun onStatus(status: Status) {
         super.onStatus(status)

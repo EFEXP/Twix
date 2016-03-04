@@ -19,10 +19,11 @@
     <activity
       android:name=".view.activity.MainActivity"
       android:label="${appName}"
-      android:theme="@style/AppTheme.NoActionBar">
+      android:theme="@style/AppTheme.NoActionBar"
+      android:screenOrientation="portrait"
+      >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
@@ -37,10 +38,12 @@
 
     <activity
       android:name=".view.activity.AccountSettingActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_account_setting"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.SettingsActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_settings" />
     <activity
       android:name=".view.activity.PictureActivity"
@@ -48,10 +51,12 @@
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.UserActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_scrolling"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.TweetDetailActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_tweet_detail"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
@@ -59,6 +64,7 @@
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.HelpActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_help"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
@@ -67,22 +73,27 @@
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.UsersActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_users"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.SearchActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_search"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.EditProfileActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_edit_profile"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.ListsActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_lists"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".view.activity.SeeMyListActivity"
+      android:screenOrientation="portrait"
       android:label="@string/title_activity_see_my_list"
       android:theme="@style/AppTheme.NoActionBar"/>
   </application>

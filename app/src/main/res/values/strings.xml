@@ -46,41 +46,22 @@
   <string name="users_activity">ユーザー</string>
   <string name="users_list_activity">リスト</string>
   <string name="main_activity">ホーム</string>
+  <string name="picture_activity">写真</string>
   <string name="lists_activity">リスト</string>
-  <!-- Example settings for Data & Sync -->
-  <string name="pref_header_data_sync">Data &amp; sync</string>
-  <string name="pref_title_sync_frequency">Sync frequency</string>
-  <string-array name="pref_sync_frequency_titles">
-    <item>15 minutes</item>
-    <item>30 minutes</item>
-    <item>1 hour</item>
-    <item>3 hours</item>
-    <item>6 hours</item>
-    <item>Never</item>
-  </string-array>
-  <string-array name="pref_sync_frequency_values">
-    <item>15</item>
-    <item>30</item>
-    <item>60</item>
-    <item>180</item>
-    <item>360</item>
-    <item>-1</item>
-  </string-array>
   <string-array name="tweet_my_menu">
-    <item>削除</item>
+    <item>いいねした人</item>
+    <item>RTした人</item>
     <item>会話</item>
     <item>コピー</item>
-    <item>RTした人</item>
+    <item>削除</item>
   </string-array>
   <string-array name="tweet_menu">
+    <item>RTした人</item>
+    <item> いいねした人</item>
     <item>会話</item>
     <item>コピー</item>
-    <item>RTした人</item>
   </string-array>
-
   <string name="pref_title_system_sync_settings">System sync settings</string>
-
-  <!-- Example settings for Notifications -->
   <string name="pref_header_notifications">通知</string>
   <string name="pref_title_notifications">通知を有効にする</string>
   <string name="pref_title_ringtone">通知音</string>
@@ -92,7 +73,7 @@
   <string name="title_activity_picture">PictureActivity</string>
   <string name="save_it">画像を保存</string>
   <string name="title_activity_scrolling">ScrollingActivity</string>
-  <string name="action_settings">Settings</string>
+  <string name="action_settings">設定</string>
   <string name="What_is_happening">いまどうしてる？</string>
 
   <string name="new_mention_notification_title_template">新しい返信です: %1$s</string>
@@ -106,8 +87,6 @@
   <string name="title_activity_tweet_detail">TweetDetailActivity</string>
 
   <string name="title_activity_fullscreen">FullscreenActivity</string>
-  <string name="dummy_button">Dummy Button</string>
-  <string name="dummy_content">DUMMY\nCONTENT</string>
 
   <string name="title_activity_video">VideoActivity</string>
   <string name="title_activity_help">HelpActivity</string>

@@ -27,7 +27,7 @@ class TrendFragment():RxFragment(){
    val  mAdapter by lazy { TrendAdapter(context, data) }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
-    val recycler=v.findViewById(R.id.recycler_view)as RecyclerView
+    val recycler=v.findViewById(R.id.base_recycler_view)as RecyclerView
     recycler.apply{
       itemAnimator= OvershootInRightAnimator(1f)
       adapter = AlphaInAnimationAdapter(mAdapter)

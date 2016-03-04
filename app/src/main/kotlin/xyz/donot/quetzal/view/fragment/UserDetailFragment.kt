@@ -25,16 +25,17 @@ import java.text.SimpleDateFormat
 
 
 class UserDetailFragment(val userId:Long) : RxFragment()
-{val twitter by lazy { activity.getTwitterInstance() }
+{
+  val twitter by lazy { activity.getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
-    TwitterObservable(twitter).showUser(userId)
+    TwitterObservable(context,twitter).showUser(userId)
      .bindToLifecycle(this@UserDetailFragment)
     .subscribe (object : TwitterUserSubscriber(activity) {
       override fun onNext(user: User) {
         super.onNext(user)
         if(user.id!=getMyId()) {
-          TwitterObservable(twitter).showFriendShip(userId).subscribe {
+          TwitterObservable(context,twitter).showFriendShip(userId).subscribe {
             follow_button.apply {
               if (it.isSourceFollowingTarget) {
                 text = "フォロー中"

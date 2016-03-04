@@ -38,10 +38,11 @@ class MainActivity : RxAppCompatActivity() {
         startActivity(Intent(this@MainActivity, InitialActivity::class.java))
         finish()
       }
-      else if(haveNetworkConnection()) {
+      else  {
         setContentView(R.layout.activity_main)
-        viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
-        toolbar.apply {
+        if(!haveNetworkConnection()){showSnackbar(coordinatorLayout,R.string.description_a_network_error_occurred)}
+        viewpager.adapter = pagerAdapter
+          toolbar.apply {
           inflateMenu(R.menu.menu_main)
           setOnMenuItemClickListener { startActivity(Intent(this@MainActivity,SearchActivity::class.java))
             true
@@ -52,23 +53,23 @@ class MainActivity : RxAppCompatActivity() {
         design_navigation_view.setNavigationItemSelectedListener({
           if(haveNetworkConnection()) {
             when (it.itemId) {
-              R.id.my_profile -> {
+              R.id.action_my_profile -> {
                 startActivity(Intent(this@MainActivity, EditProfileActivity::class.java))
                 drawer_layout.closeDrawers()
               }
-              R.id.setting -> {
+              R.id.action_setting -> {
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                 drawer_layout.closeDrawers()
               }
-              R.id.account -> {
+              R.id.action_account -> {
                 startActivity(Intent(this@MainActivity, AccountSettingActivity::class.java))
                 drawer_layout.closeDrawers()
               }
-              R.id.list -> {
+              R.id.action_list -> {
                 startActivity(Intent(this@MainActivity, ListsActivity::class.java))
                 drawer_layout.closeDrawers()
               }
-              R.id.whats_new -> {
+              R.id.action_whats_new -> {
                 EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new.html"))
                 drawer_layout.closeDrawers()
               }
@@ -104,26 +105,11 @@ class MainActivity : RxAppCompatActivity() {
             editText_status.setText("")
           }})
         accountChanged=false
+
       }
-      else{
-        setContentView(R.layout.activity_main)
-        showSnackbar(coordinatorLayout,R.string.description_a_network_error_occurred)
-      }
+
       eventbus.register(this@MainActivity)
-
 }
-
-  override fun onStart() {
-    super.onStart()
-    if(accountChanged){
-      pagerAdapter.destroyAllItem()
-      viewpager.adapter=null
-      tabs.removeAllTabs()
-      viewpager.adapter = TimeLinePagerAdapter(supportFragmentManager)
-      tabs.setupWithViewPager(viewpager)
-    }
-  }
-
   override fun onDestroy() {
     super.onDestroy()
     eventbus.unregister(this@MainActivity)
@@ -134,12 +120,12 @@ class MainActivity : RxAppCompatActivity() {
   {
     accountChanged=true
   }
-
   @Subscribe
   fun onHashTagTouched(onHashtagEvent: OnHashtagEvent)
   {
     startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",onHashtagEvent.tag))
   }
+
   @Subscribe
   fun onStreamDisconnected(onExceptionEvent: OnExceptionEvent)
   {

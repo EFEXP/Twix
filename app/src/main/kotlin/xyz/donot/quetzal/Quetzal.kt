@@ -23,5 +23,4 @@ class Quetzal : Application() {
         AppCompatDelegate.MODE_NIGHT_YES)
 
     }
-
 }

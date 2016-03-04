@@ -2,7 +2,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="xyz.donot.twix.view.fragment.PictureFragment">
+  tools:context="xyz.donot.quetzal.view.fragment.PictureFragment">
 <uk.co.senab.photoview.PhotoView
   android:id="@+id/photo_view_image"
   android:layout_width="match_parent"

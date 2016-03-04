@@ -24,7 +24,7 @@ class UserActivity : RxAppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
       if(userName.isNullOrEmpty()){
-        TwitterObservable(twitter).showUser(userId).bindToLifecycle(this@UserActivity)
+        TwitterObservable(applicationContext,twitter).showUser(userId).bindToLifecycle(this@UserActivity)
       .subscribe(object :TwitterUserSubscriber(this@UserActivity){
         override fun onUser(user: User) {
           setUp(user)
@@ -32,7 +32,7 @@ class UserActivity : RxAppCompatActivity() {
       })
       }
       else{
-        TwitterObservable(twitter).showUser(userName).bindToLifecycle(this@UserActivity)
+        TwitterObservable(applicationContext,twitter).showUser(userName).bindToLifecycle(this@UserActivity)
           .subscribe(object :TwitterUserSubscriber(this@UserActivity){
             override fun onUser(user: User) {
               setUp(user)
