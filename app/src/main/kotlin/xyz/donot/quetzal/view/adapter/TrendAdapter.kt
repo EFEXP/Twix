@@ -20,7 +20,6 @@ class TrendAdapter(context: Context, list: MutableList<Trend>) :BasicRecyclerAda
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
     if (list.size > i ) {
       val  item= list[i]
-      //ビューホルダー
       viewHolder. binding.apply {
         setVariable(BR.trend,item)
         cardView.setOnClickListener({
@@ -32,12 +31,8 @@ class TrendAdapter(context: Context, list: MutableList<Trend>) :BasicRecyclerAda
 
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val binding:ItemTrendBinding
-  //  val cardView: CardView
-  //  val trendTxt: TextView
     init {
       binding=DataBindingUtil.bind(itemView)
-     // cardView=itemView.findViewById(R.id.cardView)as CardView
-     // trendTxt=itemView.findViewById(R.id.trend_txt)as TextView
     }
   }
 }

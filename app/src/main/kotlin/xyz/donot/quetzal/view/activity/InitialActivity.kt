@@ -36,7 +36,7 @@ class InitialActivity : AppCompatActivity() {
             Answers.getInstance().logSignUp(SignUpEvent()
               .putMethod("Twitter")
               .putCustomAttribute("UserName",result.data.userName)
-              .putSuccess(true));
+              .putSuccess(true))
            Realm.getDefaultInstance().use {
              realm->
              if(! realm.where(DBAccount::class.java).equalTo("id",result.data.userId).isValid){

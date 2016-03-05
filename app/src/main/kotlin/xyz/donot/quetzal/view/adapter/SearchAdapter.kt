@@ -13,7 +13,7 @@ class SearchAdapter(val txt:String,fm: FragmentManager) : FragmentPagerAdapter(f
       0-> SearchTweet(txt)
       1->object : UsersWatcher(){
         override fun loadMore() {
-          twitterObservable.getUserSearchAsync(txt,paging.page).subscribe(userSubscriber)
+          twitterObservable.getUserSearchAsync(txt,page).subscribe(userSubscriber)
         }
       }
       2->TrendFragment()

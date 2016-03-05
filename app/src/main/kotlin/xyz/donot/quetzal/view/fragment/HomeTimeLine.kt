@@ -4,13 +4,14 @@ import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import twitter4j.Paging
 import xyz.donot.quetzal.event.OnStatusEvent
 import xyz.donot.quetzal.util.bindToLifecycle
 
 class HomeTimeLine(): TimeLine(){
 
   override fun loadMore() {
-    twitterObservable.getHomeTimelineAsync(paging)
+    twitterObservable.getHomeTimelineAsync(Paging(page))
       .bindToLifecycle(this@HomeTimeLine)
       .subscribe({mAdapter.addAll(it)})
   }

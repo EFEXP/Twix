@@ -7,6 +7,7 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import twitter4j.Paging
 import xyz.donot.quetzal.event.OnReplyEvent
 import xyz.donot.quetzal.model.DBNotification
 import xyz.donot.quetzal.util.getStatusDeserialized
@@ -34,7 +35,7 @@ class MentionTimeLine() : TimeLine() {
     t?.forEach { mAdapter.add(it.status?.getStatusDeserialized()!!) }
   }
   override fun loadMore() {
-  twitterObservable.getMentionsTimelineAsync(paging).subscribe({mAdapter.addAll(it)})
+  twitterObservable.getMentionsTimelineAsync(Paging(page)).subscribe({mAdapter.addAll(it)})
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)

@@ -33,7 +33,6 @@ class MyUserAccountAdapter(context: Context, resId: Int,
     }
   inner class  ViewHolder {
     var screenName: TextView?=null
-
   }
 }
 

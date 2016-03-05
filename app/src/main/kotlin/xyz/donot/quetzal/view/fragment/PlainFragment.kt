@@ -11,7 +11,6 @@ import com.trello.rxlifecycle.components.support.RxDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import org.greenrobot.eventbus.EventBus
-import twitter4j.Paging
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.getTwitterInstance
@@ -29,7 +28,7 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
       field++
       return field
     }
-  val paging: Paging= Paging(page)
+
   val eventBus by lazy { EventBus.getDefault() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
@@ -49,7 +48,7 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
     swipeLayout.setOnRefreshListener { reload(swipeLayout) }
     return v}
     fun reload(sl:SwipeRefreshLayout){
-    paging.page=0
+   page=0
     data.clear()
     mAdapter.notifyDataSetChanged()
     loadMore()

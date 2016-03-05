@@ -1,15 +1,14 @@
 package xyz.donot.quetzal.view.adapter
 import android.content.Context
 import android.content.Intent
-import android.support.v7.widget.CardView
+import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.squareup.picasso.Picasso
 import twitter4j.User
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.databinding.ItemUserBinding
 import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.UserActivity
 
@@ -22,7 +21,7 @@ class UsersAdapter( context: Context, list: MutableList<User>) :BasicRecyclerAda
     if (list.size > i ) {
      val  item= list[i]
       //ビューホルダー
-      viewHolder.apply {
+      viewHolder.binding.apply {
         screenName.text=item.screenName
         description.text=item.description
         userName.text=item.name
@@ -32,18 +31,9 @@ class UsersAdapter( context: Context, list: MutableList<User>) :BasicRecyclerAda
     }
   }
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    val icon: ImageView
-    val cardView: CardView
-    val description:TextView
-    val userName:TextView
-    val screenName:TextView
+    val binding:ItemUserBinding
     init {
-      cardView=itemView.findViewById(R.id.cardView)as CardView
-      icon =itemView.findViewById(R.id.icon) as ImageView
-      description=itemView.findViewById(R.id.description)as TextView
-      userName=itemView.findViewById(R.id.user_name)as TextView
-      screenName=itemView.findViewById(R.id.screen_name)as TextView
+    binding=DataBindingUtil.bind(itemView)
     }
   }
 

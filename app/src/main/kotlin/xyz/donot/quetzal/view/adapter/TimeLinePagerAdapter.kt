@@ -4,6 +4,7 @@ package xyz.donot.quetzal.view.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import twitter4j.Paging
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.view.fragment.HomeTimeLine
 import xyz.donot.quetzal.view.fragment.MentionTimeLine
@@ -35,7 +36,7 @@ class TimeLinePagerAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm) {
     val home by  lazy {HomeTimeLine()}
     val user by lazy {object : TimeLine(){
       override fun loadMore() {
-        twitterObservable.getUserTimelineAsync(getMyId(),paging).subscribe {mAdapter.addAll(it)}
+        twitterObservable.getUserTimelineAsync(getMyId(), Paging(page)).subscribe {mAdapter.addAll(it)}
       }
     }}
     val mention by lazy { MentionTimeLine() }

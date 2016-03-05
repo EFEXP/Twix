@@ -46,6 +46,7 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
         viewHolder.binding.textViewIsRT.visibility=View.GONE
         list[i]
       }
+      //mediaType
       val type=if(item.extendedMediaEntities.isNotEmpty()){ media.EX_MEDIA }
       else if(item.mediaEntities.isNotEmpty()){ media.MEDIA }
       else{ media.NONE }
@@ -53,31 +54,44 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
       val mediaDisplayIds=ArrayList<String>()
       val statusMediaIds=ArrayList<String>()
       when(type){
-        media.NONE->{viewHolder.binding.mediaContainerGrid.visibility = View.GONE}
+        media.NONE->
+        {viewHolder.binding.mediaContainerGrid.visibility = View.GONE
+        viewHolder.binding.mediaContainer.visibility = View.GONE
+        }
         media.EX_MEDIA->{statusMediaIds.addAll(item.extendedMediaEntities.map { it.mediaURLHttps })
-          mediaDisplayIds.addAll(item.extendedMediaEntities.map { it.displayURL })
-        }
+          mediaDisplayIds.addAll(item.extendedMediaEntities.map { it.displayURL }) }
         media.MEDIA-> {statusMediaIds.addAll(item.mediaEntities.map { it.mediaURLHttps })
-          mediaDisplayIds.addAll(item.mediaEntities.map { it.displayURL })
-        }
+          mediaDisplayIds.addAll(item.mediaEntities.map { it.displayURL }) }
       }
+
       if(type!= media.NONE){
+        if(statusMediaIds.size!=1){
         val gridAdapter=TweetPictureGridAdapter(context,0)
         gridAdapter.addAll(statusMediaIds)
         viewHolder.binding.mediaContainerGrid.apply {
           adapter=gridAdapter
-          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id ->
-            val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
-            if (videourl!=null) {
-              context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
-            } else
-            { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
-          }
+          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id -> context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
           visibility = View.VISIBLE
+        }
+          viewHolder.binding.mediaContainer.visibility=View.GONE
+        }
+        else{
+          viewHolder.binding.apply {
+            mediaContainerGrid.visibility=View.GONE
+             mediaContainer.visibility=View.VISIBLE
+            Picasso.with(context).load(statusMediaIds[0]).into(mediaContainer)
+            mediaContainer.setOnClickListener {
+              val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
+              if (videourl!=null) {
+                context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
+              } else
+              { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
+            }
+          }
         }
       }
       //ビューホルダー
-      viewHolder. binding.apply {
+      viewHolder.binding.apply {
         if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed)}
         else{like.setImageResource(R.drawable.ic_favorite_grey)}
         if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_redo_pressed)}
