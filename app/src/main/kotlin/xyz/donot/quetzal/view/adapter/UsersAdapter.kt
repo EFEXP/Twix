@@ -1,11 +1,8 @@
 package xyz.donot.quetzal.view.adapter
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,64 +13,24 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.UserActivity
 
-class UsersAdapter(private val mContext: Context, private val userList: MutableList<User>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.UsersAdapter.ViewHolder>() {
-  private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
+class UsersAdapter( context: Context, list: MutableList<User>) :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersAdapter.ViewHolder,User>(context,list) {
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     // 表示するレイアウトを設定
     return ViewHolder(mInflater.inflate(R.layout.item_user, viewGroup, false))
   }
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-    if (userList.size > i ) {
-     val  item=userList[i]
+    if (list.size > i ) {
+     val  item= list[i]
       //ビューホルダー
       viewHolder.apply {
         screenName.text=item.screenName
         description.text=item.description
         userName.text=item.name
-        Picasso.with(mContext).load(item.biggerProfileImageURLHttps).transform(RoundCorner()).into(icon)
-        cardView.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.id))}
-        }
-
-
-    }
-  }
-
-  override fun getItemCount(): Int {
-    return userList.size
-  }
-  fun add(user: User)
-  {
-    Handler(Looper.getMainLooper()).post {  userList.add(user)
-      this.notifyItemInserted(userList.size)}
-  }
-  fun reload(status : User)
-  {
-    Handler(Looper.getMainLooper()).post {
-      userList.
-        filter{ it.id==status.id }
-        .mapNotNull {  userList.indexOf(it) }
-        .forEach {
-          userList[it] = status
-          this.notifyItemChanged(it)
+        Picasso.with(context).load(item.biggerProfileImageURLHttps).transform(RoundCorner()).into(icon)
+        cardView.setOnClickListener{ context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.id))}
         }
     }
   }
-  fun insert(user: User)
-  {
-    Handler(Looper.getMainLooper()).post { userList[0] = user
-      this.notifyItemInserted(0)}
-  }
-
-  fun clear(){
-    Handler(Looper.getMainLooper()).post {  userList.clear()
-      this.notifyDataSetChanged()}
-  }
-  fun remove(user: User){
-    Handler(Looper.getMainLooper()).post {   userList.remove(user)
-      this.notifyDataSetChanged()}
-  }
-
-
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val icon: ImageView

@@ -3,12 +3,9 @@ package xyz.donot.quetzal.view.adapter
 import android.app.AlertDialog
 import android.content.*
 import android.databinding.DataBindingUtil
-import android.os.Handler
-import android.os.Looper
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.text.Html
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -29,11 +26,9 @@ import xyz.donot.quetzal.view.activity.*
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 import java.util.*
 
-class StatusAdapter(private val mContext: Context, private val statusList: MutableList<Status>) : RecyclerView.Adapter<xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder>() {
-  private val mInflater: LayoutInflater by lazy { LayoutInflater.from(mContext) }
-  private val twitter: Twitter by  lazy { mContext.getTwitterInstance() }
+class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder,Status>(context,list) {
+  private val twitter: Twitter by  lazy { context.getTwitterInstance() }
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-    // 表示するレイアウトを設定
     return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
   }
   enum class media{
@@ -42,14 +37,14 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
     NONE
   }
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-    if (statusList.size > i ) {
-      val item= if (statusList[i].isRetweet){
+    if (list.size > i ) {
+      val item= if (list[i].isRetweet){
         viewHolder.binding.textViewIsRT.visibility=View.VISIBLE
-        viewHolder.binding.textViewIsRT.text="${statusList[i].user.name}がリツイート"
-        statusList[i].retweetedStatus
+        viewHolder.binding.textViewIsRT.text="${list[i].user.name}がリツイート"
+        list[i].retweetedStatus
       }else{
         viewHolder.binding.textViewIsRT.visibility=View.GONE
-        statusList[i]
+        list[i]
       }
       val type=if(item.extendedMediaEntities.isNotEmpty()){ media.EX_MEDIA }
       else if(item.mediaEntities.isNotEmpty()){ media.MEDIA }
@@ -67,7 +62,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
         }
       }
       if(type!= media.NONE){
-        val gridAdapter=TweetPictureGridAdapter(mContext,0)
+        val gridAdapter=TweetPictureGridAdapter(context,0)
         gridAdapter.addAll(statusMediaIds)
         viewHolder.binding.mediaContainerGrid.apply {
           adapter=gridAdapter
@@ -85,40 +80,39 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
       viewHolder. binding.apply {
         if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed)}
         else{like.setImageResource(R.drawable.ic_favorite_grey)}
-        if(statusList[i].isRetweeted){retweet.setImageResource(R.drawable.ic_redo_pressed)}
+        if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_redo_pressed)}
         else{ retweet.setImageResource(R.drawable.ic_redo_grey)}
         via.text=Html.fromHtml(item.source)
           userNameText.text = item.user.name
        screenName.text = "@${item.user.screenName}"
         textViewDate.text = getRelativeTime(item.createdAt)
         count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
-        Picasso.with(mContext).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
-
+        Picasso.with(context).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
         //cardview
         cardView.setOnClickListener({
-          val tweetItem=if(getMyId() ==statusList[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
-          AlertDialog.Builder(mContext)
+          val tweetItem=if(getMyId() ==list[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
+          AlertDialog.Builder(context)
             .setItems(tweetItem, { dialogInterface, int ->
-              val selectedItem=mContext.resources.getStringArray(tweetItem)[int]
+              val selectedItem=context.resources.getStringArray(tweetItem)[int]
               when (selectedItem) {
                 "削除" -> {
-                  TwitterUpdateObservable(twitter).deleteStatusAsync(statusList[i].id).subscribe (object : TwitterSubscriber(mContext) {
+                  TwitterUpdateObservable(twitter).deleteStatusAsync(list[i].id).subscribe (object : TwitterSubscriber(context) {
                     override fun onStatus(status: Status) {
                       super.onStatus(status)
-                      Toast.makeText(mContext, "削除しました",  Toast.LENGTH_LONG).show()
+                      Toast.makeText(context, "削除しました",  Toast.LENGTH_LONG).show()
                     }
                   })
                 }
                 "会話" -> {
-                  mContext.startActivity(Intent(mContext, TweetDetailActivity::class.java).putExtra("status_id", statusList[i].id))
+                  context.startActivity(Intent(context, TweetDetailActivity::class.java).putExtra("status_id", list[i].id))
                 }
                 "コピー" -> {
-                  val t= mContext.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
+                  val t= context.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
                   t.primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
                 }
 
                 "RTした人"-> {
-                  RetweeterDialog(item.id).show((mContext as AppCompatActivity).supportFragmentManager ,"")
+                  RetweeterDialog(item.id).show((context as AppCompatActivity).supportFragmentManager ,"")
 
                 }
                 "いいねした人"-> {EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))}
@@ -129,19 +123,19 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
             .show()
           EventBus.getDefault().post(OnCardViewTouchEvent(item))
         })
-        icon.setOnClickListener{mContext.startActivity(Intent(mContext, UserActivity::class.java).putExtra("user_id",item.user.id))}
+        icon.setOnClickListener{context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.user.id))}
         tweetText.text=item.text
-        LinkBuilder.on(tweetText).addLinks(mContext.getLinkList()).build()
+        LinkBuilder.on(tweetText).addLinks(context.getLinkList()).build()
         reply.setOnClickListener{
-          mContext.startActivity(Intent(mContext, TweetEditActivity::class.java).putExtra("status_id",item.id).putExtra("user_screen_name",item.user.screenName))
+          context.startActivity(Intent(context, TweetEditActivity::class.java).putExtra("status_id",item.id).putExtra("user_screen_name",item.user.screenName))
         }
         retweet.setOnClickListener{
           if(!item.isRetweeted){
-            TwitterUpdateObservable(twitter).createRetweetAsync(item.id).subscribe(object : TwitterSubscriber(mContext) {
+            TwitterUpdateObservable(twitter).createRetweetAsync(item.id).subscribe(object : TwitterSubscriber(context) {
               override fun onStatus(status: Status) {
                 super.onStatus(status)
                 reload(status)
-                Toast.makeText(mContext, "RTしました",  Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "RTしました",  Toast.LENGTH_LONG).show()
               }
             })
           }
@@ -149,7 +143,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
         like.setOnClickListener{
          if(!item.isFavorited){
           TwitterUpdateObservable(twitter).createLikeAsync(item.id).subscribe(
-           object : TwitterSubscriber(mContext) {
+           object : TwitterSubscriber(context) {
              override fun onStatus(status: Status) {
                super.onStatus(status)
                reload(status)
@@ -157,7 +151,7 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
            }) }
           else{
            TwitterUpdateObservable(twitter).deleteLikeAsync(item.id).subscribe(
-             object : TwitterSubscriber(mContext) {
+             object : TwitterSubscriber(context) {
                override fun onStatus(status: Status) {
                  super.onStatus(status)
                  reload(status)
@@ -168,52 +162,6 @@ class StatusAdapter(private val mContext: Context, private val statusList: Mutab
 
     }
   }
-
-  override fun getItemCount(): Int {
-    return statusList.size
-  }
-  fun addAll(statuses :Iterable<Status>)
-  {
-    Handler(Looper.getMainLooper()).post()
-    {
-      statuses.forEach { statusList.add(it)
-        this.notifyItemInserted(statusList.size)
-      }
-    }
-  }
-
-  fun add(status :Status)
-  {
-    Handler(Looper.getMainLooper()).post {  statusList.add(status)
-    this.notifyItemInserted(statusList.size)}
-  }
-  fun reload(status :Status)
-  {
-    Handler(Looper.getMainLooper()).post {
-      statusList.
-        filter{ it.id==status.id }
-        .mapNotNull {  statusList.indexOf(it) }
-     .forEach {
-        statusList[it] = status
-        this.notifyItemChanged(it)
-      }
-     }
-  }
-  fun insert(status: Status)
-  {
-    Handler(Looper.getMainLooper()).post { statusList.add(0,status)
-    this.notifyItemInserted(0)}
-  }
-  fun clear(){
-    Handler(Looper.getMainLooper()).post {  statusList.clear()
-    this.notifyDataSetChanged()}
-  }
-  fun remove(status: Status){
-    Handler(Looper.getMainLooper()).post {statusList.remove(status)
-    this.notifyDataSetChanged()}
-  }
-
-
   inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
    val binding :ItemTweetCardBinding
     init {

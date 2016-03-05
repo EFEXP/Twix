@@ -24,17 +24,12 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
   abstract val data:MutableList<L>
   abstract val  mAdapter : T
   abstract fun loadMore()
-
-
-
-  val paging: Paging= Paging(1)
-  get() {
-    field.page++
-    return Paging(field.page-1)
-  }
-
-
-
+  var page : Int = 0
+    get() {
+      field++
+      return field
+    }
+  val paging: Paging= Paging(page)
   val eventBus by lazy { EventBus.getDefault() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
@@ -54,7 +49,7 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
     swipeLayout.setOnRefreshListener { reload(swipeLayout) }
     return v}
     fun reload(sl:SwipeRefreshLayout){
-    paging.page=1
+    paging.page=0
     data.clear()
     mAdapter.notifyDataSetChanged()
     loadMore()

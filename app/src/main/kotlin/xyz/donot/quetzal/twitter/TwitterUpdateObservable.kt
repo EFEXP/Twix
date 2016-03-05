@@ -7,7 +7,6 @@ import xyz.donot.quetzal.util.basicNetworkTask
 import java.io.File
 
 class TwitterUpdateObservable(val twitter: Twitter){
-
  fun updateStatusAsync(string: String): Observable<Status> {
   return  observable<Status> {
      try{it.onNext(twitter.updateStatus(string))

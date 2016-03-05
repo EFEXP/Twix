@@ -6,8 +6,6 @@ import twitter4j.Twitter
 import xyz.donot.quetzal.util.basicNetworkTask
 
 class TwitterTrendObservable(val twitter: Twitter){
-
-
   fun  getTrend():Observable<Array<Trend>>{
     return  Observable.create<Array<Trend>> {
       try{
