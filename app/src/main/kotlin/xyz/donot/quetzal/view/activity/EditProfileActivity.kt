@@ -76,7 +76,7 @@ val twitter by lazy { getTwitterInstance()}
         })
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {
-          TwitterUpdateObservable(twitter).updateProfileAsync(name = user_name.text.toString(),location = geo.text.toString(),description = description.text.toString(),url = web.text.toString())
+          TwitterUpdateObservable(this@EditProfileActivity,twitter).updateProfileAsync(name = user_name.text.toString(),location = geo.text.toString(),description = description.text.toString(),url = web.text.toString())
           .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
             override fun onCompleted() {
               super.onCompleted()
@@ -84,10 +84,10 @@ val twitter by lazy { getTwitterInstance()}
             }
           })
           if (uri2 != null) {
-            TwitterUpdateObservable(twitter).profileImageUpdateAsync(File(getPath(uri2!!)))
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(uri2!!)))
           }
           if (uri != null) {
-            TwitterUpdateObservable(twitter).profileImageUpdateAsync(File(getPath(uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
               override fun onCompleted() {
                 super.onCompleted()
                 Toast.makeText(this@EditProfileActivity,"画像更新しました",Toast.LENGTH_LONG).show()

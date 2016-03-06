@@ -17,7 +17,7 @@ import xyz.donot.quetzal.view.adapter.TrendAdapter
 import java.util.*
 
 class TrendFragment():RxFragment(){
-   val twitter by lazy { context.getTwitterInstance() }
+   val twitter by lazy {getTwitterInstance() }
 
    val data by lazy { LinkedList<Trend>() }
    val  mAdapter by lazy { TrendAdapter(context, data) }

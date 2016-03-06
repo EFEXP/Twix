@@ -20,4 +20,5 @@
     android:id="@+id/action_whats_new"
     android:icon="@drawable/ic_info_outline"
     android:title="@string/whats_new"/>
+
 </menu>

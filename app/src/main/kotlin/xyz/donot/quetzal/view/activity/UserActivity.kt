@@ -8,14 +8,13 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_user.*
 import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.TwitterUserSubscriber
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.adapter.AnyUserTimeLineAdapter
 
 class UserActivity : RxAppCompatActivity() {
-  val userId by lazy { intent.getLongExtra("user_id",0) }
+  val userId by lazy { intent.getLongExtra("user_id",0L) }
   val userName by lazy { intent.getStringExtra("user_name") }
   val twitter by lazy {getTwitterInstance()}
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,26 +23,15 @@ class UserActivity : RxAppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
       if(userName.isNullOrEmpty()){
-        TwitterObservable(applicationContext,twitter).showUser(userId).bindToLifecycle(this@UserActivity)
-      .subscribe(object :TwitterUserSubscriber(this@UserActivity){
-        override fun onUser(user: User) {
-          setUp(user)
-        }
-      })
+        TwitterObservable(applicationContext,twitter)
+          .showUser(userId)
+          .bindToLifecycle(this@UserActivity)
+      .subscribe({ setUp(it)})
       }
       else{
         TwitterObservable(applicationContext,twitter).showUser(userName).bindToLifecycle(this@UserActivity)
-          .subscribe(object :TwitterUserSubscriber(this@UserActivity){
-            override fun onUser(user: User) {
-              setUp(user)
-            }
-          })
+          .subscribe{ setUp(it)}
       }
-
-
-
-
-
     }
 
   fun setUp(user: User){

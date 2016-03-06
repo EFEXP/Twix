@@ -4,7 +4,8 @@ import rx.Observable
 import rx.lang.kotlin.observable
 import twitter4j.TwitterException
 import xyz.donot.quetzal.util.basicNetworkTask
-import xyz.donot.quetzal.util.logw
+import xyz.donot.quetzal.util.extrautils.w
+
 import xyz.donot.quetzal.view.fragment.UsersWatcher
 
 class RetweeterDialog(val statusId:Long) : UsersWatcher (){
@@ -24,7 +25,7 @@ class RetweeterDialog(val statusId:Long) : UsersWatcher (){
         }
         subscriber.onNext(ids.iDs)
       } catch (e: TwitterException) {
-        logw("error", e.errorMessage)
+       w(e.errorMessage)
         subscriber.onError(e)
       }
       subscriber.onCompleted()

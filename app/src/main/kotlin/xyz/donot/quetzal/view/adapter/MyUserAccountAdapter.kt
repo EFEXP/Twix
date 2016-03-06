@@ -8,8 +8,10 @@ import android.widget.ListAdapter
 import android.widget.TextView
 import io.realm.RealmBaseAdapter
 import io.realm.RealmResults
+import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.DBAccount
+import xyz.donot.quetzal.util.getDeserialized
 
 
 class MyUserAccountAdapter(context: Context, resId: Int,
@@ -27,7 +29,7 @@ class MyUserAccountAdapter(context: Context, resId: Int,
             viewHolder = convertView.tag as ViewHolder
         }
         val item = realmResults[position]
-      viewHolder.screenName?.text = item.screenName
+      viewHolder.screenName?.text = item.user?.getDeserialized<User>()?.screenName
         Log.d("Realm", item.toString())
         return convertView!!
     }

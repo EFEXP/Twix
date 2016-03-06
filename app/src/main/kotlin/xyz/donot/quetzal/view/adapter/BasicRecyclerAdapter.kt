@@ -41,7 +41,7 @@ abstract class BasicRecyclerAdapter
   }
   fun insert(item:ListItem)
   {
-    Handler(Looper.getMainLooper()).post {list.add(0, item)
+    Handler(Looper.getMainLooper()).post { list.add(0, item)
       this.notifyItemInserted(0)}
   }
   fun clear(){

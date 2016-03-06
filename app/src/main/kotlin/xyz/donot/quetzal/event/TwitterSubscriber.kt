@@ -6,7 +6,8 @@ import rx.Subscriber
 import twitter4j.PagableResponseList
 import twitter4j.Status
 import twitter4j.User
-import xyz.donot.quetzal.util.loge
+
+import xyz.donot.quetzal.util.extrautils.e
 
 
 open class TwitterSubscriber(val context: Context) : Subscriber<Status>() {
@@ -14,9 +15,9 @@ open class TwitterSubscriber(val context: Context) : Subscriber<Status>() {
       onLoaded()
     }
 
-  override fun onError(e: Throwable) {
+  override fun onError(ex: Throwable) {
       Toast.makeText(context,"エラーが発生しました",Toast.LENGTH_LONG).show()
-      loge(e.cause.toString(),e.message.toString())
+    e(ex.message.toString())
     }
 
   override fun onNext(status: Status) {
@@ -31,9 +32,9 @@ open class TwitterUserSubscriber(val context: Context) : Subscriber<User>() {
     onLoaded()
   }
 
-  override fun onError(e: Throwable) {
+  override fun onError(ex: Throwable) {
     Toast.makeText(context,"エラーが発生しました",Toast.LENGTH_LONG).show()
-    loge(e.cause.toString(),e.message.toString())
+   e(ex.message.toString())
   }
 
   override fun onNext(user: User) {
@@ -48,8 +49,8 @@ open class TwitterUsersSubscriber (val context: Context): Subscriber<PagableResp
     onLoaded()
   }
 
-  override fun onError(e: Throwable) {
-    loge(e.cause.toString(),e.message.toString())
+  override fun onError(ex: Throwable) {
+   e(ex.message.toString())
   }
 
   override fun onNext(user: PagableResponseList<User>) {

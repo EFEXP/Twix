@@ -13,6 +13,7 @@ import twitter4j.TwitterException
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.OnCustomtabEvent
 import xyz.donot.quetzal.event.OnHashtagEvent
+import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.view.activity.UserActivity
 
 
@@ -89,7 +90,7 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        logd("MENTION_PATTERN", "MENTION_PATTERN")
+        d("MENTION_PATTERN", "MENTION_PATTERN")
         startActivity(Intent(this, UserActivity::class.java).putExtra("user_name", it.replace("@", "")))
       }
     ,
@@ -105,7 +106,7 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        logd("HASHTAG_PATTERN", "HASHTAG_PATTERN")
+        d("HASHTAG_PATTERN", "HASHTAG_PATTERN")
         EventBus.getDefault().post(OnHashtagEvent(it))
       },
     Link(Regex.EMAIL_ADDRESS_PATTERN)

@@ -9,14 +9,15 @@ import xyz.donot.quetzal.view.adapter.FFAdapter
 
 
 class UsersActivity() : RxAppCompatActivity() {
-    val userId by lazy { intent.getLongExtra("user_id",0) }
+    val userId by lazy { intent.getLongExtra("user_id",0L) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users)
       toolbar.setNavigationOnClickListener { finish() }
-      viewpager.adapter= FFAdapter(userId, supportFragmentManager)
-      users_tabs.setupWithViewPager(viewpager)
-
+      if(userId!=0L) {
+        viewpager.adapter = FFAdapter(userId, supportFragmentManager)
+        users_tabs.setupWithViewPager(viewpager)
+      }
     }
 
 

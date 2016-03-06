@@ -4,13 +4,12 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import io.realm.Realm
 import org.greenrobot.eventbus.EventBus
 import twitter4j.*
 import xyz.donot.quetzal.event.OnDeleteEvent
-import xyz.donot.quetzal.model.DBStatus
-import xyz.donot.quetzal.util.getSerialized
-import xyz.donot.quetzal.util.logd
+import xyz.donot.quetzal.event.OnFavoritedEvent
+import xyz.donot.quetzal.util.extrautils.d
+
 import xyz.donot.quetzal.util.save
 
 
@@ -45,7 +44,7 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
 
   }
     else{
-      logd("StreamManager","You Have Already Connected to the Stream ")
+      d("StreamManager", "You Have Already Connected to the Stream ")
     }
   }
 
@@ -53,7 +52,7 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
   inner class MyNotificationAdapter:UserStreamAdapter(){
     override fun onStatus(status: Status) {
       status.save(context)
-      Realm.getDefaultInstance().executeTransaction { it.createObject(DBStatus::class.java).status=status.getSerialized() }
+     // Realm.getDefaultInstance().executeTransaction { it.createObject(DBStatus::class.java).status=status.getSerialized() }
     }
 
     override fun onException(ex: Exception) {
@@ -68,6 +67,7 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
 
     override fun onFavorite(source: User, target: User, favoritedStatus: Status) {
       super.onFavorite(source, target, favoritedStatus)
+      eventBus.post(OnFavoritedEvent(source,favoritedStatus))
     }
   }
   }

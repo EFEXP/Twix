@@ -19,7 +19,7 @@ import xyz.donot.quetzal.view.listener.OnLoadMoreListener
 import java.util.*
 
 class UsersListFragment(val userId:Long) : RxFragment() {
-  val twitter by lazy { activity.getTwitterInstance() }
+  val twitter by lazy {getTwitterInstance() }
   val data by lazy { LinkedList<UserList>() }
   val mAdapter by lazy { UsersListAdapter(context,data) }
   internal var cursor = -1L

@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat
 
 class UserDetailFragment(val userId:Long) : RxFragment()
 {
-  val twitter by lazy { activity.getTwitterInstance() }
+  val twitter by lazy { getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
     TwitterObservable(context,twitter).showUser(userId)
@@ -40,14 +40,14 @@ class UserDetailFragment(val userId:Long) : RxFragment()
               if (it.isSourceFollowingTarget) {
                 text = "フォロー中"
                 setOnClickListener {
-                  TwitterUpdateObservable(twitter).destroyFriendShipAsync(userId).subscribe {
+                  TwitterUpdateObservable(context,twitter).destroyFriendShipAsync(userId).subscribe {
                     text = "フォロー"
                     setBackgroundColor(R.color.cardview_light_background)
                   }
                 }
               } else {
                 setOnClickListener {
-                  TwitterUpdateObservable(twitter).createFriendShipAsync(userId)
+                  TwitterUpdateObservable(context,twitter).createFriendShipAsync(userId)
                     .subscribe {
                       text = "フォロー中"
                       setBackgroundColor(R.color.colorPrimary)

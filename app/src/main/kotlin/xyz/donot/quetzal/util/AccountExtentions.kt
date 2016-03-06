@@ -5,30 +5,18 @@ import android.preference.PreferenceManager
 import io.realm.Realm
 import org.greenrobot.eventbus.EventBus
 import twitter4j.Status
-import twitter4j.TwitterFactory
-import twitter4j.auth.AccessToken
-import xyz.donot.quetzal.R
+import twitter4j.Twitter
 import xyz.donot.quetzal.event.OnReplyEvent
 import xyz.donot.quetzal.event.OnStatusEvent
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.model.DBMuteUser
 import xyz.donot.quetzal.notification.NewMentionNotification
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
+import xyz.donot.quetzal.util.extrautils.i
+import java.io.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-fun Context.getTwitterInstance(): twitter4j.Twitter {
-  val consumerKey =this.getString(R.string.twitter_consumer_key)
-  val consumerSecret = this.getString(R.string.twitter_consumer_secret)
-  val twitter =  TwitterFactory().instance
-  twitter.setOAuthConsumer(consumerKey, consumerSecret)
-  twitter.oAuthAccessToken=loadAccessToken()
-  return twitter
-}
 
 fun Context.getFabricTwitterInstance(): com.twitter.sdk.android.Twitter {
   return com.twitter.sdk.android.Twitter.getInstance()
@@ -57,25 +45,25 @@ fun Status.save(context:Context){
         NewMentionNotification.notify(context,status.text,0)
       }
       }
-
       EventBus.getDefault().post(OnStatusEvent(status))
    }//execute
   }
 
 
 
-fun Status.getSerialized():ByteArray{
+fun<T:Serializable> T.getSerialized():ByteArray{
   ByteArrayOutputStream().use {
   val out = ObjectOutputStream(it);
   out.writeObject(this);
   val bytes = it.toByteArray();
   out.close();
-  it.close();
   return bytes;
   }
 }
-fun ByteArray.getStatusDeserialized():Status{
-  return ObjectInputStream(ByteArrayInputStream(this)).readObject()as Status
+
+@Suppress
+fun<T> ByteArray.getDeserialized():T{
+  return ObjectInputStream(ByteArrayInputStream(this)).readObject()as T
 }
 
 fun getMyId(): Long{
@@ -99,18 +87,21 @@ fun getRelativeTime(create: Date): String {
     "%d日前".format(TimeUnit.MILLISECONDS.toDays(Difference))
   }
 }
-fun loadAccessToken(): AccessToken {
-  Realm.getDefaultInstance().use {
-  val ac= it.where(DBAccount::class.java).equalTo("isMain",true).findFirst()
-  return AccessToken(ac.key, ac.secret)
-  }
-}
 
+
+fun getTwitterInstance(): twitter4j.Twitter {
+  Realm.getDefaultInstance().use {
+    val ac= it.where(DBAccount::class.java).equalTo("isMain",true).findFirst()
+    return ac.twitter?.getDeserialized<Twitter>()?:throw IllegalStateException()
+  }
+
+}
 
 fun haveToken(): Boolean {
   Realm.getDefaultInstance().use {
-   logi( "AddedAccounts","You have ${it.where(DBAccount::class.java).count()} accounts!")
+   i( "AddedAccounts","You have ${it.where(DBAccount::class.java).count()} accounts!")
  return  it.where(DBAccount::class.java).count()>0
  }
   }
+
 

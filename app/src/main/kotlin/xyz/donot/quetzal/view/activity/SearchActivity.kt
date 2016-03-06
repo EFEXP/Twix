@@ -25,6 +25,7 @@ class SearchActivity : AppCompatActivity() {
       if (query_txt != null) {
         setUpViews(query_txt)
       }
+
       searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
         override fun onQueryTextChange(p0: String): Boolean {
           return true

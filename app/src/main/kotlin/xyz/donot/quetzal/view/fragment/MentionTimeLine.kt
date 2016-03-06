@@ -10,7 +10,7 @@ import org.greenrobot.eventbus.ThreadMode
 import twitter4j.Paging
 import xyz.donot.quetzal.event.OnReplyEvent
 import xyz.donot.quetzal.model.DBNotification
-import xyz.donot.quetzal.util.getStatusDeserialized
+import xyz.donot.quetzal.util.getDeserialized
 
 
 class MentionTimeLine() : TimeLine() {
@@ -32,7 +32,7 @@ class MentionTimeLine() : TimeLine() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val t=  Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()
-    t?.forEach { mAdapter.add(it.status?.getStatusDeserialized()!!) }
+    t?.forEach { mAdapter.add(it.status?.getDeserialized()!!) }
   }
   override fun loadMore() {
   twitterObservable.getMentionsTimelineAsync(Paging(page)).subscribe({mAdapter.addAll(it)})

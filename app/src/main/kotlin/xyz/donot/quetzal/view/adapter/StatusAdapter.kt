@@ -1,15 +1,16 @@
 package xyz.donot.quetzal.view.adapter
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.databinding.DataBindingUtil
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import com.klinker.android.link_builder.LinkBuilder
 import com.squareup.picasso.Picasso
 import org.greenrobot.eventbus.EventBus
@@ -22,12 +23,14 @@ import xyz.donot.quetzal.event.OnCustomtabEvent
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
+import xyz.donot.quetzal.util.extrautils.longToast
+import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.view.activity.*
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 import java.util.*
 
-class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder,Status>(context,list) {
-  private val twitter: Twitter by  lazy { context.getTwitterInstance() }
+class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context,list) {
+  private val twitter: Twitter by  lazy { getTwitterInstance() }
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
   }
@@ -104,30 +107,40 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
         Picasso.with(context).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
         //cardview
         cardView.setOnClickListener({
+         if( !(context as Activity).isFinishing){
           val tweetItem=if(getMyId() ==list[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
           AlertDialog.Builder(context)
             .setItems(tweetItem, { dialogInterface, int ->
               val selectedItem=context.resources.getStringArray(tweetItem)[int]
               when (selectedItem) {
                 "削除" -> {
-                  TwitterUpdateObservable(twitter).deleteStatusAsync(list[i].id).subscribe (object : TwitterSubscriber(context) {
+                  TwitterUpdateObservable(context,twitter).deleteStatusAsync(list[i].id).subscribe (object : TwitterSubscriber(context) {
                     override fun onStatus(status: Status) {
                       super.onStatus(status)
-                      Toast.makeText(context, "削除しました",  Toast.LENGTH_LONG).show()
+                    context.longToast("削除しました")
                     }
                   })
                 }
                 "会話" -> {
-                  context.startActivity(Intent(context, TweetDetailActivity::class.java).putExtra("status_id", list[i].id))
+
+                  context.start<TweetDetailActivity>(Bundle().apply { putLong("status_id", list[i].id) })
+
                 }
                 "コピー" -> {
-                  val t= context.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager
-                  t.primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
+                (context.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager)
+                  .primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
                 }
 
                 "RTした人"-> {
                   RetweeterDialog(item.id).show((context as AppCompatActivity).supportFragmentManager ,"")
 
+                }
+                "共有"-> {
+                  context. startActivity( Intent().apply {
+                    action = Intent.ACTION_SEND
+                    setType("text/plain")
+                    putExtra(Intent.EXTRA_TEXT,"@${item.user.screenName}さんのツイート https://twitter.com/${item.user.screenName}/status/${item.id}をチェック")
+                  })
                 }
                 "いいねした人"-> {EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))}
               }
@@ -136,27 +149,32 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
             })
             .show()
           EventBus.getDefault().post(OnCardViewTouchEvent(item))
-        })
+        }})
         icon.setOnClickListener{context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.user.id))}
         tweetText.text=item.text
         LinkBuilder.on(tweetText).addLinks(context.getLinkList()).build()
         reply.setOnClickListener{
-          context.startActivity(Intent(context, TweetEditActivity::class.java).putExtra("status_id",item.id).putExtra("user_screen_name",item.user.screenName))
+       val bundle=   Bundle().apply {
+            putString("status_txt",item.text)
+            putLong("status_id",item.id)
+            putString("user_screen_name",item.user.screenName)
+          }
+          (context as Activity).start<TweetEditActivity>(bundle)
         }
         retweet.setOnClickListener{
           if(!item.isRetweeted){
-            TwitterUpdateObservable(twitter).createRetweetAsync(item.id).subscribe(object : TwitterSubscriber(context) {
+            TwitterUpdateObservable(context,twitter).createRetweetAsync(item.id).subscribe(object : TwitterSubscriber(context) {
               override fun onStatus(status: Status) {
                 super.onStatus(status)
                 reload(status)
-                Toast.makeText(context, "RTしました",  Toast.LENGTH_LONG).show()
+                context.longToast("RTしました")
               }
             })
           }
         }
         like.setOnClickListener{
          if(!item.isFavorited){
-          TwitterUpdateObservable(twitter).createLikeAsync(item.id).subscribe(
+          TwitterUpdateObservable(context,twitter).createLikeAsync(item.id).subscribe(
            object : TwitterSubscriber(context) {
              override fun onStatus(status: Status) {
                super.onStatus(status)
@@ -164,7 +182,7 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
              }
            }) }
           else{
-           TwitterUpdateObservable(twitter).deleteLikeAsync(item.id).subscribe(
+           TwitterUpdateObservable(context,twitter).deleteLikeAsync(item.id).subscribe(
              object : TwitterSubscriber(context) {
                override fun onStatus(status: Status) {
                  super.onStatus(status)

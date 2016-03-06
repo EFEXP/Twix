@@ -19,7 +19,7 @@ import xyz.donot.quetzal.view.listener.OnLoadMoreListener
 abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHolder>:RxDialogFragment()
 {
   val twitterObservable : TwitterObservable by lazy { TwitterObservable(context,twitter) }
-  val twitter by lazy {context.getTwitterInstance()}
+  val twitter by lazy {getTwitterInstance()}
   abstract val data:MutableList<L>
   abstract val  mAdapter : T
   abstract fun loadMore()

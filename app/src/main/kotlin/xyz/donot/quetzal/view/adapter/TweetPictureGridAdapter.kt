@@ -12,10 +12,7 @@ import xyz.donot.quetzal.R
 
 
 class TweetPictureGridAdapter(context: Context, resource: Int) : ArrayAdapter<String>(context, resource) {
- val inflater: LayoutInflater by lazy { getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater }
-
-
-
+ val inflater: LayoutInflater by lazy {context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater }
   override fun getView(position: Int, convertView_: View?, parent: ViewGroup): View {
     var convertView = convertView_
     val view: ViewHolder

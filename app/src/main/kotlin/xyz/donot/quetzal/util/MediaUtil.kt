@@ -5,7 +5,7 @@ import twitter4j.ExtendedMediaEntity
 import twitter4j.MediaEntity
 import java.util.*
 
-
+@Suppress
 class MediaUtil {
     fun getVideoURL(mediaEntities: Array<MediaEntity>, extendedMediaEntities: Array<ExtendedMediaEntity>): String? {
         if (mediaEntities.size > 0) {

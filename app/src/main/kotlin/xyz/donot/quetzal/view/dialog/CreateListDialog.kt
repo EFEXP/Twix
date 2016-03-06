@@ -15,7 +15,7 @@ import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.getTwitterInstance
 
 class CreateListDialog : RxDialogFragment() {
-  val twitter by lazy { activity.getTwitterInstance() }
+  val twitter by lazy { getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_create_list, container, false)
@@ -26,7 +26,7 @@ class CreateListDialog : RxDialogFragment() {
     val close =v.findViewById(R.id.close_buton)as Button
     button.setOnClickListener{
         if(!name.editableText.isNullOrBlank()&&!name.editableText.isNullOrEmpty()){
-          TwitterUpdateObservable(twitter).createList(name.text.toString(),isPublic.isChecked,description.editableText.toString())
+          TwitterUpdateObservable(context,twitter).createList(name.text.toString(),isPublic.isChecked,description.editableText.toString())
             .bindToLifecycle(this)
             .subscribe ({
             Toast.makeText(activity,"作成しました",Toast.LENGTH_LONG).show()

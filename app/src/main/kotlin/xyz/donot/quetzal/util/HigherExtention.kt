@@ -4,21 +4,29 @@ import android.content.Context
 import rx.Observable
 import rx.lang.kotlin.observable
 import twitter4j.TwitterException
+import xyz.donot.quetzal.util.extrautils.e
 
 
 fun <T> safeTry(context: Context,body: () -> T):Observable<T> {
-  return observable<T> { subscriber ->
+  val observable= observable<T> { subscriber ->
     try {
       val toNext=body()
       subscriber.onNext(toNext)
       subscriber.onCompleted()
     } catch(ex: TwitterException) {
-      loge(ex.cause.toString(),ex.stackTrace.toString())
-    //  subscriber.onError(ex)
-     context.twitterEx(ex)
+      e(ex.cause.toString(), ex.stackTrace.toString())
+  //    subscriber.onError(ex)
+      ex.printStackTrace()
+      context.twitterEx(ex)
     } catch(ex: Exception) {
-      loge(ex.cause.toString(),ex.stackTrace.toString())
-      subscriber.onError(ex)
+      e(ex.cause.toString(), ex.stackTrace.toString())
+      //subscriber.onError(ex)
+      ex.printStackTrace()
     }
-  }  .basicNetworkTask() }
+  }
+    .basicNetworkTask()
+
+  return observable
+
+}
 
