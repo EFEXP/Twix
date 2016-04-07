@@ -99,4 +99,6 @@
   <string name="edit_tweet_activity">ツイート</string>
   <string name="title_activity_see_my_list">SeeMyListActivity</string>
   <string name="whats_new">お知らせ</string>
+  <string name="pref_header_data">データ管理</string>
+  <string name="title_activity_data_manage">DataManageActivity</string>
 </resources>

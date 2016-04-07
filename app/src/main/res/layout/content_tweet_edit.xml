@@ -28,7 +28,7 @@
 <android.support.v7.widget.AppCompatEditText
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:inputType="textLongMessage"
+  android:inputType="textMultiLine"
   android:id="@+id/editText_status"
   android:minLines="5"
   />

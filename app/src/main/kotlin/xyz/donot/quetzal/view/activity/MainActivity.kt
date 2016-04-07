@@ -17,7 +17,10 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import twitter4j.Status
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.*
+import xyz.donot.quetzal.event.OnAccountChanged
+import xyz.donot.quetzal.event.OnCustomtabEvent
+import xyz.donot.quetzal.event.OnHashtagEvent
+import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.StreamManager
 import xyz.donot.quetzal.twitter.StreamType
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
@@ -46,6 +49,7 @@ class MainActivity : RxAppCompatActivity() {
       viewpager.adapter = pagerAdapter
       toolbar.apply {
         inflateMenu(R.menu.menu_main)
+
         setOnMenuItemClickListener {
           start<SearchActivity>()
           true
@@ -132,11 +136,7 @@ class MainActivity : RxAppCompatActivity() {
     startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",onHashtagEvent.tag))
   }
 
-  @Subscribe
-  fun onStreamDisconnected(onExceptionEvent: OnExceptionEvent)
-  {
 
-  }
   @Subscribe
  fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
     CustomTabsIntent.Builder()

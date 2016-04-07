@@ -33,7 +33,7 @@ class TrendFragment():RxFragment(){
     return v}
 
   fun TimelineLoader(){
-    TwitterTrendObservable(twitter).getTrend().subscribe {
+    TwitterTrendObservable(context,twitter).getTrend().subscribe {
       it.forEach {
         mAdapter.add(it)
       }

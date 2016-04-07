@@ -1,101 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="xyz.donot.quetzal">
+    package="xyz.donot.quetzal" >
 
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-  <application
-    android:name=".Quetzal"
-    android:allowBackup="true"
-    android:icon="@drawable/ic_launcher"
-    android:label="${appName}"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme"
-    android:hardwareAccelerated="true"
-    >
-    <activity
-      android:name=".view.activity.MainActivity"
-      android:label="${appName}"
-      android:theme="@style/AppTheme.NoActionBar"
-      android:screenOrientation="portrait"
-      >
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-    <activity
-      android:name=".view.activity.InitialActivity"
-      android:label="@string/title_activity_initial"
-      android:theme="@style/AppTheme.NoActionBar" />
+    <application
+        android:name=".Quetzal"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="${appName}"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:label="${appName}"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-    <meta-data
-      android:name="io.fabric.ApiKey"
-      android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.InitialActivity"
+            android:label="@string/title_activity_initial"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-    <activity
-      android:name=".view.activity.AccountSettingActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_account_setting"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.SettingsActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_settings" />
-    <activity
-      android:name=".view.activity.PictureActivity"
-      android:label="@string/title_activity_picture"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.UserActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_scrolling"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.TweetDetailActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_tweet_detail"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.VideoActivity"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.HelpActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_help"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.TweetEditActivity"
-      android:label="@string/title_activity_tweet_edit"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.UsersActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_users"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.SearchActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_search"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.EditProfileActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_edit_profile"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.ListsActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_lists"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity
-      android:name=".view.activity.SeeMyListActivity"
-      android:screenOrientation="portrait"
-      android:label="@string/title_activity_see_my_list"
-      android:theme="@style/AppTheme.NoActionBar"/>
-  </application>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
+
+        <activity
+            android:name=".view.activity.AccountSettingActivity"
+            android:label="@string/title_activity_account_setting"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PictureActivity"
+            android:label="@string/title_activity_picture"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.UserActivity"
+            android:label="@string/title_activity_scrolling"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.TweetDetailActivity"
+            android:label="@string/title_activity_tweet_detail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.VideoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.HelpActivity"
+            android:label="@string/title_activity_help"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.TweetEditActivity"
+            android:label="@string/title_activity_tweet_edit"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.UsersActivity"
+            android:label="@string/title_activity_users"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.ListsActivity"
+            android:label="@string/title_activity_lists"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.SeeMyListActivity"
+            android:label="@string/title_activity_see_my_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.DataManageActivity"
+            android:label="@string/title_activity_data_manage"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+    </application>
 
 </manifest>

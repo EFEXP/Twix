@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.content_edit_profile.*
 import twitter4j.User
@@ -15,6 +14,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.TwitterUserSubscriber
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
+import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getPath
 import xyz.donot.quetzal.util.getTwitterInstance
@@ -29,8 +29,8 @@ val twitter by lazy { getTwitterInstance()}
     if (Build.VERSION.SDK_INT < 19) {
       Intent(Intent.ACTION_GET_CONTENT)
         .setType("image/*")
-
     } else {
+
       Intent(Intent.ACTION_OPEN_DOCUMENT)
         .addCategory(Intent.CATEGORY_OPENABLE)
         .setType("image/jpeg")
@@ -80,7 +80,7 @@ val twitter by lazy { getTwitterInstance()}
           .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
             override fun onCompleted() {
               super.onCompleted()
-              Toast.makeText(this@EditProfileActivity,"更新しました",Toast.LENGTH_LONG).show()
+              longToast("更新しました")
             }
           })
           if (uri2 != null) {
@@ -90,7 +90,7 @@ val twitter by lazy { getTwitterInstance()}
             TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
               override fun onCompleted() {
                 super.onCompleted()
-                Toast.makeText(this@EditProfileActivity,"画像更新しました",Toast.LENGTH_LONG).show()
+              longToast("画像更新しました")
               }
             })
           }

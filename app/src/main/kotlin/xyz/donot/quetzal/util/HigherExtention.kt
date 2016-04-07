@@ -7,7 +7,7 @@ import twitter4j.TwitterException
 import xyz.donot.quetzal.util.extrautils.e
 
 
-fun <T> safeTry(context: Context,body: () -> T):Observable<T> {
+inline fun <T> safeTry(context: Context,crossinline  body: () -> T):Observable<T> {
   val observable= observable<T> { subscriber ->
     try {
       val toNext=body()

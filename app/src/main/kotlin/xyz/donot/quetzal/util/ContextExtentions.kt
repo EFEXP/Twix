@@ -83,7 +83,6 @@ fun Context.twitterEx(exception: TwitterException)
 
 
 fun Context.getLinkList() :MutableList<Link> {
-
   return listOf<Link>(
     Link(Regex.MENTION_PATTERN)
       .setUnderlined(false)

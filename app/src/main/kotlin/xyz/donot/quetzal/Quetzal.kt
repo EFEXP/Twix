@@ -23,6 +23,5 @@ class Quetzal : Application() {
         EventBus.builder().installDefaultEventBus()
       AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
       (getSystemService(Context.UI_MODE_SERVICE)as UiModeManager).nightMode = UiModeManager.MODE_NIGHT_YES;
-
     }
 }

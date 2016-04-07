@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 
 
-fun Context.getFabricTwitterInstance(): com.twitter.sdk.android.Twitter {
+fun getFabricTwitterInstance(): com.twitter.sdk.android.Twitter {
   return com.twitter.sdk.android.Twitter.getInstance()
 }
 
@@ -30,11 +30,7 @@ fun isIgnore(id: Long): Boolean {
 fun isMentionToMe(status: Status): Boolean {
   return  status.userMentionEntities.map { it.id }.filter { it==getMyId() }.isNotEmpty()
 }
-/*Usage
-*0=status
-* 1=reply
-* 2=notifications
-*/
+
 fun Status.save(context:Context){
   val status=this
   if(!isIgnore(status.user.id)){
@@ -46,7 +42,7 @@ fun Status.save(context:Context){
       }
       }
       EventBus.getDefault().post(OnStatusEvent(status))
-   }//execute
+   }
   }
 
 
@@ -61,8 +57,9 @@ fun<T:Serializable> T.getSerialized():ByteArray{
   }
 }
 
-@Suppress
+
 fun<T> ByteArray.getDeserialized():T{
+  @Suppress("UNCHECKED_CAST")
   return ObjectInputStream(ByteArrayInputStream(this)).readObject()as T
 }
 
