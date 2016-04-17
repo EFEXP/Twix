@@ -95,10 +95,10 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
       }
       //ビューホルダー
       viewHolder.binding.apply {
-        if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed)}
-        else{like.setImageResource(R.drawable.ic_favorite_grey)}
-        if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_redo_pressed)}
-        else{ retweet.setImageResource(R.drawable.ic_redo_grey)}
+        if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed_24dp)}
+        else{like.setImageResource(R.drawable.ic_favorite_grey_400_24dp)}
+        if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_retweet_pressed_24dp)}
+        else{ retweet.setImageResource(R.drawable.ic_retweet_grey_400_24dp)}
         via.text=Html.fromHtml(item.source)
           userNameText.text = item.user.name
        screenName.text = "@${item.user.screenName}"

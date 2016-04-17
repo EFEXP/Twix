@@ -23,7 +23,6 @@ object NewMentionNotification {
         val ringtone = PreferenceManager.getDefaultSharedPreferences(context).getString("notifications_ringtone", "")
     val builder=  NotificationCompat.Builder(context).apply {
         setSound(Uri.parse(ringtone))
-        setSmallIcon(R.drawable.ic_stat_new_mention)
         setContentText(text)
         setPriority(NotificationCompat.PRIORITY_DEFAULT)
         setLargeIcon(picture)

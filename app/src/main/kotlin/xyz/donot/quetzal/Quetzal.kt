@@ -21,7 +21,7 @@ class Quetzal : Application() {
         Fabric.with(this, Twitter(authConfig),Crashlytics())
         Realm.setDefaultConfiguration(RealmConfiguration.Builder(applicationContext).build())
         EventBus.builder().installDefaultEventBus()
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-      (getSystemService(Context.UI_MODE_SERVICE)as UiModeManager).nightMode = UiModeManager.MODE_NIGHT_YES
+      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
+      (getSystemService(Context.UI_MODE_SERVICE)as UiModeManager).nightMode = UiModeManager.MODE_NIGHT_AUTO
     }
 }

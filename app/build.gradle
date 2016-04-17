@@ -9,9 +9,6 @@ android {
     dataBinding {
         enabled = true
     }
-  aaptOptions {
-    additionalParameters "--no-version-vectors"
-  }
   defaultConfig {
         applicationId "xyz.donot.quetzal"
         minSdkVersion 15

@@ -19,7 +19,7 @@
       android:background="?attr/colorPrimary"
       app:popupTheme="@style/AppTheme.PopupOverlay"
       app:title="@string/lists_activity"
-      app:navigationIcon="@drawable/ic_arrow_back"
+      app:navigationIcon="@drawable/ic_arrow_back_white_36dp"
       />
 
   </android.support.design.widget.AppBarLayout>

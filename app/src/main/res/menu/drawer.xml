@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
     android:id="@+id/action_my_profile"
-    android:icon="@drawable/ic_edit_grey"
+    android:icon="@drawable/ic_edit_grey_400_24dp"
     android:title="@string/my_profile"/>
   <item
     android:id="@+id/action_setting"
-    android:icon="@drawable/ic_settings_grey"
+    android:icon="@drawable/ic_settings_grey_400_36dp"
     android:title="@string/setting"/>
   <item
     android:id="@+id/action_account"
-    android:icon="@drawable/ic_contacts_grey"
+    android:icon="@drawable/ic_contacts_grey_400_36dp"
     android:title="@string/account"/>
   <item
     android:id="@+id/action_list"
-    android:icon="@drawable/ic_view_list"
+    android:icon="@drawable/ic_view_list_grey_400_36dp"
     android:title="@string/list"/>
   <item
     android:id="@+id/action_whats_new"
-    android:icon="@drawable/ic_info_outline"
+    android:icon="@drawable/ic_info_outline_grey_400_36dp"
     android:title="@string/whats_new"/>
 
 </menu>

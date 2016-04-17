@@ -9,7 +9,6 @@
   card_view:cardCornerRadius="@dimen/cardview_default_radius"
   android:layout_margin="3dp"
   android:id="@+id/cardView"
-  card_view:cardBackgroundColor="@color/cardview_dark_background"
   >
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
