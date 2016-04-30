@@ -3,6 +3,8 @@ package xyz.donot.quetzal.util
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
@@ -35,7 +37,8 @@ fun Context.getPath(uri : Uri):String
 fun Context.twitterEx(exception: TwitterException)
 {
   fun toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    Handler(Looper.getMainLooper()).post {  Toast.makeText(this, message, Toast.LENGTH_LONG).show()  }
+
   }
   when(exception.errorCode)
   {

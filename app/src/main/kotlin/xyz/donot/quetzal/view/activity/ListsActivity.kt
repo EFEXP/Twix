@@ -22,7 +22,7 @@ class ListsActivity : AppCompatActivity() {
         fab.setOnClickListener {
               CreateListDialog().apply {
                 isCancelable=false
-                show(supportFragmentManager,"lit")
+                show(supportFragmentManager,"list")
               }
         }
     }

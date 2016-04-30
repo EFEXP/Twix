@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.squareup.picasso.Picasso
@@ -55,14 +56,25 @@ val twitter by lazy { getTwitterInstance()}
       }
     }
   }
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+  override fun onBackPressed() {
+     AlertDialog.Builder(this@EditProfileActivity)
+            .setTitle("戻る")
+            .setMessage("編集を削除して戻りますか？")
+            .setPositiveButton("はい",  { dialogInterface, i ->   super.onBackPressed() })
+            .setNegativeButton("いいえ",{ dialogInterface, i -> dialogInterface.cancel()})
+            .show();
+
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-      toolbar.setNavigationOnClickListener { finish() }
+      toolbar.setNavigationOnClickListener { onBackPressed() }
         TwitterObservable(applicationContext,twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(this@EditProfileActivity){
           override fun onNext(user: User) {
-            Picasso.with(this@EditProfileActivity).load(user.profileBannerIPadURL).into(profile_banner)
+            Picasso.with(this@EditProfileActivity).load(user.profileBannerIPadRetinaURL).into(profile_banner)
             Picasso.with(this@EditProfileActivity).load(user.originalProfileImageURLHttps).into(icon)
             profile_banner.setOnClickListener{
               startActivityForResult(intentGallery,1) }

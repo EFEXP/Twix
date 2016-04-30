@@ -3,7 +3,7 @@ package xyz.donot.quetzal.view.activity
 import android.os.Bundle
 import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
-import kotlinx.android.synthetic.main.activity_picture.*
+import kotlinx.android.synthetic.main.activity_tweet_edit.*
 import kotlinx.android.synthetic.main.content_tweet_edit.*
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.R

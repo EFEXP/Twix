@@ -33,5 +33,17 @@ class UsersObservable (val twitter: Twitter){
 
     } .basicNetworkTask()
   }
+  fun getMyUserInstance():Observable<User>{
+    return  Observable.create<User> {
+      try{
+        it.onNext(twitter.verifyCredentials())
+        it.onCompleted()
+      }
+      catch(ex:Exception){
+        it.onError(ex)
+      }
+
+    } .basicNetworkTask()
+  }
 
 }

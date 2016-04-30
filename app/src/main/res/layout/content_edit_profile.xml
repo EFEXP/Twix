@@ -20,7 +20,6 @@
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:id="@+id/icon"
-
     android:layout_alignBottom="@+id/profile_banner"
     android:layout_centerHorizontal="true" />
 

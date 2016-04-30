@@ -1,0 +1,5 @@
+/src/main/res/values/api_resources.xml
+/build
+app.iml
+*.apk
+/libs

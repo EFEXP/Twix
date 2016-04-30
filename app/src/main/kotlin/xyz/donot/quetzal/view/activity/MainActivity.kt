@@ -10,9 +10,11 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.view.inputmethod.InputMethodManager
+import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.navigation_header.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import twitter4j.Status
@@ -24,6 +26,7 @@ import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.StreamManager
 import xyz.donot.quetzal.twitter.StreamType
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
+import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.intent
 import xyz.donot.quetzal.util.extrautils.start
@@ -49,7 +52,6 @@ class MainActivity : RxAppCompatActivity() {
       viewpager.adapter = pagerAdapter
       toolbar.apply {
         inflateMenu(R.menu.menu_main)
-
         setOnMenuItemClickListener {
           start<SearchActivity>()
           true
@@ -86,13 +88,20 @@ class MainActivity : RxAppCompatActivity() {
       }
       true
     })
+      //set up header
+      UsersObservable(twitter).getMyUserInstance().forEach {
+        Picasso.with(applicationContext).load(it.profileBannerIPadRetinaURL).into(my_header)
+        Picasso.with(applicationContext).load(it.originalProfileImageURLHttps).into(my_icon)
+        my_screen_name.text = it.screenName
+      }
+
+
 
     button_tweet.setOnLongClickListener {
       TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
       true
     }
     StreamManager.Factory.getStreamObject(applicationContext, twitter, StreamType.USER_STREAM).run()
-
     button_tweet.setOnClickListener(
       {
         if (!editText_status.editableText.isNullOrBlank()) {
