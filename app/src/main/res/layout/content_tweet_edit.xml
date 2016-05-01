@@ -31,13 +31,64 @@
   android:inputType="textMultiLine"
   android:id="@+id/editText_status"
   android:minLines="5"
+    android:gravity="top"
   />
 </android.support.design.widget.TextInputLayout>
-  <android.support.v7.widget.AppCompatButton
-    android:id="@+id/send_status"
-    android:text="@string/send"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/editText_status_"/>
+
+      <android.support.v7.widget.RecyclerView
+          android:layout_below="@+id/tools_layout"
+          android:id="@+id/pic_recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+      </android.support.v7.widget.RecyclerView>
+
+
+    <LinearLayout
+        android:id="@+id/tools_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="24sp"
+        android:layout_below="@+id/editText_status_"
+        android:layout_centerHorizontal="true">
+      <android.support.v7.widget.AppCompatImageButton
+          android:id="@+id/add_picture"
+          android:src="@drawable/ic_add_to_photos_primary_18dp"
+          android:layout_width="0sp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:background="@android:color/transparent"
+          android:scaleType="fitCenter"
+          />
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/use_camera"
+            android:src="@drawable/ic_camera_alt_primary_18dp"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            />
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/trend_hashtag"
+            android:layout_width="0sp"
+            android:src="@drawable/ic_whatshot_vector"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            />
+
+      <android.support.v7.widget.AppCompatImageButton
+          android:id="@+id/send_status"
+          android:src="@drawable/ic_send_primary_24dp"
+          android:layout_width="0sp"
+          android:layout_height="match_parent"
+          android:background="@android:color/transparent"
+          android:scaleType="fitCenter"
+          android:layout_weight="2"
+           />
+    </LinearLayout>
+
   </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

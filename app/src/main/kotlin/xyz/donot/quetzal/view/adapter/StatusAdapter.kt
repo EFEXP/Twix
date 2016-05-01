@@ -68,6 +68,10 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
       }
 
       if(type!= media.NONE){
+
+
+
+
         if(statusMediaIds.size!=1){
         val gridAdapter=TweetPictureGridAdapter(context,0)
         gridAdapter.addAll(statusMediaIds)
