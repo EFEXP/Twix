@@ -99,7 +99,7 @@
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/media_container_grid"
+        android:layout_below="@+id/tweet_card_recycler"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_alignStart="@+id/tweet_text"
         android:layout_alignLeft="@+id/tweet_text" />
@@ -114,29 +114,17 @@
         android:ellipsize="end"
         android:singleLine="true"
         />
-      <GridView
-        android:id="@+id/media_container_grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="4"
-        android:columnWidth="100dp"
-        android:verticalSpacing="2dp"
-        android:horizontalSpacing="2dp"
-        android:layout_alignStart="@+id/media_container"
-        android:layout_below="@+id/media_container"
-        android:layout_alignLeft="@+id/media_container"
-        android:gravity="center"
-        android:visibility="gone"
-        />
-      <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/media_container"
-        android:layout_width="match_parent"
-        android:layout_height="250sp"
-        android:layout_alignStart="@+id/tweet_text"
-        android:layout_below="@+id/tweet_text"
-        android:layout_alignLeft="@+id/tweet_text"
-        android:scaleType="centerCrop"
-        />
+      <android.support.v7.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="200dp"
+          android:id="@+id/tweet_card_recycler"
+          android:layout_alignStart="@+id/tweet_text"
+          android:layout_below="@+id/tweet_text"
+          android:layout_alignLeft="@+id/tweet_text"
+          android:visibility="gone"
+          />
+
+
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/textView_isRT"
         android:layout_width="wrap_content"

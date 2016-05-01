@@ -6,11 +6,11 @@ import android.content.*
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import com.klinker.android.link_builder.LinkBuilder
 import com.squareup.picasso.Picasso
 import org.greenrobot.eventbus.EventBus
@@ -25,7 +25,9 @@ import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.extrautils.start
-import xyz.donot.quetzal.view.activity.*
+import xyz.donot.quetzal.view.activity.TweetDetailActivity
+import xyz.donot.quetzal.view.activity.TweetEditActivity
+import xyz.donot.quetzal.view.activity.UserActivity
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 import java.util.*
 
@@ -58,8 +60,9 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
       val statusMediaIds=ArrayList<String>()
       when(type){
         media.NONE->
-        {viewHolder.binding.mediaContainerGrid.visibility = View.GONE
-        viewHolder.binding.mediaContainer.visibility = View.GONE
+        {
+            viewHolder.binding.tweetCardRecycler.visibility = View.GONE
+
         }
         media.EX_MEDIA->{statusMediaIds.addAll(item.extendedMediaEntities.map { it.mediaURLHttps })
           mediaDisplayIds.addAll(item.extendedMediaEntities.map { it.displayURL }) }
@@ -68,34 +71,38 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
       }
 
       if(type!= media.NONE){
+         val adapter=TweetCardPicAdapter(context,statusMediaIds)
+          val manager = LinearLayoutManager(context)
+          manager.orientation = LinearLayoutManager.HORIZONTAL
+          viewHolder.binding.tweetCardRecycler.adapter=adapter
+          viewHolder.binding.tweetCardRecycler.layoutManager=manager
+          viewHolder.binding.tweetCardRecycler.visibility = View.VISIBLE
 
-
-
-
-        if(statusMediaIds.size!=1){
-        val gridAdapter=TweetPictureGridAdapter(context,0)
-        gridAdapter.addAll(statusMediaIds)
-        viewHolder.binding.mediaContainerGrid.apply {
-          adapter=gridAdapter
-          onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id -> context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
-          visibility = View.VISIBLE
-        }
-          viewHolder.binding.mediaContainer.visibility=View.GONE
-        }
-        else{
-          viewHolder.binding.apply {
-            mediaContainerGrid.visibility=View.GONE
-             mediaContainer.visibility=View.VISIBLE
-            Picasso.with(context).load(statusMediaIds[0]).into(mediaContainer)
-            mediaContainer.setOnClickListener {
-              val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
-              if (videourl!=null) {
-                context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
-              } else
-              { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
-            }
+          /*if(statusMediaIds.size!=1){
+              val gridAdapter=TweetPictureGridAdapter(context,0)
+              gridAdapter.addAll(statusMediaIds)
+              viewHolder.binding.mediaContainerGrid.apply {
+                  adapter=gridAdapter
+                  onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id -> context.startActivity(Intent(context, PictureActivity::class.java)
+                          .putStringArrayListExtra("picture_urls", statusMediaIds)) }
+                  visibility = View.VISIBLE
+              }
+              viewHolder.binding.mediaContainer.visibility=View.GONE
           }
-        }
+          else{
+              viewHolder.binding.apply {
+                  mediaContainerGrid.visibility=View.GONE
+                  mediaContainer.visibility=View.VISIBLE
+                  Picasso.with(context).load(statusMediaIds[0]).into(mediaContainer)
+                  mediaContainer.setOnClickListener {
+                      val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
+                      if (videourl!=null) {
+                          context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
+                      } else
+                      { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
+                  }
+              }
+          }*/
       }
       //ビューホルダー
       viewHolder.binding.apply {
