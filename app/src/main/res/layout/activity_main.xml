@@ -7,7 +7,6 @@
   android:id="@+id/drawer_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-
   android:fitsSystemWindows="true"
   >
   <RelativeLayout
@@ -46,35 +45,38 @@
       app:layout_scrollFlags="scroll|enterAlways"
       />
   </android.support.design.widget.AppBarLayout>
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:orientation="horizontal" android:layout_width="match_parent"
-      android:layout_alignParentBottom="true"
-      android:background="@color/colorPrimary"
-      android:layout_height="wrap_content">
-    <android.support.design.widget.TextInputLayout
-        android:focusable="true"
-        android:layout_weight="5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-      <android.support.v7.widget.AppCompatEditText
-          android:hint="@string/What_is_happening"
-          android:inputType="textMultiLine"
-          android:id="@+id/editText_status"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content" />
-    </android.support.design.widget.TextInputLayout>
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/button_tweet"
-        app:srcCompat="@drawable/ic_send_white_24dp"
-        android:layout_width="70dp"
-        android:layout_height="24dp"
-        android:background="@android:color/transparent"
-        android:layout_weight="2"
-        android:layout_gravity="center"
-        />
-  </LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        >
+      <android.support.design.widget.TextInputLayout
+          android:focusable="true"
+          android:layout_weight="5"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:theme="@style/AppTheme.AppBarOverlay"
+          >
+        <android.support.v7.widget.AppCompatEditText
+            android:hint="@string/What_is_happening"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:inputType="textMultiLine"
+            android:id="@+id/editText_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+      </android.support.design.widget.TextInputLayout>
+      <android.support.v7.widget.AppCompatImageButton
+          android:id="@+id/button_tweet"
+          app:srcCompat="@drawable/ic_send_white_24dp"
+          android:layout_width="70dp"
+          android:layout_height="24dp"
+          android:background="@android:color/transparent"
+          android:layout_weight="2"
+          android:layout_gravity="center"
+          />
+    </LinearLayout>
   </RelativeLayout>
 <android.support.design.widget.NavigationView
 android:layout_width="wrap_content"

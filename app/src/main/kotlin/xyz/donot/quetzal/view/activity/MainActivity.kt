@@ -91,8 +91,8 @@ class MainActivity : RxAppCompatActivity() {
       //set up header
       UsersObservable(twitter).getMyUserInstance().forEach {
         Picasso.with(applicationContext).load(it.profileBannerIPadRetinaURL).into(my_header)
-        Picasso.with(applicationContext).load(it.originalProfileImageURLHttps).into(my_icon)
-        my_screen_name.text = it.screenName
+        Picasso.with(applicationContext).load(it.originalProfileImageURLHttps).transform(Circlize()).into(my_icon)
+        my_screen_name.text = "@${it.screenName}"
       }
 
 

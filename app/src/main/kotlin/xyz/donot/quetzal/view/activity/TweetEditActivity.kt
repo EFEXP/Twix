@@ -11,7 +11,7 @@ import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.getTwitterInstance
 
 class TweetEditActivity : RxAppCompatActivity() {
-      val  twitter  by lazy {  getTwitterInstance() }
+  val  twitter  by lazy {  getTwitterInstance() }
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
   val screenName by lazy { intent.getStringExtra("user_screen_name") }
   val statusTxt by lazy { intent.getStringExtra("status_txt") }

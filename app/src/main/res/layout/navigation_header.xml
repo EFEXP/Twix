@@ -9,17 +9,21 @@
          />
 
     <ImageView
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="80sp"
+        android:layout_height="80sp"
         android:id="@+id/my_icon"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="15sp"
+        android:layout_marginStart="15sp"
+        android:layout_marginLeft="15sp" />
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/my_screen_name"
-        android:layout_below="@+id/my_icon"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_alignBottom="@+id/my_icon"
+        android:layout_toRightOf="@+id/my_icon"
+        android:layout_toEndOf="@+id/my_icon" />
 </RelativeLayout>
