@@ -72,9 +72,6 @@ val START_CAMERA :Int=0
         START_CAMERA ->{
          val picData= data.extras.get("data") as Bitmap
           addPhotos(picData)
-         // uri2 = data.data
-        //  contentResolver.takePersistableUriPermission(uri2, takeFlags)
-        //  Picasso.with(this@EditProfileActivity).load(uri2).noPlaceholder().into(profile_banner)
         }
        START_GALLERY->{
          contentResolver.takePersistableUriPermission( data.data, takeFlags)
@@ -95,8 +92,7 @@ val START_CAMERA :Int=0
       manager.orientation = LinearLayoutManager.HORIZONTAL
       pic_recycler_view.layoutManager = manager
       pic_recycler_view.adapter=adapter
-
-
+      pic_recycler_view.hasFixedSize()
     }
 
 }

@@ -28,6 +28,7 @@ import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
 import xyz.donot.quetzal.view.activity.TweetEditActivity
 import xyz.donot.quetzal.view.activity.UserActivity
+import xyz.donot.quetzal.view.customview.RecyclerDivider
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 import java.util.*
 
@@ -55,54 +56,28 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
       val type=if(item.extendedMediaEntities.isNotEmpty()){ media.EX_MEDIA }
       else if(item.mediaEntities.isNotEmpty()){ media.MEDIA }
       else{ media.NONE }
-
-      val mediaDisplayIds=ArrayList<String>()
       val statusMediaIds=ArrayList<String>()
       when(type){
         media.NONE->
         {
             viewHolder.binding.tweetCardRecycler.visibility = View.GONE
-
         }
         media.EX_MEDIA->{statusMediaIds.addAll(item.extendedMediaEntities.map { it.mediaURLHttps })
-          mediaDisplayIds.addAll(item.extendedMediaEntities.map { it.displayURL }) }
+         }
         media.MEDIA-> {statusMediaIds.addAll(item.mediaEntities.map { it.mediaURLHttps })
-          mediaDisplayIds.addAll(item.mediaEntities.map { it.displayURL }) }
+        }
       }
-
       if(type!= media.NONE){
-         val adapter=TweetCardPicAdapter(context,statusMediaIds)
-          val manager = LinearLayoutManager(context)
-          manager.orientation = LinearLayoutManager.HORIZONTAL
-          viewHolder.binding.tweetCardRecycler.adapter=adapter
-          viewHolder.binding.tweetCardRecycler.layoutManager=manager
-          viewHolder.binding.tweetCardRecycler.visibility = View.VISIBLE
-
-          /*if(statusMediaIds.size!=1){
-              val gridAdapter=TweetPictureGridAdapter(context,0)
-              gridAdapter.addAll(statusMediaIds)
-              viewHolder.binding.mediaContainerGrid.apply {
-                  adapter=gridAdapter
-                  onItemClickListener= AdapterView.OnItemClickListener { parent, view, position, id -> context.startActivity(Intent(context, PictureActivity::class.java)
-                          .putStringArrayListExtra("picture_urls", statusMediaIds)) }
-                  visibility = View.VISIBLE
-              }
-              viewHolder.binding.mediaContainer.visibility=View.GONE
+          val manager = LinearLayoutManager(context).apply {
+              orientation = LinearLayoutManager.HORIZONTAL
           }
-          else{
-              viewHolder.binding.apply {
-                  mediaContainerGrid.visibility=View.GONE
-                  mediaContainer.visibility=View.VISIBLE
-                  Picasso.with(context).load(statusMediaIds[0]).into(mediaContainer)
-                  mediaContainer.setOnClickListener {
-                      val videourl:String? =MediaUtil().getVideoURL(item.mediaEntities,item.extendedMediaEntities)
-                      if (videourl!=null) {
-                          context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
-                      } else
-                      { context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", statusMediaIds)) }
-                  }
-              }
-          }*/
+          viewHolder.binding.tweetCardRecycler.apply {
+              adapter=TweetCardPicAdapter(context,statusMediaIds,item)
+              layoutManager=manager
+              visibility = View.VISIBLE
+              addItemDecoration(RecyclerDivider(context))
+              hasFixedSize()
+          }
       }
       //ビューホルダー
       viewHolder.binding.apply {
@@ -112,7 +87,7 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
         else{ retweet.setImageResource(R.drawable.ic_retweet_grey_400_24dp)}
         via.text=Html.fromHtml(item.source)
           userNameText.text = item.user.name
-       screenName.text = "@${item.user.screenName}"
+        screenName.text = "@${item.user.screenName}"
         textViewDate.text = getRelativeTime(item.createdAt)
         count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
         Picasso.with(context).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)

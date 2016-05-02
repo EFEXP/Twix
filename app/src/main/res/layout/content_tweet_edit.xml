@@ -39,6 +39,7 @@
           android:layout_below="@+id/tools_layout"
           android:id="@+id/pic_recycler_view"
           android:layout_width="match_parent"
+          android:scrollbars="horizontal"
           android:layout_height="200sp">
 
       </android.support.v7.widget.RecyclerView>

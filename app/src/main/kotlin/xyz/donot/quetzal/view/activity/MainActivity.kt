@@ -18,11 +18,9 @@ import kotlinx.android.synthetic.main.navigation_header.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import twitter4j.Status
+import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.OnAccountChanged
-import xyz.donot.quetzal.event.OnCustomtabEvent
-import xyz.donot.quetzal.event.OnHashtagEvent
-import xyz.donot.quetzal.event.TwitterSubscriber
+import xyz.donot.quetzal.event.*
 import xyz.donot.quetzal.twitter.StreamManager
 import xyz.donot.quetzal.twitter.StreamType
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
@@ -89,11 +87,18 @@ class MainActivity : RxAppCompatActivity() {
       true
     })
       //set up header
-      UsersObservable(twitter).getMyUserInstance().forEach {
-        Picasso.with(applicationContext).load(it.profileBannerIPadRetinaURL).into(my_header)
-        Picasso.with(applicationContext).load(it.originalProfileImageURLHttps).transform(RoundCorner()).into(my_icon)
-        my_screen_name.text = "@${it.screenName}"
-      }
+      UsersObservable(twitter)
+              .getMyUserInstance()
+              .bindToLifecycle(this@MainActivity)
+              .subscribe(object : TwitterUserSubscriber(this@MainActivity){
+                override fun onUser(user: User) {
+                  super.onUser(user)
+                  Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
+                  Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).transform(RoundCorner()).into(my_icon)
+                  my_screen_name.text = "@${user.screenName}"
+                }
+              })
+
 
 
 

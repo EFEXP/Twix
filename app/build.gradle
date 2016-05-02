@@ -90,7 +90,7 @@ dependencies {
     compile('jp.wasabeef:recyclerview-animators:2.2.0')
             { exclude module: 'appcompat-v7' }
     kapt 'com.android.databinding:compiler:2.1.0-alpha5'
-    compile 'io.reactivex:rxkotlin:0.40.1'
+    compile 'io.reactivex:rxkotlin:0.55.0'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7-kotlin:0.4.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:0.4.0'

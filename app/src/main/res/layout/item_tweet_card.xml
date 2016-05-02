@@ -116,12 +116,13 @@
         />
       <android.support.v7.widget.RecyclerView
           android:layout_width="match_parent"
-          android:layout_height="200dp"
+          android:layout_height="250dp"
           android:id="@+id/tweet_card_recycler"
           android:layout_alignStart="@+id/tweet_text"
           android:layout_below="@+id/tweet_text"
           android:layout_alignLeft="@+id/tweet_text"
           android:visibility="gone"
+          android:scrollbars="horizontal"
           />
 
 

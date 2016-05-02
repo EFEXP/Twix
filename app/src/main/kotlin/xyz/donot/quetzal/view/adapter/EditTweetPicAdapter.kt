@@ -20,6 +20,7 @@ class EditTweetPicAdapter(context: Context, list: MutableList<Bitmap>)
         if (list.size > i ) {
             val  item= list[i]
             viewHolder. binding.apply {
+              textView.text="${i+1}/${list.size}"
               imageView.setImageBitmap(item)
             }
         }
