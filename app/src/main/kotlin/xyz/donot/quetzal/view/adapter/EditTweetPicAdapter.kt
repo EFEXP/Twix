@@ -2,16 +2,17 @@ package xyz.donot.quetzal.view.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.graphics.Bitmap
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
 
 
-class EditTweetPicAdapter(context: Context, list: MutableList<Bitmap>)
-:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Bitmap>(context,list) {
+class EditTweetPicAdapter(context: Context, list: MutableList<Uri>)
+:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context,list) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         return ViewHolder(mInflater.inflate(R.layout.item_bitmap, viewGroup, false))
@@ -21,7 +22,7 @@ class EditTweetPicAdapter(context: Context, list: MutableList<Bitmap>)
             val  item= list[i]
             viewHolder. binding.apply {
               textView.text="${i+1}/${list.size}"
-              imageView.setImageBitmap(item)
+              Picasso.with(context).load(item).into(imageView)
             }
         }
     }

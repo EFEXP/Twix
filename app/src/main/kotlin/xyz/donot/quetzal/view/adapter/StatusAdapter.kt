@@ -25,10 +25,9 @@ import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.extrautils.start
+import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
-import xyz.donot.quetzal.view.activity.TweetEditActivity
 import xyz.donot.quetzal.view.activity.UserActivity
-import xyz.donot.quetzal.view.customview.RecyclerDivider
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 import java.util.*
 
@@ -75,7 +74,6 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
               adapter=TweetCardPicAdapter(context,statusMediaIds,item)
               layoutManager=manager
               visibility = View.VISIBLE
-              addItemDecoration(RecyclerDivider(context))
               hasFixedSize()
           }
       }
@@ -145,7 +143,7 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
             putLong("status_id",item.id)
             putString("user_screen_name",item.user.screenName)
           }
-          (context as Activity).start<TweetEditActivity>(bundle)
+          (context as Activity).start<EditTweetActivity>(bundle)
         }
         retweet.setOnClickListener{
           if(!item.isRetweeted){

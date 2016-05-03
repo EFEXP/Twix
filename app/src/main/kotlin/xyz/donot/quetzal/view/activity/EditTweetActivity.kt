@@ -1,11 +1,12 @@
 package xyz.donot.quetzal.view.activity
 
+import android.content.ContentValues
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
@@ -19,10 +20,10 @@ import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
 import java.util.*
 
-class TweetEditActivity : RxAppCompatActivity() {
-val START_CAMERA :Int=0
+class EditTweetActivity : RxAppCompatActivity() {
+    val START_CAMERA :Int=0
   val START_GALLERY :Int=1
-    val list=LinkedList<Bitmap>()
+    val list=LinkedList<Uri>()
   val intentGallery=
           if (Build.VERSION.SDK_INT < 19) {
             Intent(Intent.ACTION_GET_CONTENT)
@@ -33,6 +34,7 @@ val START_CAMERA :Int=0
                     .addCategory(Intent.CATEGORY_OPENABLE)
                     .setType("image/jpeg")
           }
+    var m_uri:Uri?= null
   val  twitter  by lazy {  getTwitterInstance() }
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
   val screenName by lazy { intent.getStringExtra("user_screen_name") }
@@ -40,22 +42,33 @@ val START_CAMERA :Int=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_edit)
-      toolbar.setNavigationOnClickListener { finish() }
+      toolbar.setNavigationOnClickListener { onBackPressed() }
       //listener
-      use_camera.setOnClickListener { startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE),START_CAMERA) }
+      use_camera.setOnClickListener {
+          val photoName = "${System.currentTimeMillis()}.jpg"
+          val contentValues = ContentValues().apply {
+             put(MediaStore.Images.Media.TITLE, photoName)
+             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+          }
+           m_uri= contentResolver
+                  .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+          val intentCamera =  Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { putExtra(MediaStore.EXTRA_OUTPUT, m_uri) }
+          startActivityForResult(intentCamera,START_CAMERA)
+          //startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE),START_CAMERA)
+      }
       add_picture.setOnClickListener { startActivityForResult(intentGallery,START_GALLERY) }
 
-
+//Set
       editText_status.setText("@$screenName")
       editText_status.selectionEnd
       reply_for_status.text=statusTxt
       send_status.setOnClickListener{
         val updateStatus= StatusUpdate(editText_status.text.toString())
         updateStatus.inReplyToStatusId=statusId
-        TwitterUpdateObservable(this@TweetEditActivity,twitter).updateStatusAsync(updateStatus)
-        .subscribe ({ Toast.makeText(this@TweetEditActivity,"送信しました",Toast.LENGTH_LONG).show()
+        TwitterUpdateObservable(this@EditTweetActivity,twitter).updateStatusAsync(updateStatus)
+        .subscribe ({ Toast.makeText(this@EditTweetActivity,"送信しました",Toast.LENGTH_LONG).show()
           finish()},
-          {Toast.makeText(this@TweetEditActivity,"失敗しました",Toast.LENGTH_LONG).show()
+          {Toast.makeText(this@EditTweetActivity,"失敗しました",Toast.LENGTH_LONG).show()
             finish()
           })
 
@@ -68,31 +81,37 @@ val START_CAMERA :Int=0
       val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
       when(requestCode)
       {
-      //banner
         START_CAMERA ->{
-         val picData= data.extras.get("data") as Bitmap
-          addPhotos(picData)
+           val resultUri = data.data ?:m_uri
+            resultUri.let {   addPhotos(it!!) }
+
         }
        START_GALLERY->{
          contentResolver.takePersistableUriPermission( data.data, takeFlags)
-         contentResolver.openInputStream(data.data).use {
-        val bmp = BitmapFactory.decodeStream(it)
-         addPhotos(bmp)
-         }
+           addPhotos(data.data)
         }
 
       }
     }
   }
 
-  fun addPhotos(bitmap: Bitmap){
-      list.add(bitmap)
-      val adapter=EditTweetPicAdapter(this@TweetEditActivity,list)
-     val manager = LinearLayoutManager(this@TweetEditActivity)
+  fun addPhotos(uri: Uri){
+      list.add(uri)
+      val adapter=EditTweetPicAdapter(this@EditTweetActivity,list)
+     val manager = LinearLayoutManager(this@EditTweetActivity)
       manager.orientation = LinearLayoutManager.HORIZONTAL
       pic_recycler_view.layoutManager = manager
       pic_recycler_view.adapter=adapter
       pic_recycler_view.hasFixedSize()
+    }
+    override fun onBackPressed() {
+        AlertDialog.Builder(this@EditTweetActivity)
+                .setTitle("戻る")
+                .setMessage("下書きに保存しますか？")
+                .setPositiveButton("はい",  { dialogInterface, i ->   super.onBackPressed() })
+                .setNegativeButton("いいえ",{ dialogInterface, i -> dialogInterface.cancel()})
+                .show();
+
     }
 
 }

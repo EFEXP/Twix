@@ -27,7 +27,7 @@ class TweetCardPicAdapter(context: Context,val mediaList: ArrayList<String>,val 
             val item = list[i]
             viewHolder.binding.apply {
                 textView.text="${i+1}/${list.size}"
-                Picasso.with(context).load(item).into(imageView)
+                Picasso.with(context).load(item).placeholder(R.drawable.ic_launcher).into(imageView)
                 imageView.setOnClickListener {
                     val videourl: String? = MediaUtil().getVideoURL(status.mediaEntities,status.extendedMediaEntities)
                     if (videourl != null) {

@@ -1,8 +1,10 @@
 package xyz.donot.quetzal.view.activity
 
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
@@ -33,6 +35,10 @@ import xyz.donot.quetzal.view.adapter.TimeLinePagerAdapter
 
 
 class MainActivity : RxAppCompatActivity() {
+
+  val REQUEST_WRITE_READ=0
+
+
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy { getTwitterInstance() }
   private var accountChanged = true
@@ -56,7 +62,6 @@ class MainActivity : RxAppCompatActivity() {
         }
         setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
       }
-
 
     tabs.setupWithViewPager(viewpager)
     design_navigation_view.setNavigationItemSelectedListener({
@@ -129,11 +134,30 @@ class MainActivity : RxAppCompatActivity() {
         }
       })
     accountChanged = false
-
   }
 
       eventbus.register(this@MainActivity)
-}
+    //パーミッション要求
+    val EX_WRITE=this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
+    val EX_READ=this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
+    if(!(EX_WRITE&&EX_READ)){
+      requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),REQUEST_WRITE_READ)
+    }
+
+
+  }
+
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if(requestCode==REQUEST_WRITE_READ){
+      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+      }
+      if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+        toast("権限がないため画像の保存ができません")
+      }
+    }
+  }
+
   override fun onDestroy() {
     super.onDestroy()
     eventbus.unregister(this@MainActivity)
