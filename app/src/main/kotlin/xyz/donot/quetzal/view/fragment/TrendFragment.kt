@@ -1,22 +1,25 @@
 package xyz.donot.quetzal.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.trello.rxlifecycle.components.support.RxFragment
+import com.trello.rxlifecycle.components.support.RxDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import twitter4j.Trend
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterTrendObservable
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.view.activity.SearchActivity
+import xyz.donot.quetzal.view.adapter.BasicRecyclerAdapter
 import xyz.donot.quetzal.view.adapter.TrendAdapter
 import java.util.*
 
-class TrendFragment():RxFragment(){
+class TrendFragment():RxDialogFragment(){
    val twitter by lazy {getTwitterInstance() }
 
    val data by lazy { LinkedList<Trend>() }
@@ -27,9 +30,14 @@ class TrendFragment():RxFragment(){
     recycler.apply{
       itemAnimator= OvershootInRightAnimator(1f)
       adapter = AlphaInAnimationAdapter(mAdapter)
+      mAdapter.setOnItemClickListener(object:BasicRecyclerAdapter.OnItemClickListener<TrendAdapter.ViewHolder,Trend>{
+        override fun onItemClick(adapter: BasicRecyclerAdapter<TrendAdapter.ViewHolder, Trend>, position: Int, item: Trend) {
+          this@TrendFragment.startActivity(Intent(context, SearchActivity::class.java).putExtra("query_txt",item.query))
+        }
+      })
+
       layoutManager = LinearLayoutManager(context)
-      TimelineLoader()
-    }
+      TimelineLoader() }
     return v}
 
   fun TimelineLoader(){

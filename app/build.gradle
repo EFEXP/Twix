@@ -26,7 +26,7 @@ android {
         }
         debug {
             applicationIdSuffix ".debug"
-            minifyEnabled true
+            minifyEnabled false
             manifestPlaceholders = [appName: "QuetzalDEBUG"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

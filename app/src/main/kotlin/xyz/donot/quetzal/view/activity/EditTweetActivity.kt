@@ -18,6 +18,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
+import xyz.donot.quetzal.view.fragment.TrendFragment
 import java.util.*
 
 class EditTweetActivity : RxAppCompatActivity() {
@@ -39,24 +40,39 @@ class EditTweetActivity : RxAppCompatActivity() {
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
   val screenName by lazy { intent.getStringExtra("user_screen_name") }
   val statusTxt by lazy { intent.getStringExtra("status_txt") }
+    val adapter= EditTweetPicAdapter(this@EditTweetActivity, list)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_edit)
       toolbar.setNavigationOnClickListener { onBackPressed() }
+        val manager = LinearLayoutManager(this@EditTweetActivity).apply {
+            orientation = LinearLayoutManager.HORIZONTAL
+        }
+        pic_recycler_view.layoutManager = manager
+        pic_recycler_view.adapter=adapter
+        pic_recycler_view.hasFixedSize()
+
       //listener
+       trend_hashtag.setOnClickListener {
+           val dialog=TrendFragment()
+
+           dialog.show(supportFragmentManager,"")
+
+       }
       use_camera.setOnClickListener {
-          val photoName = "${System.currentTimeMillis()}.jpg"
-          val contentValues = ContentValues().apply {
-             put(MediaStore.Images.Media.TITLE, photoName)
-             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+          if(pic_recycler_view.layoutManager.itemCount<4) {
+              val photoName = "${System.currentTimeMillis()}.jpg"
+              val contentValues = ContentValues().apply {
+                  put(MediaStore.Images.Media.TITLE, photoName)
+                  put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+              }
+              m_uri = contentResolver
+                      .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+              val intentCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { putExtra(MediaStore.EXTRA_OUTPUT, m_uri) }
+              startActivityForResult(intentCamera, START_CAMERA)
           }
-           m_uri= contentResolver
-                  .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-          val intentCamera =  Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { putExtra(MediaStore.EXTRA_OUTPUT, m_uri) }
-          startActivityForResult(intentCamera,START_CAMERA)
-          //startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE),START_CAMERA)
       }
-      add_picture.setOnClickListener { startActivityForResult(intentGallery,START_GALLERY) }
+      add_picture.setOnClickListener { if(pic_recycler_view.layoutManager.itemCount<4) {startActivityForResult(intentGallery,START_GALLERY)} }
 
 //Set
       editText_status.setText("@$screenName")
@@ -84,7 +100,6 @@ class EditTweetActivity : RxAppCompatActivity() {
         START_CAMERA ->{
            val resultUri = data.data ?:m_uri
             resultUri.let {   addPhotos(it!!) }
-
         }
        START_GALLERY->{
          contentResolver.takePersistableUriPermission( data.data, takeFlags)
@@ -97,12 +112,7 @@ class EditTweetActivity : RxAppCompatActivity() {
 
   fun addPhotos(uri: Uri){
       list.add(uri)
-      val adapter=EditTweetPicAdapter(this@EditTweetActivity,list)
-     val manager = LinearLayoutManager(this@EditTweetActivity)
-      manager.orientation = LinearLayoutManager.HORIZONTAL
-      pic_recycler_view.layoutManager = manager
-      pic_recycler_view.adapter=adapter
-      pic_recycler_view.hasFixedSize()
+      adapter.notifyItemInserted(list.size)
     }
     override fun onBackPressed() {
         AlertDialog.Builder(this@EditTweetActivity)

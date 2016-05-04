@@ -5,13 +5,17 @@ import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
+import xyz.donot.quetzal.util.extrautils.d
 
 abstract class BasicRecyclerAdapter
 <ViewHolder:RecyclerView.ViewHolder,ListItem>
 (internal   val context: Context,internal   val list: MutableList<ListItem>)
-: RecyclerView.Adapter<ViewHolder>()
+: RecyclerView.Adapter<ViewHolder>(),View.OnClickListener
 {
- val mInflater: LayoutInflater by lazy { LayoutInflater.from(context) }
+    var mRecycler:RecyclerView?=null
+    var mListener:OnItemClickListener<ViewHolder,ListItem>?=null
+    val mInflater: LayoutInflater by lazy { LayoutInflater.from(context) }
   fun addAll(item:List<ListItem>)
   {
     Handler(Looper.getMainLooper()).post()
@@ -56,4 +60,37 @@ abstract class BasicRecyclerAdapter
     return list.size
   }
 
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        d("OnDetached!")
+        mRecycler=null
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        d("onAttached!")
+        mRecycler=recyclerView
+    }
+    fun setOnItemClickListener( listener: OnItemClickListener <ViewHolder,ListItem>) {
+    mListener = listener;
+}
+
+    override fun onClick(v: View) {
+        d("OnClick!")
+        if (mRecycler == null) {
+            d("mRecycler == null")
+            return;
+        }
+
+        if (mListener != null) {
+            d("mListener != null")
+            val position=mRecycler?.getChildAdapterPosition(v)!!
+            val item = list[position];
+            mListener?.onItemClick(this, position, item);
+        }
+    }
+
+    interface OnItemClickListener <ViewHolder:RecyclerView.ViewHolder,ListItem>{
+    fun  onItemClick(adapter:BasicRecyclerAdapter<ViewHolder,ListItem>,  position:Int, item:ListItem);
+}
 }
