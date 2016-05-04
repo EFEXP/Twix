@@ -8,14 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import xyz.donot.quetzal.util.extrautils.d
 
+var mRecycler:RecyclerView?=null
+
 abstract class BasicRecyclerAdapter
 <ViewHolder:RecyclerView.ViewHolder,ListItem>
 (internal   val context: Context,internal   val list: MutableList<ListItem>)
 : RecyclerView.Adapter<ViewHolder>(),View.OnClickListener
 {
-    var mRecycler:RecyclerView?=null
-    var mListener:OnItemClickListener<ViewHolder,ListItem>?=null
+
+    var mListener: BasicRecyclerAdapter.OnItemClickListener<ViewHolder, ListItem>?=null
     val mInflater: LayoutInflater by lazy { LayoutInflater.from(context) }
+
   fun addAll(item:List<ListItem>)
   {
     Handler(Looper.getMainLooper()).post()
@@ -63,7 +66,7 @@ abstract class BasicRecyclerAdapter
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         d("OnDetached!")
-        mRecycler=null
+       mRecycler=null
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

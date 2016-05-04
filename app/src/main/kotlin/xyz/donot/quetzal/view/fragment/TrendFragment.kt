@@ -14,6 +14,7 @@ import twitter4j.Trend
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterTrendObservable
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.SearchActivity
 import xyz.donot.quetzal.view.adapter.BasicRecyclerAdapter
 import xyz.donot.quetzal.view.adapter.TrendAdapter
@@ -32,7 +33,13 @@ class TrendFragment():RxDialogFragment(){
       adapter = AlphaInAnimationAdapter(mAdapter)
       mAdapter.setOnItemClickListener(object:BasicRecyclerAdapter.OnItemClickListener<TrendAdapter.ViewHolder,Trend>{
         override fun onItemClick(adapter: BasicRecyclerAdapter<TrendAdapter.ViewHolder, Trend>, position: Int, item: Trend) {
+          if(activity is SearchActivity){
           this@TrendFragment.startActivity(Intent(context, SearchActivity::class.java).putExtra("query_txt",item.query))
+        }
+        else if(activity is EditTweetActivity){
+            (activity as EditTweetActivity).addTrendHashtag(item.name)
+            this@TrendFragment.dismiss()
+          }
         }
       })
 

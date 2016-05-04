@@ -6,19 +6,23 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
+import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_tweet_edit.*
 import kotlinx.android.synthetic.main.content_tweet_edit.*
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.view.adapter.BasicRecyclerAdapter
 import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
 import xyz.donot.quetzal.view.fragment.TrendFragment
+import java.io.File
 import java.util.*
 
 class EditTweetActivity : RxAppCompatActivity() {
@@ -40,7 +44,10 @@ class EditTweetActivity : RxAppCompatActivity() {
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
   val screenName by lazy { intent.getStringExtra("user_screen_name") }
   val statusTxt by lazy { intent.getStringExtra("status_txt") }
-    val adapter= EditTweetPicAdapter(this@EditTweetActivity, list)
+    val mAdapter= EditTweetPicAdapter(this@EditTweetActivity, list)
+    var dialog:DialogFragment?=null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_edit)
@@ -49,15 +56,27 @@ class EditTweetActivity : RxAppCompatActivity() {
             orientation = LinearLayoutManager.HORIZONTAL
         }
         pic_recycler_view.layoutManager = manager
-        pic_recycler_view.adapter=adapter
+        pic_recycler_view.adapter=mAdapter
+        mAdapter.setOnItemClickListener(object: BasicRecyclerAdapter.OnItemClickListener<EditTweetPicAdapter.ViewHolder, Uri>{
+            override fun onItemClick(adapter: BasicRecyclerAdapter<EditTweetPicAdapter.ViewHolder, Uri>, position: Int, item: Uri) {
+                AlertDialog.Builder(this@EditTweetActivity)
+                        .setTitle("写真")
+                        .setMessage("何をしますか？")
+                        .setPositiveButton("編集", { dialogInterface, i ->
+                            UCrop.of(item,Uri.fromFile(File(cacheDir,"Cropped.jpg"))).start(this@EditTweetActivity)
+                        })
+                        .setNegativeButton("削除", { dialogInterface, i ->  })
+                        .show();
+            }
+
+        })
         pic_recycler_view.hasFixedSize()
+
 
       //listener
        trend_hashtag.setOnClickListener {
-           val dialog=TrendFragment()
-
-           dialog.show(supportFragmentManager,"")
-
+           dialog=TrendFragment()
+           dialog?.show(supportFragmentManager,"")
        }
       use_camera.setOnClickListener {
           if(pic_recycler_view.layoutManager.itemCount<4) {
@@ -76,7 +95,6 @@ class EditTweetActivity : RxAppCompatActivity() {
 
 //Set
       editText_status.setText("@$screenName")
-      editText_status.selectionEnd
       reply_for_status.text=statusTxt
       send_status.setOnClickListener{
         val updateStatus= StatusUpdate(editText_status.text.toString())
@@ -109,19 +127,26 @@ class EditTweetActivity : RxAppCompatActivity() {
       }
     }
   }
-
+    fun addTrendHashtag(string: String){
+        editText_status.append(" $string")
+        dialog?.dismiss()
+    }
   fun addPhotos(uri: Uri){
       list.add(uri)
-      adapter.notifyItemInserted(list.size)
+      mAdapter.notifyItemInserted(list.size)
     }
     override fun onBackPressed() {
-        AlertDialog.Builder(this@EditTweetActivity)
-                .setTitle("戻る")
-                .setMessage("下書きに保存しますか？")
-                .setPositiveButton("はい",  { dialogInterface, i ->   super.onBackPressed() })
-                .setNegativeButton("いいえ",{ dialogInterface, i -> dialogInterface.cancel()})
-                .show();
-
+        if(!statusTxt.isBlank()&&!statusTxt.isEmpty()) {
+            AlertDialog.Builder(this@EditTweetActivity)
+                    .setTitle("戻る")
+                    .setMessage("下書きに保存しますか？")
+                    .setPositiveButton("はい", { dialogInterface, i -> super.onBackPressed() })
+                    .setNegativeButton("いいえ", { dialogInterface, i -> super.onBackPressed() })
+                    .show();
+        }
+        else{
+            super.onBackPressed()
+        }
     }
 
 }

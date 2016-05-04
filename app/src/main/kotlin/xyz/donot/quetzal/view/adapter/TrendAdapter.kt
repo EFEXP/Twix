@@ -13,7 +13,7 @@ import xyz.donot.quetzal.databinding.ItemTrendBinding
 class TrendAdapter(context: Context, list: MutableList<Trend>)
 :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.TrendAdapter.ViewHolder,Trend>(context,list) {
 
-  override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+  override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): TrendAdapter.ViewHolder {
     val view:View =mInflater.inflate(R.layout.item_trend, viewGroup, false)
     view.setOnClickListener(this)
     return ViewHolder(view)
@@ -28,11 +28,11 @@ class TrendAdapter(context: Context, list: MutableList<Trend>)
       }
     }
 
-
   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val binding:ItemTrendBinding
     init {
       binding=DataBindingUtil.bind(itemView)
     }
   }
+
 }

@@ -15,7 +15,9 @@ class EditTweetPicAdapter(context: Context, list: MutableList<Uri>)
 :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context,list) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        return ViewHolder(mInflater.inflate(R.layout.item_bitmap, viewGroup, false))
+        val view:View =mInflater.inflate(R.layout.item_bitmap, viewGroup, false)
+        view.setOnClickListener(this)
+        return ViewHolder(view)
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         if (list.size > i ) {
