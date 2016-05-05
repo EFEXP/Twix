@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.squareup.picasso.Picasso
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCropActivity
 import kotlinx.android.synthetic.main.content_edit_profile.*
 import twitter4j.User
 import xyz.donot.quetzal.R
@@ -20,12 +22,13 @@ import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getPath
 import xyz.donot.quetzal.util.getTwitterInstance
 import java.io.File
+import java.util.*
 
 class EditProfileActivity : AppCompatActivity() {
 
 val twitter by lazy { getTwitterInstance()}
-  var uri: Uri?=null
-  var uri2: Uri?=null
+  var iconUri: Uri?=null
+  var bannerUri: Uri?=null
   val intentGallery=
     if (Build.VERSION.SDK_INT < 19) {
       Intent(Intent.ACTION_GET_CONTENT)
@@ -38,19 +41,43 @@ val twitter by lazy { getTwitterInstance()}
     }
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == RESULT_OK&&data!=null) {
-      val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+      val color=getColor(R.color.colorPrimary)
       when(requestCode)
       {
         //banner
       1->{
-        uri2 = data.data
-        contentResolver.takePersistableUriPermission(uri2, takeFlags)
-        Picasso.with(this@EditProfileActivity).load(uri2).noPlaceholder().into(profile_banner)
+        bannerUri = data.data
+        UCrop.of(bannerUri!!,Uri.fromFile(File(cacheDir,"${Date().time}.jpg")))
+                .withOptions( UCrop.Options().apply {
+                  setToolbarColor(color)
+                  setActiveWidgetColor(color)
+                  setStatusBarColor(color)
+                  setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+                })
+                .withAspectRatio(3F,1F)
+                .start(this@EditProfileActivity,4)
+
       }
         2->{
-          uri = data.data
-          contentResolver.takePersistableUriPermission(uri, takeFlags)
-          Picasso.with(this@EditProfileActivity).load(uri).noPlaceholder().into(icon)
+          iconUri = data.data
+          UCrop.of(iconUri!!,Uri.fromFile(File(cacheDir,"${Date().time}.jpg")))
+                  .withOptions( UCrop.Options().apply {
+                    setToolbarColor(color)
+                    setActiveWidgetColor(color)
+                    setStatusBarColor(color)
+                    setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+                  })
+                  .withAspectRatio(1F,1F)
+                  .start(this@EditProfileActivity,3)
+
+        }
+      3->{
+        iconUri =UCrop.getOutput(data)
+        Picasso.with(this@EditProfileActivity).load(iconUri).into(icon)
+      }
+        4->{
+          bannerUri =UCrop.getOutput(data)
+          Picasso.with(this@EditProfileActivity).load(bannerUri).into(profile_banner)
         }
 
       }
@@ -95,11 +122,11 @@ val twitter by lazy { getTwitterInstance()}
               longToast("更新しました")
             }
           })
-          if (uri2 != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity,uri2!!)))
+          if (bannerUri != null) {
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, bannerUri!!)))
           }
-          if (uri != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity,uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
+          if (iconUri != null) {
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, iconUri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
               override fun onCompleted() {
                 super.onCompleted()
               longToast("画像更新しました")
