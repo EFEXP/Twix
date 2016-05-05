@@ -32,7 +32,7 @@
    long consumerNode;
 }
 
-
+-dontwarn com.squareup.okhttp.**
 -keepattributes SourceFile,LineNumberTable,*Annotation*
 
 #twitter4j

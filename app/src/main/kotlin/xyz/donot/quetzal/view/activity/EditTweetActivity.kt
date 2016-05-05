@@ -1,7 +1,9 @@
 package xyz.donot.quetzal.view.activity
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -97,7 +99,7 @@ class EditTweetActivity : RxAppCompatActivity() {
             dialog?.show(supportFragmentManager,"")
         }
       use_camera.setOnClickListener {
-          if(pic_recycler_view.layoutManager.itemCount<4) {
+          if(pic_recycler_view.layoutManager.itemCount<4&&this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
               val photoName = "${System.currentTimeMillis()}.jpg"
               val contentValues = ContentValues().apply {
                   put(MediaStore.Images.Media.TITLE, photoName)

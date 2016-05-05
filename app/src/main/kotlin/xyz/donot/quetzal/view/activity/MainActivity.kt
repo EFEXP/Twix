@@ -34,10 +34,7 @@ import xyz.donot.quetzal.view.adapter.TimeLinePagerAdapter
 
 
 class MainActivity : RxAppCompatActivity() {
-
   val REQUEST_WRITE_READ=0
-
-
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy { getTwitterInstance() }
   private var accountChanged = true

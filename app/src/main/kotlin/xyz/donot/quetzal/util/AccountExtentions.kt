@@ -11,7 +11,7 @@ import xyz.donot.quetzal.event.OnReplyEvent
 import xyz.donot.quetzal.event.OnStatusEvent
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.model.DBMuteUser
-import xyz.donot.quetzal.notification.NewMentionNotification
+import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.extrautils.i
 import java.io.*
 import java.util.*
@@ -41,7 +41,7 @@ fun Status.save(context:Context){
       EventBus.getDefault().post(OnReplyEvent(status))
       if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
       {
-        NewMentionNotification.notify(context,status.text,0)
+        NotificationWrapper(context).replyNotification(status)
       }
       }
       EventBus.getDefault().post(OnStatusEvent(status))

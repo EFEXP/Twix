@@ -2,7 +2,9 @@ package xyz.donot.quetzal.service
 
 import android.app.IntentService
 import android.content.Intent
+import br.com.goncalves.pugnotification.notification.PugNotification
 import twitter4j.StatusUpdate
+import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getTwitterInstance
 import java.io.File
@@ -12,6 +14,8 @@ class TweetPostService() : IntentService("TweetPostService") {
     val twitter by lazy { getTwitterInstance() }
     override fun onHandleIntent(intent: Intent) {
         var filePath: ArrayList<String>
+        val id=Random().nextInt(100)+1
+      val notification= NotificationWrapper(applicationContext).sendingNotification(id)
         if(intent.hasExtra("StatusUpdate")){
             val updateStatus= intent.getByteArrayExtra("StatusUpdate").getDeserialized<StatusUpdate>()
             if(intent.hasExtra("FilePath")){
@@ -26,6 +30,8 @@ class TweetPostService() : IntentService("TweetPostService") {
                 updateStatus.setMediaIds(array)
             }
             twitter.updateStatus(updateStatus)
+            PugNotification.with(this@TweetPostService).cancel(id)
+
         }
     }
 }
