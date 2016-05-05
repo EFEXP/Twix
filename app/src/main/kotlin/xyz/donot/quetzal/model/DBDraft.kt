@@ -1,12 +1,11 @@
 package xyz.donot.quetzal.model
 
 import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
 @RealmClass
 open class DBDraft : RealmObject() {
-    @PrimaryKey open  var accountId:Long =0
+    open  var accountId:Long =0
     open  var text:String =""
     open  var replyToStatusId:Long =0
     open var replyToScreenName:String=""

@@ -13,14 +13,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCropActivity
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_tweet_edit.*
 import kotlinx.android.synthetic.main.content_tweet_edit.*
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.model.DBDraft
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
+import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.adapter.BasicRecyclerAdapter
 import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
+import xyz.donot.quetzal.view.fragment.DraftFragment
 import xyz.donot.quetzal.view.fragment.TrendFragment
 import java.io.File
 import java.util.*
@@ -40,9 +45,10 @@ class EditTweetActivity : RxAppCompatActivity() {
                     .setType("image/jpeg")
           }
     var m_uri:Uri?= null
+    var croppingUri:Uri?= null
   val  twitter  by lazy {  getTwitterInstance() }
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
-  val screenName by lazy { intent.getStringExtra("user_screen_name") }
+  var screenName :String=""
   val statusTxt by lazy { intent.getStringExtra("status_txt") }
     val mAdapter= EditTweetPicAdapter(this@EditTweetActivity, list)
     var dialog:DialogFragment?=null
@@ -51,33 +57,47 @@ class EditTweetActivity : RxAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_edit)
-      toolbar.setNavigationOnClickListener { onBackPressed() }
+        if(intent.getStringExtra("user_screen_name")!=null) {
+            screenName ="@${intent.getStringExtra("user_screen_name")}"
+        }
+            toolbar.setNavigationOnClickListener { onBackPressed() }
         val manager = LinearLayoutManager(this@EditTweetActivity).apply {
             orientation = LinearLayoutManager.HORIZONTAL
         }
         pic_recycler_view.layoutManager = manager
         pic_recycler_view.adapter=mAdapter
         mAdapter.setOnItemClickListener(object: BasicRecyclerAdapter.OnItemClickListener<EditTweetPicAdapter.ViewHolder, Uri>{
+            val color=getColor(R.color.colorPrimary)
             override fun onItemClick(adapter: BasicRecyclerAdapter<EditTweetPicAdapter.ViewHolder, Uri>, position: Int, item: Uri) {
                 AlertDialog.Builder(this@EditTweetActivity)
                         .setTitle("写真")
                         .setMessage("何をしますか？")
                         .setPositiveButton("編集", { dialogInterface, i ->
-                            UCrop.of(item,Uri.fromFile(File(cacheDir,"Cropped.jpg"))).start(this@EditTweetActivity)
+                            croppingUri=item
+                            UCrop.of(item,Uri.fromFile(File(cacheDir,"Cropped.jpg")))
+                                    .withOptions( UCrop.Options().apply {
+                                        setToolbarColor(color)
+                                        setActiveWidgetColor(color)
+                                        setStatusBarColor(color)
+                                        setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE,UCropActivity.SCALE);
+                                    })
+                                    .start(this@EditTweetActivity)
                         })
-                        .setNegativeButton("削除", { dialogInterface, i ->  })
-                        .show();
-            }
-
+                        .setNegativeButton("削除", { dialogInterface, i ->
+                            mAdapter.remove(item)
+                        })
+                        .show(); }
         })
         pic_recycler_view.hasFixedSize()
-
-
       //listener
        trend_hashtag.setOnClickListener {
            dialog=TrendFragment()
            dialog?.show(supportFragmentManager,"")
        }
+        show_drafts.setOnClickListener {
+            dialog=DraftFragment()
+            dialog?.show(supportFragmentManager,"")
+        }
       use_camera.setOnClickListener {
           if(pic_recycler_view.layoutManager.itemCount<4) {
               val photoName = "${System.currentTimeMillis()}.jpg"
@@ -91,14 +111,16 @@ class EditTweetActivity : RxAppCompatActivity() {
               startActivityForResult(intentCamera, START_CAMERA)
           }
       }
-      add_picture.setOnClickListener { if(pic_recycler_view.layoutManager.itemCount<4) {startActivityForResult(intentGallery,START_GALLERY)} }
+      add_picture.setOnClickListener {
+
+          if(pic_recycler_view.layoutManager.itemCount<4) {startActivityForResult(intentGallery,START_GALLERY)} }
 
 //Set
-      editText_status.setText("@$screenName")
+      editText_status.setText("$screenName")
       reply_for_status.text=statusTxt
       send_status.setOnClickListener{
         val updateStatus= StatusUpdate(editText_status.text.toString())
-        updateStatus.inReplyToStatusId=statusId
+          updateStatus.inReplyToStatusId=statusId
         TwitterUpdateObservable(this@EditTweetActivity,twitter).updateStatusAsync(updateStatus)
         .subscribe ({ Toast.makeText(this@EditTweetActivity,"送信しました",Toast.LENGTH_LONG).show()
           finish()},
@@ -115,6 +137,10 @@ class EditTweetActivity : RxAppCompatActivity() {
       val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
       when(requestCode)
       {
+          UCrop.REQUEST_CROP->{
+             val resultUri = UCrop.getOutput(data)
+             mAdapter.insertWithPosition(croppingUri!!,resultUri!!)
+          }
         START_CAMERA ->{
            val resultUri = data.data ?:m_uri
             resultUri.let {   addPhotos(it!!) }
@@ -127,20 +153,37 @@ class EditTweetActivity : RxAppCompatActivity() {
       }
     }
   }
+
+    fun changeToDraft(draft: DBDraft){
+        editText_status.editableText.clear()
+        editText_status.append(draft.text)
+        dialog?.dismiss()
+        dialog=null
+    }
     fun addTrendHashtag(string: String){
         editText_status.append(" $string")
         dialog?.dismiss()
+        dialog=null
     }
   fun addPhotos(uri: Uri){
       list.add(uri)
       mAdapter.notifyItemInserted(list.size)
     }
     override fun onBackPressed() {
-        if(!statusTxt.isBlank()&&!statusTxt.isEmpty()) {
+        if(!editText_status.editableText.isBlank()&&!editText_status.editableText.isEmpty()) {
             AlertDialog.Builder(this@EditTweetActivity)
                     .setTitle("戻る")
                     .setMessage("下書きに保存しますか？")
-                    .setPositiveButton("はい", { dialogInterface, i -> super.onBackPressed() })
+                    .setPositiveButton("はい", { dialogInterface, i ->
+                        Realm.getDefaultInstance().executeTransaction {
+                         it.createObject(DBDraft::class.java).apply {
+                             text=editText_status.text.toString()
+                             replyToScreenName=screenName
+                             replyToStatusId=statusId
+                             accountId= getMyId()
+                         }
+                        }
+                        super.onBackPressed() })
                     .setNegativeButton("いいえ", { dialogInterface, i -> super.onBackPressed() })
                     .show();
         }

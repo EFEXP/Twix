@@ -40,7 +40,9 @@
           android:id="@+id/pic_recycler_view"
           android:layout_width="match_parent"
           android:scrollbars="horizontal"
-          android:layout_height="200sp">
+          android:layout_height="200sp"
+          android:layout_margin="5dp"
+          >
 
       </android.support.v7.widget.RecyclerView>
 

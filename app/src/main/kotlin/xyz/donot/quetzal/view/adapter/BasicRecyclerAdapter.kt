@@ -51,6 +51,18 @@ abstract class BasicRecyclerAdapter
     Handler(Looper.getMainLooper()).post { list.add(0, item)
       this.notifyItemInserted(0)}
   }
+    fun insertWithPosition(replacedItem:ListItem,replaceItem: ListItem)
+    {
+        Handler(Looper.getMainLooper()).post {
+            list.
+                    filter{ it==replacedItem }
+                    .mapNotNull { list.indexOf(it) }
+                    .forEach {
+                        list[it] = replaceItem
+                        this.notifyItemChanged(it)
+                    }
+        }
+    }
   fun clear(){
     Handler(Looper.getMainLooper()).post {list.clear()
       this.notifyDataSetChanged()}

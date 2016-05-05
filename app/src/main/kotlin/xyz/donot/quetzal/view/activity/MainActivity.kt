@@ -14,7 +14,6 @@ import android.support.v4.view.GravityCompat
 import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
-import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.*
 import org.greenrobot.eventbus.EventBus
@@ -108,12 +107,14 @@ class MainActivity : RxAppCompatActivity() {
 
 
     button_tweet.setOnLongClickListener {
-      TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
+      start<EditTweetActivity>()
+      //TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
       true
     }
     StreamManager.Factory.getStreamObject(applicationContext, twitter, StreamType.USER_STREAM).run()
     button_tweet.setOnClickListener(
       {
+
         if (!editText_status.editableText.isNullOrBlank()) {
           val tObserver = TwitterUpdateObservable(this@MainActivity,twitter);
           tObserver.updateStatusAsync(editText_status.editableText.toString())

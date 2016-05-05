@@ -20,6 +20,8 @@
 
 -keep class android.support.v7.widget.SearchView { *; }
 
+-dontwarn com.yalantis.**
+
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
    long consumerIndex;
