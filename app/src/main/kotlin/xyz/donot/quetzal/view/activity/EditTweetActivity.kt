@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -67,7 +68,7 @@ class EditTweetActivity : RxAppCompatActivity() {
         pic_recycler_view.layoutManager = manager
         pic_recycler_view.adapter=mAdapter
         mAdapter.setOnItemClickListener(object: BasicRecyclerAdapter.OnItemClickListener<EditTweetPicAdapter.ViewHolder, Uri>{
-            val color=getColor(R.color.colorPrimary)
+            val color=ContextCompat.getColor(this@EditTweetActivity,R.color.colorPrimary)
             override fun onItemClick(adapter: BasicRecyclerAdapter<EditTweetPicAdapter.ViewHolder, Uri>, position: Int, item: Uri) {
                 AlertDialog.Builder(this@EditTweetActivity)
                         .setTitle("写真")
@@ -99,7 +100,9 @@ class EditTweetActivity : RxAppCompatActivity() {
             dialog?.show(supportFragmentManager,"")
         }
       use_camera.setOnClickListener {
-          if(pic_recycler_view.layoutManager.itemCount<4&&this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
+          if(pic_recycler_view.layoutManager.itemCount<4
+                  && ContextCompat.checkSelfPermission(this@EditTweetActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                  ==PackageManager.PERMISSION_GRANTED) {
               val photoName = "${System.currentTimeMillis()}.jpg"
               val contentValues = ContentValues().apply {
                   put(MediaStore.Images.Media.TITLE, photoName)
