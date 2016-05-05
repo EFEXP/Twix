@@ -2,11 +2,8 @@ package xyz.donot.quetzal.util
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.klinker.android.link_builder.Link
@@ -19,21 +16,7 @@ import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.view.activity.UserActivity
 
 
-fun Context.getPath(uri : Uri):String
-{
-  contentResolver.takePersistableUriPermission(uri,Intent.FLAG_GRANT_READ_URI_PERMISSION)
-  val id = DocumentsContract.getDocumentId(uri)
-  val selection = "_id=?"
-  val selectionArgs = arrayOf(id.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1])
-  contentResolver.query(
-    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-    arrayOf(MediaStore.MediaColumns.DATA),
-    selection, selectionArgs, null).use {
-    it.moveToFirst()
-    val path=  it.getString(0)
-    return path
-}
-}
+
 fun Context.twitterEx(exception: TwitterException)
 {
   fun toast(message: String) {

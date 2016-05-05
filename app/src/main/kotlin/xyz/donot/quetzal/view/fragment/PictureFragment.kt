@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +21,7 @@ import uk.co.senab.photoview.PhotoViewAttacher
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.OnSaveIt
 import xyz.donot.quetzal.util.extrautils.toast
+import xyz.donot.quetzal.util.getPictureStorePath
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -79,7 +79,7 @@ class PictureFragment : Fragment() {
       }
 
       override fun onBitmapLoaded(p0: Bitmap, p1: Picasso.LoadedFrom?) {
-        val file  = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val file  =getPictureStorePath()
         try{
           val name= Date().time
           val attachName: File = File("$file/", "$name.jpg")

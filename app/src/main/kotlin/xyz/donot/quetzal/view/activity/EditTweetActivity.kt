@@ -10,7 +10,6 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
@@ -20,9 +19,8 @@ import kotlinx.android.synthetic.main.content_tweet_edit.*
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.DBDraft
-import xyz.donot.quetzal.twitter.TwitterUpdateObservable
-import xyz.donot.quetzal.util.getMyId
-import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.service.TweetPostService
+import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.view.adapter.BasicRecyclerAdapter
 import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
 import xyz.donot.quetzal.view.fragment.DraftFragment
@@ -74,7 +72,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                         .setMessage("何をしますか？")
                         .setPositiveButton("編集", { dialogInterface, i ->
                             croppingUri=item
-                            UCrop.of(item,Uri.fromFile(File(cacheDir,"Cropped.jpg")))
+                            UCrop.of(item,Uri.fromFile(File(getPictureStorePath(),"${Date().time}.jpg")))
                                     .withOptions( UCrop.Options().apply {
                                         setToolbarColor(color)
                                         setActiveWidgetColor(color)
@@ -121,13 +119,12 @@ class EditTweetActivity : RxAppCompatActivity() {
       send_status.setOnClickListener{
         val updateStatus= StatusUpdate(editText_status.text.toString())
           updateStatus.inReplyToStatusId=statusId
-        TwitterUpdateObservable(this@EditTweetActivity,twitter).updateStatusAsync(updateStatus)
-        .subscribe ({ Toast.makeText(this@EditTweetActivity,"送信しました",Toast.LENGTH_LONG).show()
-          finish()},
-          {Toast.makeText(this@EditTweetActivity,"失敗しました",Toast.LENGTH_LONG).show()
-            finish()
-          })
-
+          val filePathList =ArrayList<String>()
+          list.forEach { filePathList.add(getPath(this@EditTweetActivity,it)!!) }
+          startService(Intent(this@EditTweetActivity, TweetPostService::class.java)
+                  .putExtra("StatusUpdate",updateStatus.getSerialized())
+                  .putStringArrayListExtra("FilePath",filePathList))
+          finish()
       }
 
 
@@ -169,6 +166,7 @@ class EditTweetActivity : RxAppCompatActivity() {
       list.add(uri)
       mAdapter.notifyItemInserted(list.size)
     }
+
     override fun onBackPressed() {
         if(!editText_status.editableText.isBlank()&&!editText_status.editableText.isEmpty()) {
             AlertDialog.Builder(this@EditTweetActivity)
@@ -185,7 +183,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                         }
                         super.onBackPressed() })
                     .setNegativeButton("いいえ", { dialogInterface, i -> super.onBackPressed() })
-                    .show();
+                    .show()
         }
         else{
             super.onBackPressed()

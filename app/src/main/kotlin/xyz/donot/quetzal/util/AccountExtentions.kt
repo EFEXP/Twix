@@ -1,6 +1,7 @@
 package xyz.donot.quetzal.util;
 
 import android.content.Context
+import android.os.Environment
 import android.preference.PreferenceManager
 import io.realm.Realm
 import org.greenrobot.eventbus.EventBus
@@ -17,7 +18,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-
+fun getPictureStorePath(): File {
+  return  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+}
 fun getFabricTwitterInstance(): com.twitter.sdk.android.Twitter {
   return com.twitter.sdk.android.Twitter.getInstance()
 }

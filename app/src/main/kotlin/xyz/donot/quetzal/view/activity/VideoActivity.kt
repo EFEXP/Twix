@@ -13,7 +13,6 @@ class VideoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_video)
       val url = intent.getStringExtra("video_url")
       val mp =MediaController(this@VideoActivity)
-
       video_view.apply {
         setVideoURI(Uri.parse(url))
         setMediaController(mp)

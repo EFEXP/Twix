@@ -96,10 +96,10 @@ val twitter by lazy { getTwitterInstance()}
             }
           })
           if (uri2 != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(uri2!!)))
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity,uri2!!)))
           }
           if (uri != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity,uri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
               override fun onCompleted() {
                 super.onCompleted()
               longToast("画像更新しました")
