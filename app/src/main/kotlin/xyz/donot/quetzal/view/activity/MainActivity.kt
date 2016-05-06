@@ -1,6 +1,5 @@
 package xyz.donot.quetzal.view.activity
 
-
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -15,7 +14,6 @@ import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.navigation_header.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -33,7 +31,6 @@ import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.view.adapter.TimeLinePagerAdapter
 import xyz.donot.quetzal.view.fragment.HelpFragment
-
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
@@ -61,38 +58,38 @@ class MainActivity : RxAppCompatActivity() {
         setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
       }
 
-    tabs.setupWithViewPager(viewpager)
-    design_navigation_view.setNavigationItemSelectedListener({
-      if (haveNetworkConnection()) {
-        when (it.itemId) {
+      tabs.setupWithViewPager(viewpager)
+      design_navigation_view.setNavigationItemSelectedListener({
+        if (haveNetworkConnection()) {
+          when (it.itemId) {
             R.id.my_profile -> {
-               startActivity(Intent(this@MainActivity, UserActivity::class.java).putExtra("user_id",getMyId()))
-                drawer_layout.closeDrawers()
+                             startActivity(Intent(this@MainActivity, UserActivity::class.java).putExtra("user_id",getMyId()))
+                              drawer_layout.closeDrawers()
+                          }
+            R.id.action_help -> {
+                          HelpFragment().show(supportFragmentManager,"")
+                        drawer_layout.closeDrawers()
+                       }
+            R.id.action_setting -> {
+              start<SettingsActivity>()
+              drawer_layout.closeDrawers()
             }
-          R.id.action_setting -> {
-            start<SettingsActivity>()
-            drawer_layout.closeDrawers()
-          }
-          R.id.action_account -> {
-            start<AccountSettingActivity>()
-            drawer_layout.closeDrawers()
-          }
-          R.id.action_list -> {
-            start<ListsActivity>()
-            drawer_layout.closeDrawers()
-          }
-          R.id.action_whats_new -> {
-            EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new.html"))
-            drawer_layout.closeDrawers()
-          }
-          R.id.action_help -> {
-            HelpFragment().show(supportFragmentManager,"")
-            drawer_layout.closeDrawers()
+            R.id.action_account -> {
+              start<AccountSettingActivity>()
+              drawer_layout.closeDrawers()
+            }
+            R.id.action_list -> {
+              start<ListsActivity>()
+              drawer_layout.closeDrawers()
+            }
+            R.id.action_whats_new -> {
+              EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new.html"))
+              drawer_layout.closeDrawers()
+            }
           }
         }
-      }
-      true
-    })
+        true
+      })
       //set up header
       UsersObservable(twitter)
               .getMyUserInstance()
@@ -102,47 +99,48 @@ class MainActivity : RxAppCompatActivity() {
                   super.onUser(user)
                   Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
                   Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).transform(RoundCorner()).into(my_icon)
-                    my_name.text = "${user.name}"
-                  my_screen_name.text = "@${user.screenName}"
+                  my_name_header.text="${user.name}"
+                  my_screen_name_header.text = "@${user.screenName}"
                 }
               })
 
 
 
 
-    button_tweet.setOnLongClickListener {
-      start<EditTweetActivity>()
-      true
+      button_tweet.setOnLongClickListener {
+        start<EditTweetActivity>()
+        true
+      }
+      StreamManager.Factory.getStreamObject(applicationContext, twitter, StreamType.USER_STREAM).run()
+      button_tweet.setOnClickListener(
+              {
+
+                if (!editText_status.editableText.isNullOrBlank()) {
+                  val tObserver = TwitterUpdateObservable(this@MainActivity,twitter);
+                  tObserver.updateStatusAsync(editText_status.editableText.toString())
+                          .bindToLifecycle(this@MainActivity)
+                          .subscribe(object : TwitterSubscriber(this@MainActivity) {
+                            override fun onStatus(status: Status) {
+                              val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                              inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                              Snackbar.make(coordinatorLayout, "投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
+                                tObserver.deleteStatusAsync(status.id).subscribe {
+                                  toast("削除しました")
+                                }
+                              }).show()
+                            }
+
+                          })
+                  editText_status.setText("")
+                }
+              })
+      accountChanged = false
     }
-    StreamManager.Factory.getStreamObject(applicationContext, twitter, StreamType.USER_STREAM).run()
-    button_tweet.setOnClickListener(
-      {
-        if (!editText_status.editableText.isNullOrBlank()) {
-          val tObserver = TwitterUpdateObservable(this@MainActivity,twitter);
-          tObserver.updateStatusAsync(editText_status.editableText.toString())
-            .bindToLifecycle(this@MainActivity)
-            .subscribe(object : TwitterSubscriber(this@MainActivity) {
-              override fun onStatus(status: Status) {
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                Snackbar.make(coordinatorLayout, "投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
-                  tObserver.deleteStatusAsync(status.id).subscribe {
-                    toast("削除しました")
-                  }
-                }).show()
-              }
 
-            })
-          editText_status.setText("")
-        }
-      })
-    accountChanged = false
-  }
-
-      eventbus.register(this@MainActivity)
+    eventbus.register(this@MainActivity)
     //パーミッション要求
-    val EX_WRITE=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-    val EX_READ=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
+    val EX_WRITE=this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
+    val EX_READ=this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
     if(!(EX_WRITE&&EX_READ)){
       requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),REQUEST_WRITE_READ)
     }
@@ -179,14 +177,14 @@ class MainActivity : RxAppCompatActivity() {
 
 
   @Subscribe
- fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
+  fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
     CustomTabsIntent.Builder()
-      .setShowTitle(true)
-      .addDefaultShareMenuItem()
-      .setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
-      .setStartAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-      .setExitAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right).build()
-      .launchUrl(this@MainActivity, Uri.parse(onCustomTabEvent.url))
+            .setShowTitle(true)
+            .addDefaultShareMenuItem()
+            .setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
+            .setStartAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            .setExitAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right).build()
+            .launchUrl(this@MainActivity, Uri.parse(onCustomTabEvent.url))
   }
 
 }

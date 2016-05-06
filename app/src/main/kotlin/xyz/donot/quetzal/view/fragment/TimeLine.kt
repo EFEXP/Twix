@@ -14,7 +14,8 @@ abstract  class TimeLine() : PlainFragment<Status, StatusAdapter, xyz.donot.quet
 
   open  fun onDeserialize(){}
   open  fun onSerialize(sStatus: Status){}
-  abstract override  fun loadMore()
+  abstract  override  fun loadMore()
+
   override val data: MutableList<Status> by lazy { LinkedList<Status>() }
   override val mAdapter: StatusAdapter by lazy{ StatusAdapter(activity, data) }
   override fun onCreate(savedInstanceState: Bundle?){

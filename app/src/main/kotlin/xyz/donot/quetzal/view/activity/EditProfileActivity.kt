@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import br.com.goncalves.pugnotification.notification.PugNotification
 import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.content_edit_profile.*
 import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.TwitterUserSubscriber
+import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.extrautils.longToast
@@ -116,11 +118,18 @@ val twitter by lazy { getTwitterInstance()}
         })
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {
-          TwitterUpdateObservable(this@EditProfileActivity,twitter).updateProfileAsync(name = user_name.text.toString(),location = geo.text.toString(),description = description.text.toString(),url = web.text.toString())
+          val id=Random().nextInt()+1
+          NotificationWrapper(this).sendingNotification(id)
+          TwitterUpdateObservable(this@EditProfileActivity,twitter)
+                  .updateProfileAsync(name = user_name.text.toString(),
+                          location = geo.text.toString(),
+                          description = description.text.toString(),
+                          url = web.text.toString())
           .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
             override fun onCompleted() {
               super.onCompleted()
               longToast("更新しました")
+              PugNotification.with(this@EditProfileActivity).cancel(id)
             }
           })
           if (bannerUri != null) {
@@ -131,6 +140,7 @@ val twitter by lazy { getTwitterInstance()}
               override fun onCompleted() {
                 super.onCompleted()
               longToast("画像更新しました")
+                PugNotification.with(this@EditProfileActivity).cancel(id)
               }
             })
           }

@@ -1,12 +1,11 @@
 package xyz.donot.quetzal.view.adapter
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import xyz.donot.quetzal.util.extrautils.d
+import xyz.donot.quetzal.util.extrautils.mainThread
 
 var mRecycler:RecyclerView?=null
 
@@ -21,8 +20,8 @@ abstract class BasicRecyclerAdapter
 
   fun addAll(item:List<ListItem>)
   {
-    Handler(Looper.getMainLooper()).post()
-    {
+      mainThread {
+
       item.forEach { list.add(it)
         notifyItemInserted(list.size)
       }
@@ -31,12 +30,12 @@ abstract class BasicRecyclerAdapter
 
   fun add(item:ListItem)
   {
-    Handler(Looper.getMainLooper()).post {list.add(item)
+      mainThread {list.add(item)
       this.notifyItemInserted(list.size)}
   }
   fun reload(item:ListItem)
   {
-    Handler(Looper.getMainLooper()).post {
+      mainThread {
       list.
         filter{ it== item }
         .mapNotNull { list.indexOf(it) }
@@ -48,12 +47,15 @@ abstract class BasicRecyclerAdapter
   }
   fun insert(item:ListItem)
   {
-    Handler(Looper.getMainLooper()).post { list.add(0, item)
-      this.notifyItemInserted(0)}
+      mainThread {
+          list.add(0, item)
+          this.notifyItemInserted(0)
+      }
+
   }
     fun insertWithPosition(replacedItem:ListItem,replaceItem: ListItem)
     {
-        Handler(Looper.getMainLooper()).post {
+        mainThread {
             list.
                     filter{ it==replacedItem }
                     .mapNotNull { list.indexOf(it) }
@@ -64,11 +66,11 @@ abstract class BasicRecyclerAdapter
         }
     }
   fun clear(){
-    Handler(Looper.getMainLooper()).post {list.clear()
+      mainThread {list.clear()
       this.notifyDataSetChanged()}
   }
   fun remove(item:ListItem){
-    Handler(Looper.getMainLooper()).post {list.remove(item)
+      mainThread {list.remove(item)
       this.notifyDataSetChanged()}
   }
   override fun getItemCount(): Int {
@@ -108,4 +110,5 @@ abstract class BasicRecyclerAdapter
     interface OnItemClickListener <ViewHolder:RecyclerView.ViewHolder,ListItem>{
     fun  onItemClick(adapter:BasicRecyclerAdapter<ViewHolder,ListItem>,  position:Int, item:ListItem);
 }
+
 }
