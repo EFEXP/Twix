@@ -38,7 +38,7 @@
 
     <string name="main_activity">ホーム</string>
 
-    <string name="my_profile">プロフィール編集</string>
+    <string name="edit_my_profile">プロフィール編集</string>
 
     <string name="new_mention_notification_placeholder_text_template">新しい返信です: %1$s</string>
     <string name="new_mention_notification_title_template">新しい返信です: %1$s</string>
@@ -114,11 +114,28 @@
         <item>共有</item>
         <item>削除</item>
     </string-array>
-
+    <string-array name="endpoint">
+        <item>/statuses/home_timeline</item>
+        <item>/statuses/user_timeline</item>
+        <item>/statuses/mentions_timeline</item>
+        <item>/search/tweets</item>
+        <item>/friendships/show</item>
+        <item>/lists/statuses</item>
+    </string-array>
+    <string-array name="family">
+        <item>lists</item>
+        <item>statuses</item>
+        <item>search</item>
+        <item>friendships</item>
+        <item>favorites</item>
+        <item>users</item>
+    </string-array>
     <string name="use_card_view">カードビュー</string>
 
     <string name="users_activity">ユーザー</string>
     <string name="users_list_activity">リスト</string>
 
     <string name="whats_new">お知らせ</string>
+    <string name="whats_this_app">ヘルプ</string>
+    <string name="my_profile">プロフィール</string>
 </resources>

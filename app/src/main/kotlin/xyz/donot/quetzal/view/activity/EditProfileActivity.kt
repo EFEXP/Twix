@@ -38,7 +38,7 @@ val twitter by lazy { getTwitterInstance()}
 
       Intent(Intent.ACTION_OPEN_DOCUMENT)
         .addCategory(Intent.CATEGORY_OPENABLE)
-        .setType("image/jpeg")
+        .setType("image/*")
     }
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == RESULT_OK&&data!=null) {

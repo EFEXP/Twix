@@ -43,7 +43,7 @@ class EditTweetActivity : RxAppCompatActivity() {
 
             Intent(Intent.ACTION_OPEN_DOCUMENT)
                     .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType("image/jpeg")
+                    .setType("image/*")
           }
     var m_uri:Uri?= null
     var croppingUri:Uri?= null

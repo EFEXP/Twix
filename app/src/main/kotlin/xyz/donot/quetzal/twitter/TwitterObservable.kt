@@ -14,6 +14,10 @@ class TwitterObservable(val context: Context,val twitter : Twitter)
     return safeTry(context){twitter.getFavorites(userID, paging)}
   }
 
+    fun getRateLimit(vararg string: String): Observable<Map<String ,RateLimitStatus>>
+    {
+        return safeTry(context){twitter.getRateLimitStatus(*string)}
+    }
 
   fun getHomeTimelineAsync(paging: Paging): Observable<ResponseList<Status>>
   {

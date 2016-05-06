@@ -21,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
       val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.inflateMenu(R.menu.search)
       toolbar.setNavigationOnClickListener { finish() }
-      setUpViews("Hello")
+      setUpViews("Twitter")
       if (query_txt != null) {
         setUpViews(query_txt)
       }

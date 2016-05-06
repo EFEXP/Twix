@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.navigation_header.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -31,6 +32,7 @@ import xyz.donot.quetzal.util.extrautils.intent
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.view.adapter.TimeLinePagerAdapter
+import xyz.donot.quetzal.view.fragment.HelpFragment
 
 
 class MainActivity : RxAppCompatActivity() {
@@ -63,10 +65,10 @@ class MainActivity : RxAppCompatActivity() {
     design_navigation_view.setNavigationItemSelectedListener({
       if (haveNetworkConnection()) {
         when (it.itemId) {
-          R.id.action_my_profile -> {
-            start<EditProfileActivity>()
-            drawer_layout.closeDrawers()
-          }
+            R.id.my_profile -> {
+               startActivity(Intent(this@MainActivity, UserActivity::class.java).putExtra("user_id",getMyId()))
+                drawer_layout.closeDrawers()
+            }
           R.id.action_setting -> {
             start<SettingsActivity>()
             drawer_layout.closeDrawers()
@@ -83,6 +85,10 @@ class MainActivity : RxAppCompatActivity() {
             EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new.html"))
             drawer_layout.closeDrawers()
           }
+          R.id.action_help -> {
+            HelpFragment().show(supportFragmentManager,"")
+            drawer_layout.closeDrawers()
+          }
         }
       }
       true
@@ -96,6 +102,7 @@ class MainActivity : RxAppCompatActivity() {
                   super.onUser(user)
                   Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
                   Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).transform(RoundCorner()).into(my_icon)
+                    my_name.text = "${user.name}"
                   my_screen_name.text = "@${user.screenName}"
                 }
               })
@@ -105,13 +112,11 @@ class MainActivity : RxAppCompatActivity() {
 
     button_tweet.setOnLongClickListener {
       start<EditTweetActivity>()
-      //TweetComposer.Builder(this@MainActivity).text(editText_status.editableText.toString()).show()
       true
     }
     StreamManager.Factory.getStreamObject(applicationContext, twitter, StreamType.USER_STREAM).run()
     button_tweet.setOnClickListener(
       {
-
         if (!editText_status.editableText.isNullOrBlank()) {
           val tObserver = TwitterUpdateObservable(this@MainActivity,twitter);
           tObserver.updateStatusAsync(editText_status.editableText.toString())

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
-    android:id="@+id/action_my_profile"
-    android:icon="@drawable/ic_edit_grey_400_24dp"
-    android:title="@string/my_profile"/>
-  <item
-    android:id="@+id/action_setting"
-    android:icon="@drawable/ic_settings_grey_400_36dp"
-    android:title="@string/setting"/>
+  <group
+      android:title="Twitter"
+      android:id="@+id/menu_main"
+      android:checkableBehavior="single">
+    <item
+        android:id="@+id/my_profile"
+        android:icon="@drawable/ic_account_circle_grey_400_36dp"
+        android:title="@string/my_profile"/>
   <item
     android:id="@+id/action_account"
     android:icon="@drawable/ic_contacts_grey_400_36dp"
@@ -16,9 +16,23 @@
     android:id="@+id/action_list"
     android:icon="@drawable/ic_view_list_grey_400_36dp"
     android:title="@string/list"/>
-  <item
-    android:id="@+id/action_whats_new"
-    android:icon="@drawable/ic_info_outline_grey_400_36dp"
-    android:title="@string/whats_new"/>
+  </group>
+  <group
+      android:title="その他"
+      android:id="@+id/group_setting"
+      android:checkableBehavior="single">
+    <item
+        android:id="@+id/action_setting"
+        android:icon="@drawable/ic_settings_grey_400_36dp"
+        android:title="@string/setting"/>
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_help_outline_grey_400_36dp"
+        android:title="@string/whats_this_app"/>
+    <item
+        android:id="@+id/action_whats_new"
+        android:icon="@drawable/ic_info_outline_grey_400_36dp"
+        android:title="@string/whats_new"/>
 
+  </group>
 </menu>

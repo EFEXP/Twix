@@ -15,9 +15,11 @@ import xyz.donot.quetzal.event.TwitterUserSubscriber
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.bindToLifecycle
+import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.getLinkList
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.view.activity.EditProfileActivity
 import xyz.donot.quetzal.view.activity.ListsActivity
 import xyz.donot.quetzal.view.activity.PictureActivity
 import xyz.donot.quetzal.view.activity.UsersActivity
@@ -35,6 +37,8 @@ class UserDetailFragment(val userId:Long) : RxFragment()
       override fun onNext(user: User) {
         super.onNext(user)
         if(user.id!=getMyId()) {
+          follow_button.visibility=View.VISIBLE
+          relation.visibility=View.VISIBLE
           TwitterObservable(context,twitter).showFriendShip(userId).subscribe {
             follow_button.apply {
               if (it.isSourceFollowingTarget) {
@@ -65,8 +69,8 @@ class UserDetailFragment(val userId:Long) : RxFragment()
           }
         }
         else{
-          follow_button.visibility=View.GONE
-          relation.visibility=View.GONE
+          edit_profile.visibility=View.VISIBLE
+          edit_profile.setOnClickListener{  activity.start<EditProfileActivity>()}
         }
         val iconIntent= Intent(activity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.originalProfileImageURLHttps))
         Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
