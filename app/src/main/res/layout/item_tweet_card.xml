@@ -32,17 +32,7 @@
         android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
         />
-      <android.support.v7.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/via"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        />
+
 
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/user_name_text"
@@ -104,17 +94,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_alignStart="@+id/tweet_text"
         android:layout_alignLeft="@+id/tweet_text" />
-      <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/textView_via"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/tweet_text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_alignParentRight="true"
-        android:ellipsize="end"
-        android:singleLine="true"
-        />
       <android.support.v7.widget.RecyclerView
           android:layout_width="match_parent"
           android:layout_height="250dp"
@@ -136,8 +115,17 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorHighlight"
         android:layout_alignLeft="@+id/tweet_text" />
+      <android.support.v7.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/via"
+          android:layout_below="@+id/tools_liner"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_margin="5dp"
+          />
       <android.support.v7.widget.LinearLayoutCompat
-        android:layout_alignParentBottom="true"
+          android:id="@+id/tools_liner"
         android:layout_below="@+id/textView_isRT"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -145,7 +133,7 @@
         android:layout_alignLeft="@id/textView_isRT"
         android:layout_alignStart="@id/textView_isRT"
         >
-          <ImageButton
+          <android.support.v7.widget.AppCompatImageButton
               android:id="@+id/reply"
               android:layout_weight="1"
               android:layout_width="24dp"

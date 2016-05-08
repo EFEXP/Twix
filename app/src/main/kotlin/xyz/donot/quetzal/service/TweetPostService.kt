@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.content.Intent
 import br.com.goncalves.pugnotification.notification.PugNotification
 import twitter4j.StatusUpdate
+import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getTwitterInstance
 import java.io.File
@@ -18,6 +19,7 @@ class TweetPostService() : IntentService("TweetPostService") {
             val updateStatus= intent.getByteArrayExtra("StatusUpdate").getDeserialized<StatusUpdate>()
             if(intent.hasExtra("FilePath")){
                filePath=intent.getStringArrayListExtra("FilePath")
+                NotificationWrapper(applicationContext).sendingNotification(id)
                 val uploadedMediaId = filePath.map {  twitter.uploadMedia(File(it)).mediaId }
                 val array = LongArray(uploadedMediaId.size)
                 var i=0

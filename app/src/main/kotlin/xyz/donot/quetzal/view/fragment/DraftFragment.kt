@@ -31,13 +31,13 @@ class DraftFragment : RxDialogFragment() {
         list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             d("$position Clicked")
             val parent_list=parent as ListView
-            val item=parent_list.getItemAtPosition(position)
+            val item=parent_list.getItemAtPosition(position)as DBDraft
             if(activity is EditTweetActivity){
-                (activity as EditTweetActivity) .changeToDraft(item as DBDraft)
+                (activity as EditTweetActivity) .changeToDraft(item)
                 this@DraftFragment.dismiss()
             }
+            Realm.getDefaultInstance().executeTransaction { item.removeFromRealm() }
         }
-
         return view
     }
 

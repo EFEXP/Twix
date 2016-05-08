@@ -136,12 +136,6 @@ object Regex {
 
                     + "([0-9][0-9\\- \\.][0-9\\- \\.]+[0-9])") // <digit><digit|sdd>+<digit>
 
-    val HASHTAG_PATTERN_OLD = Pattern.compile("#([\\p{L}\\p{InThai}A-Za-z0-9_-]+)")
-
-    val CASHTAG_PATTERN_OLD = Pattern.compile("\\$([\\p{L}\\p{InThai}A-Z]+)")
-
-    val MENTION_PATTERN_OLD = Pattern.compile("@([\\p{L}\\p{InThai}A-Za-z0-9_-]+)")
-
     /**
      * Convenience method to take all of the non-null matching groups in a
      * regex Matcher and return them as a concatenated string.

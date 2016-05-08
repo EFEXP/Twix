@@ -46,7 +46,6 @@ class UserDetailFragment(val userId:Long) : RxFragment()
                 setOnClickListener {
                   TwitterUpdateObservable(context,twitter).destroyFriendShipAsync(userId).subscribe {
                     text = "フォロー"
-                    setBackgroundColor(R.color.cardview_light_background)
                   }
                 }
               } else {
@@ -54,7 +53,6 @@ class UserDetailFragment(val userId:Long) : RxFragment()
                   TwitterUpdateObservable(context,twitter).createFriendShipAsync(userId)
                     .subscribe {
                       text = "フォロー中"
-                      setBackgroundColor(R.color.colorPrimary)
                     }
                 }
               }

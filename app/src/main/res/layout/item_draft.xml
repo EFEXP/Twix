@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:orientation="horizontal"
      android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:minHeight="70dp"
+    android:gravity="center"
+    android:weightSum="5"
     >
-
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="70dp"
-        android:text="nwmg;rkl"
-        android:id="@+id/draft_txt" />
-</RelativeLayout>
+        android:id="@+id/draft_txt"
+        android:layout_weight="4"
+        />
+    <android.support.v7.widget.AppCompatImageButton
+        app:srcCompat="@drawable/ic_check_grey_400_24dp"
+        android:id="@+id/delete_draft"
+        android:background="@android:color/transparent"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+</LinearLayout>
     </layout>

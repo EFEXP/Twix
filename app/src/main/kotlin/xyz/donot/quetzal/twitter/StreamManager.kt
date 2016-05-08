@@ -1,9 +1,6 @@
 package xyz.donot.quetzal.twitter
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
 import org.greenrobot.eventbus.EventBus
 import twitter4j.*
 import xyz.donot.quetzal.event.OnDeleteEvent
@@ -40,8 +37,6 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
       StreamType.RETWEET_STREAM->{}
       StreamType.SAMPLE_STREAM->{stream.sample()}
     }
-      Handler(Looper.getMainLooper()).post {Toast.makeText(context,"ストリームに接続しました",Toast.LENGTH_LONG).show()}
-
   }
     else{
       d("StreamManager", "You Have Already Connected to the Stream ")

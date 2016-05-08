@@ -118,7 +118,7 @@ val twitter by lazy { getTwitterInstance()}
         })
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {
-          val id=Random().nextInt()+1
+          val id=Random().nextInt(100)+1
           NotificationWrapper(this).sendingNotification(id)
           TwitterUpdateObservable(this@EditProfileActivity,twitter)
                   .updateProfileAsync(name = user_name.text.toString(),
