@@ -7,15 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.TextView
+import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmBaseAdapter
-import io.realm.RealmResults
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.DBDraft
 
 class DraftAdapter(context: Context,
-                   realmResults: RealmResults<DBDraft>,
-                   automaticUpdate: Boolean) : RealmBaseAdapter<DBDraft>(context, realmResults, automaticUpdate), ListAdapter {
+                  val  realmResults: OrderedRealmCollection<DBDraft>) : RealmBaseAdapter<DBDraft>(context, realmResults), ListAdapter {
     override fun getView(position: Int, convertView_: View?, parent: ViewGroup): View {
         var convertView = convertView_
         val viewHolder: ViewHolder
@@ -32,7 +31,7 @@ class DraftAdapter(context: Context,
         viewHolder.draft_text?.text = item.text
         viewHolder.delete_draft?.setOnClickListener {
             Realm .getDefaultInstance().executeTransaction {
-                item.removeFromRealm()
+                item.deleteFromRealm()
             }
         }
         Log.d("Realm", item.toString())

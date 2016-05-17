@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 import twitter4j.Status
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
-import xyz.donot.quetzal.util.MediaUtil
+import xyz.donot.quetzal.util.getVideoURL
 import xyz.donot.quetzal.view.activity.PictureActivity
 import xyz.donot.quetzal.view.activity.VideoActivity
 import java.util.*
@@ -29,7 +29,7 @@ class TweetCardPicAdapter(context: Context,val mediaList: ArrayList<String>,val 
                 textView.text="${i+1}/${list.size}"
                 Picasso.with(context).load(item).placeholder(R.drawable.ic_launcher).into(imageView)
                 imageView.setOnClickListener {
-                    val videourl: String? = MediaUtil().getVideoURL(status.mediaEntities,status.extendedMediaEntities)
+                    val videourl: String? = getVideoURL(status.mediaEntities,status.extendedMediaEntities)
                     if (videourl != null) {
                         context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
                     } else {

@@ -24,6 +24,7 @@
       android:id="@+id/editText_status_"
       app:counterEnabled="true"
       app:counterMaxLength="140"
+        app:theme="@style/AppTheme.Design"
       >
 <android.support.v7.widget.AppCompatEditText
   android:layout_width="match_parent"

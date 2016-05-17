@@ -14,9 +14,8 @@ import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.util.getDeserialized
 
 
-class MyUserAccountAdapter(context: Context, resId: Int,
-                           realmResults: RealmResults<DBAccount>,
-                           automaticUpdate: Boolean) : RealmBaseAdapter<DBAccount>(context, realmResults, automaticUpdate), ListAdapter {
+class MyUserAccountAdapter(context: Context,
+                         val  realmResults: RealmResults<DBAccount>) : RealmBaseAdapter<DBAccount>(context, realmResults), ListAdapter {
     override fun getView(position: Int, convertView_: View?, parent: ViewGroup): View {
         var convertView = convertView_
         val viewHolder: ViewHolder

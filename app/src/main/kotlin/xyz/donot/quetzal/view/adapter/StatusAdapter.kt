@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import com.klinker.android.link_builder.LinkBuilder
@@ -29,7 +28,6 @@ import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
 import xyz.donot.quetzal.view.activity.UserActivity
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
-import java.util.*
 
 class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context,list) {
   private val twitter: Twitter by  lazy { getTwitterInstance() }
@@ -37,8 +35,6 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
     return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
   }
   enum class media{
-    EX_MEDIA,
-    MEDIA,
     NONE
   }
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
@@ -52,21 +48,12 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
         list[i]
       }
       //mediaType
-      val type=if(item.extendedMediaEntities.isNotEmpty()){ media.EX_MEDIA }
-      else if(item.mediaEntities.isNotEmpty()){ media.MEDIA }
-      else{ media.NONE }
-      val statusMediaIds=ArrayList<String>()
-      when(type){
-        media.NONE->
-        {
-            viewHolder.binding.tweetCardRecycler.visibility = View.GONE
-        }
-        media.EX_MEDIA->{statusMediaIds.addAll(item.extendedMediaEntities.map { it.mediaURLHttps })
-         }
-        media.MEDIA-> {statusMediaIds.addAll(item.mediaEntities.map { it.mediaURLHttps })
-        }
-      }
-      if(type!= media.NONE){
+        val statusMediaIds=getImageUrls(item)
+
+
+
+
+      if(statusMediaIds.isNotEmpty()){
           val manager = LinearLayoutManager(context).apply {
               orientation = LinearLayoutManager.HORIZONTAL
           }
@@ -77,13 +64,16 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
               hasFixedSize()
           }
       }
+        else{
+          viewHolder.binding.tweetCardRecycler.visibility = View.GONE
+      }
       //ビューホルダー
       viewHolder.binding.apply {
         if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed_24dp)}
         else{like.setImageResource(R.drawable.ic_favorite_grey_400_24dp)}
         if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_retweet_pressed_24dp)}
         else{ retweet.setImageResource(R.drawable.ic_retweet_grey_400_24dp)}
-        via.text=Html.fromHtml(item.source)
+        via.text=getClientName(item.source)
           userNameText.text = item.user.name
         screenName.text = "@${item.user.screenName}"
         textViewDate.text = getRelativeTime(item.createdAt)
@@ -135,7 +125,7 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
           EventBus.getDefault().post(OnCardViewTouchEvent(item))
         }})
         icon.setOnClickListener{context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.user.id))}
-        tweetText.text=item.text
+        tweetText.text=getExpandedText(status = item)
         LinkBuilder.on(tweetText).addLinks(context.getLinkList()).build()
         reply.setOnClickListener{
        val bundle=   Bundle().apply {

@@ -25,7 +25,7 @@ class DraftFragment : RxDialogFragment() {
                .where(DBDraft::class.java)
                .equalTo("accountId",getMyId())
         .findAll()
-        val mAdapter=DraftAdapter(context = context,realmResults =realm,automaticUpdate = true)
+        val mAdapter=DraftAdapter(context = context,realmResults =realm)
         val list=view.findViewById(R.id.draft_list_view) as ListView
         list.adapter=mAdapter
         list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
