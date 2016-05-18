@@ -16,7 +16,7 @@ import xyz.donot.quetzal.event.OnAccountChanged
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.util.RoundCorner
 
-class MyAccountsAdapter(context: Context,list: MutableList<User>):BasicRecyclerAdapter<MyAccountsAdapter.ViewHolder, User>(context,list){
+class MyAccountsAdapter(val context: Context,val list: MutableList<User>):BasicRecyclerAdapter<MyAccountsAdapter.ViewHolder, User>(context,list){
   override fun onBindViewHolder( viewHolder: ViewHolder, i: Int) {
     if (list.size > i ) {
       val  item= list[i]

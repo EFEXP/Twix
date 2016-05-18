@@ -16,8 +16,8 @@ import xyz.donot.quetzal.view.activity.VideoActivity
 import java.util.*
 
 
-class TweetCardPicAdapter(context: Context,val mediaList: ArrayList<String>,val status: Status)
-:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.TweetCardPicAdapter.ViewHolder,String>(context,mediaList) {
+class TweetCardPicAdapter(val context: Context,val list: ArrayList<String>,val status: Status)
+:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.TweetCardPicAdapter.ViewHolder,String>(context, list) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         return ViewHolder(mInflater.inflate(R.layout.item_bitmap, viewGroup, false))
@@ -33,7 +33,7 @@ class TweetCardPicAdapter(context: Context,val mediaList: ArrayList<String>,val 
                     if (videourl != null) {
                         context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videourl))
                     } else {
-                        context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls", mediaList))
+                        context.startActivity(Intent(context, PictureActivity::class.java).putStringArrayListExtra("picture_urls",  list))
                     }
                 }
             }

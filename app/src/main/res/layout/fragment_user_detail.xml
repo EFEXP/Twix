@@ -24,6 +24,7 @@
       android:layout_height="wrap_content"
       android:id="@+id/relation"
       android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
       android:layout_alignBottom="@id/icon_user"
       android:layout_toLeftOf="@+id/icon_user"
       android:layout_toStartOf="@+id/icon_user"
@@ -74,11 +75,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/loading_user"
         android:id="@+id/user_name"
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
-        android:drawableRight="@drawable/ic_lock_grey_400_24dp"
+
         />
   <TextView
     android:layout_width="wrap_content"

@@ -11,7 +11,7 @@ var mRecycler:RecyclerView?=null
 
 abstract class BasicRecyclerAdapter
 <ViewHolder:RecyclerView.ViewHolder,ListItem>
-(internal   val context: Context,internal   val list: MutableList<ListItem>)
+(private    val context: Context,private    val list: MutableList<ListItem>)
 : RecyclerView.Adapter<ViewHolder>(),View.OnClickListener
 {
 

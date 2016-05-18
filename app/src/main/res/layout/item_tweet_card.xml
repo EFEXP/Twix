@@ -42,7 +42,6 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/icon"
         android:textStyle="bold"
-        android:textColor="?android:textColorPrimary"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/icon"
         />

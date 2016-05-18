@@ -15,7 +15,8 @@ import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.SeeMyListActivity
 import java.util.*
 
-class UsersListAdapter( context: Context, list: LinkedList<UserList>) : BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersListAdapter.ViewHolder,UserList>(context,list) {
+class UsersListAdapter(val  context: Context, val list: LinkedList<UserList>)
+: BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersListAdapter.ViewHolder,UserList>(context,list) {
 
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     // 表示するレイアウトを設定

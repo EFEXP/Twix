@@ -10,7 +10,7 @@ import xyz.donot.quetzal.BR
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemTrendBinding
 
-class TrendAdapter(context: Context, list: MutableList<Trend>)
+class TrendAdapter(val context: Context,val list: MutableList<Trend>)
 :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.TrendAdapter.ViewHolder,Trend>(context,list) {
 
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): TrendAdapter.ViewHolder {

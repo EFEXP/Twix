@@ -2,6 +2,7 @@ package xyz.donot.quetzal.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,7 @@ class UserDetailFragment(val userId:Long) : RxFragment()
             else{
               relation.text = "フォローされていません"
             }
+
           }
         }
         else{
@@ -74,7 +76,9 @@ class UserDetailFragment(val userId:Long) : RxFragment()
         Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
         icon_user.setOnClickListener{startActivity(iconIntent)}
         user_name.text=user.name
-        if(!user.isProtected){user_name.setCompoundDrawables(null,null,null,null)}
+        val re=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_vector,null)
+        if(user.isProtected){user_name.setCompoundDrawablesWithIntrinsicBounds(null,null,re,null)}
+
         screen_name.text="@${user.screenName}"
         description.text=user.description.replace("\n","")
         web_txt.text=user.urlEntity.expandedURL
@@ -89,8 +93,10 @@ class UserDetailFragment(val userId:Long) : RxFragment()
         has_list.setOnClickListener{
           startActivity(Intent(activity,ListsActivity::class.java).putExtra("user_id",user.id))
         }
+
       }
     })
+
     return v
   }
 }

@@ -12,7 +12,7 @@ import xyz.donot.quetzal.databinding.ItemUserBinding
 import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.UserActivity
 
-class UsersAdapter( context: Context, list: MutableList<User>) :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersAdapter.ViewHolder,User>(context,list) {
+class UsersAdapter( val context: Context, val list: MutableList<User>) :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersAdapter.ViewHolder,User>(context,list) {
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     // 表示するレイアウトを設定
     return ViewHolder(mInflater.inflate(R.layout.item_user, viewGroup, false))

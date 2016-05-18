@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.*
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -29,7 +30,7 @@ import xyz.donot.quetzal.view.activity.TweetDetailActivity
 import xyz.donot.quetzal.view.activity.UserActivity
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 
-class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context,list) {
+class StatusAdapter(val context: Context,val  list: MutableList<Status>) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context,list) {
   private val twitter: Twitter by  lazy { getTwitterInstance() }
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
     return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
@@ -73,6 +74,13 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
         else{like.setImageResource(R.drawable.ic_favorite_grey_400_24dp)}
         if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_retweet_pressed_24dp)}
         else{ retweet.setImageResource(R.drawable.ic_retweet_grey_400_24dp)}
+          if(item.user.isProtected){
+              val re= ResourcesCompat.getDrawable(context.resources,R.drawable.ic_lock_vector,null)
+              via.setCompoundDrawablesWithIntrinsicBounds(null,null,re,null)
+          }
+          else{
+              via.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null)
+          }
         via.text=getClientName(item.source)
           userNameText.text = item.user.name
         screenName.text = "@${item.user.screenName}"
@@ -112,7 +120,7 @@ class StatusAdapter(context: Context,  list: MutableList<Status>) : BasicRecycle
                 "共有"-> {
                   context. startActivity( Intent().apply {
                     action = Intent.ACTION_SEND
-                    setType("text/plain")
+                      type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT,"@${item.user.screenName}さんのツイート https://twitter.com/${item.user.screenName}/status/${item.id}をチェック")
                   })
                 }

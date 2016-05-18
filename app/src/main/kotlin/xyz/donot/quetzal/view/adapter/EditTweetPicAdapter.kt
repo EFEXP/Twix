@@ -11,7 +11,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
 
 
-class EditTweetPicAdapter(context: Context, list: MutableList<Uri>)
+class EditTweetPicAdapter(val context: Context,val  list: MutableList<Uri>)
 :BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context,list) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
