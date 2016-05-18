@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
@@ -36,15 +35,10 @@ class EditTweetActivity : RxAppCompatActivity() {
   val START_GALLERY :Int=1
     val list=LinkedList<Uri>()
   val intentGallery=
-          if (Build.VERSION.SDK_INT < 19) {
-            Intent(Intent.ACTION_GET_CONTENT)
+            Intent()
+              .setAction(Intent.ACTION_PICK)
                     .setType("image/*")
-          } else {
 
-            Intent(Intent.ACTION_OPEN_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType("image/*")
-          }
     var m_uri:Uri?= null
     var croppingUri:Uri?= null
   val  twitter  by lazy {  getTwitterInstance() }
@@ -116,7 +110,8 @@ class EditTweetActivity : RxAppCompatActivity() {
       }
       add_picture.setOnClickListener {
 
-          if(pic_recycler_view.layoutManager.itemCount<4) {startActivityForResult(intentGallery,START_GALLERY)} }
+          if(pic_recycler_view.layoutManager.itemCount<4) {
+              startActivityForResult(intentGallery,START_GALLERY)} }
 
 //Set
       editText_status.setText("$screenName")
@@ -137,7 +132,7 @@ class EditTweetActivity : RxAppCompatActivity() {
     }
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == AppCompatActivity.RESULT_OK &&data!=null) {
-      val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+   //   val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
       when(requestCode)
       {
           UCrop.REQUEST_CROP->{
@@ -149,7 +144,7 @@ class EditTweetActivity : RxAppCompatActivity() {
             resultUri.let {   addPhotos(it!!) }
         }
        START_GALLERY->{
-         contentResolver.takePersistableUriPermission( data.data, takeFlags)
+     //    contentResolver.takePersistableUriPermission( data.data, takeFlags)
            addPhotos(data.data)
         }
 

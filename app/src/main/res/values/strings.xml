@@ -52,10 +52,21 @@
         <item>Never</item>
     </string-array>
     <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
+    <item>1</item>
+    <item>0</item>
+    <item>-1</item>
+</string-array>
+    <string-array name="night_mode_titles">
+    <item>黒</item>
+    <item>白</item>
+    <item>自動</item>
+</string-array>
+    <string-array name="night_mode_values">
+        <item>black</item>
+        <item>white</item>
+        <item>auto</item>
     </string-array>
+
     <string name="pref_header_app_design">デザイン</string>
     <string name="pref_header_data">データ管理</string>
     <string name="pref_header_general">General</string>
@@ -138,4 +149,5 @@
     <string name="whats_new">お知らせ</string>
     <string name="whats_this_app">ヘルプ</string>
     <string name="my_profile">プロフィール</string>
+    <string name="design_setting">デザイン設定</string>
 </resources>

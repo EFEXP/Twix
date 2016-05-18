@@ -2,7 +2,6 @@ package xyz.donot.quetzal.view.activity
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
@@ -32,16 +31,9 @@ class EditProfileActivity : AppCompatActivity() {
 val twitter by lazy { getTwitterInstance()}
   var iconUri: Uri?=null
   var bannerUri: Uri?=null
-  val intentGallery=
-    if (Build.VERSION.SDK_INT < 19) {
-      Intent(Intent.ACTION_GET_CONTENT)
-        .setType("image/*")
-    } else {
-
-      Intent(Intent.ACTION_OPEN_DOCUMENT)
-        .addCategory(Intent.CATEGORY_OPENABLE)
-        .setType("image/*")
-    }
+  val intentGallery= Intent()
+          .setAction(Intent.ACTION_PICK)
+          .setType("image/*")
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == RESULT_OK&&data!=null) {
       val color=ContextCompat.getColor(this@EditProfileActivity,R.color.colorPrimary)

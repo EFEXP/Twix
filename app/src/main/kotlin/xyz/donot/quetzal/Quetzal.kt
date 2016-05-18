@@ -3,7 +3,6 @@ package xyz.donot.quetzal
 
 import android.app.Application
 import android.app.UiModeManager
-import android.content.Context
 import android.support.v7.app.AppCompatDelegate
 import com.crashlytics.android.Crashlytics
 import com.twitter.sdk.android.Twitter
@@ -12,6 +11,7 @@ import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import org.greenrobot.eventbus.EventBus
+import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
 
 
 class Quetzal : Application() {
@@ -21,7 +21,13 @@ class Quetzal : Application() {
         Fabric.with(this, Twitter(authConfig),Crashlytics())
         Realm.setDefaultConfiguration(RealmConfiguration.Builder(applicationContext).build())
         EventBus.builder().installDefaultEventBus()
-      AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
-      (getSystemService(Context.UI_MODE_SERVICE)as UiModeManager).nightMode = UiModeManager.MODE_NIGHT_AUTO
+      val design=  when(defaultSharedPreferences.getString("night_mode","auto")){
+            "black"->{AppCompatDelegate.MODE_NIGHT_YES}
+            "white"->{AppCompatDelegate.MODE_NIGHT_NO}
+            "auto"->{AppCompatDelegate.MODE_NIGHT_AUTO}
+          else->{AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM}
+        }
+      AppCompatDelegate.setDefaultNightMode(design)
+      (getSystemService(UI_MODE_SERVICE)as UiModeManager).nightMode = UiModeManager.MODE_NIGHT_AUTO
     }
 }

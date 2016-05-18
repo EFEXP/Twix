@@ -4,6 +4,12 @@
     android:icon="@drawable/ic_notifications_grey_400_24dp"
     android:title="@string/pref_header_notifications" />
 
+  <header
+      android:fragment="xyz.donot.quetzal.view.activity.SettingsActivity$DesignPreferenceFragment"
+      android:icon="@drawable/ic_color_lens_grey_400_24dp"
+      android:title="デザイン"/>
+
+
   <!--<header
     android:icon="@drawable/ic_edit_grey_400_24dp"
     android:title="@string/pref_header_data" >

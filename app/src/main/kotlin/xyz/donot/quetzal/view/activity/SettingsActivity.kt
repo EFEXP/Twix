@@ -35,24 +35,38 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     }
 
 
-
-    override fun onIsMultiPane(): Boolean {
-        return isXLargeTablet(this)
-    }
-
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onBuildHeaders(target: List<PreferenceActivity.Header>) {
         loadHeadersFromResource(R.xml.pref_headers, target)
     }
-
+    override fun onIsMultiPane(): Boolean {
+        return isXLargeTablet(this)
+    }
 
     override fun isValidFragment(fragmentName: String): Boolean {
         return PreferenceFragment::class.java.name == fragmentName
                 || NotificationPreferenceFragment::class.java.name == fragmentName
+                ||DesignPreferenceFragment::class.java.name==fragmentName
 
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    class DesignPreferenceFragment : PreferenceFragment() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.pref_design)
+            setHasOptionsMenu(true)
+            bindPreferenceSummaryToValue(findPreference("night_mode"))
+        }
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            val id = item.itemId
+            if (id == android.R.id.home) {
+                startActivity(Intent(activity, SettingsActivity::class.java))
+                return true
+            }
+            return super.onOptionsItemSelected(item)
+        }
+    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class NotificationPreferenceFragment : PreferenceFragment() {
@@ -62,10 +76,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             setHasOptionsMenu(true)
             bindPreferenceSummaryToValue(findPreference("notifications_ringtone"))
         }
-
-
-
-
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
             val id = item.itemId
             if (id == android.R.id.home) {

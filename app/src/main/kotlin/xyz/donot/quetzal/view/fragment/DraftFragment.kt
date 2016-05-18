@@ -36,7 +36,7 @@ class DraftFragment : RxDialogFragment() {
                 (activity as EditTweetActivity) .changeToDraft(item)
                 this@DraftFragment.dismiss()
             }
-            Realm.getDefaultInstance().executeTransaction { item.removeFromRealm() }
+            Realm.getDefaultInstance().executeTransaction { item.deleteFromRealm() }
         }
         return view
     }
