@@ -44,6 +44,7 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
         }
       }
       )}
+
     loadMore()
     swipeLayout.setOnRefreshListener { reload(swipeLayout) }
     return v}
@@ -54,4 +55,5 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
     loadMore()
     sl.isRefreshing=false
   }
+
 }

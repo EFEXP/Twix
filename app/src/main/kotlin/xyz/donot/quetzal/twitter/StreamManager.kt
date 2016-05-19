@@ -6,7 +6,6 @@ import twitter4j.*
 import xyz.donot.quetzal.event.OnDeleteEvent
 import xyz.donot.quetzal.event.OnFavoritedEvent
 import xyz.donot.quetzal.util.extrautils.d
-
 import xyz.donot.quetzal.util.save
 
 
@@ -23,13 +22,14 @@ class StreamManager( val context: Context, val twitter : Twitter, val type:Strea
   }
   val eventBus by lazy { EventBus.getDefault() }
    var isConnected:Boolean
-  val stream by lazy { TwitterStreamFactory().getInstance(twitter.authorization) }
+  private val stream by lazy { TwitterStreamFactory().getInstance(twitter.authorization) }
   init {isConnected =false }
 
   fun run()
   {
     if(!this.isConnected){
       this.isConnected= true
+
     StreamCreateUtil.addStatusListener(stream,MyNotificationAdapter())
     when(type){
       StreamType.USER_STREAM->{stream.user()}

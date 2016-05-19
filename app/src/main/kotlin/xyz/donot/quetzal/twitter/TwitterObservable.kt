@@ -53,7 +53,7 @@ class TwitterObservable(val context: Context,val twitter : Twitter)
   }
   fun getSearchAsync(query:Query): Observable<QueryResult>
   {
-    return safeTry<QueryResult>(context){twitter.search(query)}
+    return safeTry(context){twitter.search(query)}
   }
   fun getUserSearchAsync(query:String,page:Int): Observable<ResponseList<User>>
   {
@@ -62,12 +62,12 @@ class TwitterObservable(val context: Context,val twitter : Twitter)
   }
 
   fun showStatusAsync(statusId:Long) :Observable<Status>{
-    return safeTry<Status>(context){twitter.showStatus(statusId)}
+    return safeTry(context){twitter.showStatus(statusId)}
   }
 
 
  fun showUser(long: Long) :Observable<User>{
-   return safeTry<User>(context){twitter.showUser(long)}
+   return safeTry(context){twitter.showUser(long)}
  }
   fun showUser(longArray: LongArray) : Observable<ResponseList<User>>{
     return safeTry(context){twitter.users().lookupUsers(*longArray)}

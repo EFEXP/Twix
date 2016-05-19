@@ -1,30 +1,9 @@
 package xyz.donot.quetzal.view.activity
 
-import android.content.Intent
-import android.os.Bundle
-import android.support.design.widget.Snackbar
-import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.SignUpEvent
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
-import com.twitter.sdk.android.Twitter
-import com.twitter.sdk.android.core.Callback
-import com.twitter.sdk.android.core.Result
-import com.twitter.sdk.android.core.TwitterException
-import com.twitter.sdk.android.core.TwitterSession
-import io.realm.Realm
-import kotlinx.android.synthetic.main.activity_initial.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_initial.*
-import twitter4j.TwitterFactory
-import twitter4j.auth.AccessToken
-import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBAccount
-import xyz.donot.quetzal.twitter.TwitterObservable
-import xyz.donot.quetzal.util.getSerialized
-import xyz.donot.quetzal.util.showSnackbar
 
 
-class InitialActivity : RxAppCompatActivity() {
+class InitialActivity : RxAppCompatActivity() {/*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
@@ -109,5 +88,5 @@ class InitialActivity : RxAppCompatActivity() {
     super.onActivityResult(requestCode, resultCode, data)
     twitter_login_button.onActivityResult(requestCode, resultCode, data)
   }
-
+*/
 }

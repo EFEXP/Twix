@@ -21,9 +21,7 @@ import java.util.concurrent.TimeUnit
 fun getPictureStorePath(): File {
   return  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 }
-fun getFabricTwitterInstance(): com.twitter.sdk.android.Twitter {
-  return com.twitter.sdk.android.Twitter.getInstance()
-}
+
 
 fun isIgnore(id: Long): Boolean {
  return  Realm.getDefaultInstance().where(DBMuteUser::class.java)

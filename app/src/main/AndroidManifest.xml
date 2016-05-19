@@ -105,7 +105,8 @@
             android:name=".service.TweetPostService"
             android:exported="false" />
 
-        <activity android:name=".view.activity.AppSettingActivity"></activity>
+
+        <activity android:name=".view.activity.TwitterOauthActivity"/>
     </application>
 
 </manifest>

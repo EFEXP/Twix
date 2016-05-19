@@ -116,6 +116,7 @@ class EditTweetActivity : RxAppCompatActivity() {
 //Set
       editText_status.setText("$screenName")
       reply_for_status.text=statusTxt
+        editText_status.setSelection(editText_status.editableText.count())
       send_status.setOnClickListener{
         val updateStatus= StatusUpdate(editText_status.text.toString())
           updateStatus.inReplyToStatusId=statusId

@@ -41,7 +41,7 @@ class MainActivity : RxAppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (!haveToken()) {
-      startActivity(intent<InitialActivity>())
+      startActivity(intent<TwitterOauthActivity>())
       finish()
     } else {
       setContentView(R.layout.activity_main)
