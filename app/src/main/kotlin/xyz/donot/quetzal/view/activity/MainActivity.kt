@@ -26,6 +26,7 @@ import xyz.donot.quetzal.twitter.StreamType
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
+import xyz.donot.quetzal.util.extrautils.fromApi
 import xyz.donot.quetzal.util.extrautils.intent
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.extrautils.toast
@@ -76,6 +77,7 @@ class MainActivity : RxAppCompatActivity() {
             }
             R.id.action_account -> {
               start<AccountSettingActivity>()
+              finish()
               drawer_layout.closeDrawers()
             }
             R.id.action_list -> {
@@ -115,7 +117,7 @@ class MainActivity : RxAppCompatActivity() {
       button_tweet.setOnClickListener(
               {
 
-                if (!editText_status.editableText.isNullOrBlank()) {
+                if (!editText_status.editableText.isNullOrBlank()&&editText_status.text.count()<=140) {
                   val tObserver = TwitterUpdateObservable(this@MainActivity,twitter);
                   tObserver.updateStatusAsync(editText_status.editableText.toString())
                           .bindToLifecycle(this@MainActivity)
@@ -139,12 +141,14 @@ class MainActivity : RxAppCompatActivity() {
 
     eventbus.register(this@MainActivity)
     //パーミッション要求
+    fromApi(23, true){
     val EX_WRITE=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
+    val LOCATION=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.LOCATION_HARDWARE)==PackageManager.PERMISSION_GRANTED
     val EX_READ=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
-    if(!(EX_WRITE&&EX_READ)){
-      requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE),REQUEST_WRITE_READ)
+    if(!(EX_WRITE&&EX_READ&&LOCATION)){
+      requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.LOCATION_HARDWARE),REQUEST_WRITE_READ)
     }
-
+    }
 
   }
 

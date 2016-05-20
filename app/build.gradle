@@ -1,26 +1,29 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     dataBinding {
         enabled = true
     }
+
     defaultConfig {
         applicationId "xyz.donot.quetzal"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 15
-        versionName "1.1.12"
+        versionCode 16
+        versionName "1.1.13"
         vectorDrawables.useSupportLibrary = true
 
     }
 
+
     buildTypes {
         release {
+
             shrinkResources true
             minifyEnabled true
             manifestPlaceholders = [appName: "@string/app_name"]
@@ -40,9 +43,6 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
     }
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
     project.ext.versionCodes = ['armeabi': 1, 'armeabi-v7a': 2, 'arm64-v8a': 3, 'mips': 5, 'mips64': 6, 'x86': 8, 'x86_64': 9]
     splits {
         abi {
@@ -53,7 +53,6 @@ android {
         }
     }
     android.applicationVariants.all { variant ->
-        // assign different version code for each output
         variant.outputs.each { output ->
             output.versionCodeOverride =
                     project.ext.versionCodes.get(output.getFilter(com.android.build.OutputFile.ABI), 0) * 1000000 + android.defaultConfig.versionCode
@@ -64,7 +63,7 @@ android {
 
 dependencies {
     def supportLibVersion = "23.4.0"
-    def realmVersion = "0.90.1"
+    def realmVersion = "0.91.0"
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //realm
@@ -76,9 +75,6 @@ dependencies {
     compile "com.android.support:customtabs:${supportLibVersion}"
     compile "com.android.support:support-v4:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-        transitive = true;
-    }
     compile 'com.squareup.picasso:picasso:2.5.2'
     kapt 'org.greenrobot:eventbus:3.0.0'
     kapt 'com.android.databinding:compiler:2.1.0'
@@ -92,13 +88,14 @@ dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.4'
     compile 'org.twitter4j:twitter4j-media-support:4.0.4'
     compile 'org.twitter4j:twitter4j-stream:4.0.4'
-    compile 'com.commit451:PhotoView:1.2.4'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.trello:rxlifecycle-components:0.6.1'
     compile 'com.klinkerapps:link_builder:1.3.2@aar'
-    compile 'com.yalantis:ucrop:2.0.0@aar'
+    compile 'com.yalantis:ucrop:1.5.0@aar'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
-    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.google.firebase:firebase-core:9.0.0'
+    compile 'com.google.firebase:firebase-crash:9.0.0'
 }
 kapt {
     generateStubs = true
@@ -114,13 +111,12 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
-        classpath 'io.fabric.tools:gradle:1.21.5'
     }
 }
 repositories {
     mavenCentral()
     jcenter()
-    maven { url 'https://maven.fabric.io/public' }
+ //   maven { url 'https://maven.fabric.io/public' }
 }
-
+apply plugin: 'com.google.gms.google-services'
 

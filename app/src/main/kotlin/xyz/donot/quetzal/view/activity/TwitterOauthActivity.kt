@@ -7,8 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.SignUpEvent
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_twitter_oauth.*
@@ -73,10 +72,10 @@ class TwitterOauthActivity : RxAppCompatActivity() {
 
     fun saveToken(x: Twitter) {
      safeTry(this@TwitterOauthActivity){
-            Answers.getInstance().logSignUp(SignUpEvent()
-                    .putMethod("Twitter")
-                    .putCustomAttribute("UserName",x.screenName)
-                    .putSuccess(true))
+         val params =Bundle()
+         params.putString(FirebaseAnalytics.Param.VALUE, x.screenName)
+         FirebaseAnalytics.getInstance(this@TwitterOauthActivity).logEvent(FirebaseAnalytics.Event.LOGIN, params);
+
 
         Realm.getDefaultInstance().use {
             realm->

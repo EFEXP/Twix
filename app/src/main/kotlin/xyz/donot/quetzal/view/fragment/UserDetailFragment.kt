@@ -76,7 +76,7 @@ class UserDetailFragment(val userId:Long) : RxFragment()
         Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
         icon_user.setOnClickListener{startActivity(iconIntent)}
         user_name.text=user.name
-        val re=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_vector,null)
+        val re=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_grey_400_18dp,null)
         if(user.isProtected){user_name.setCompoundDrawablesWithIntrinsicBounds(null,null,re,null)}
 
         screen_name.text="@${user.screenName}"

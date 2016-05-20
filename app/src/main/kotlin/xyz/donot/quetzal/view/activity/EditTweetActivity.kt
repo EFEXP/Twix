@@ -118,6 +118,7 @@ class EditTweetActivity : RxAppCompatActivity() {
       reply_for_status.text=statusTxt
         editText_status.setSelection(editText_status.editableText.count())
       send_status.setOnClickListener{
+          if(editText_status.text.count()<=140){
         val updateStatus= StatusUpdate(editText_status.text.toString())
           updateStatus.inReplyToStatusId=statusId
           val filePathList =ArrayList<String>()
@@ -127,7 +128,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                   .putStringArrayListExtra("FilePath",filePathList))
 
           finish()
-      }
+      }}
 
 
     }

@@ -26,8 +26,8 @@
     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
     android:text="@{trend.name}"
     android:id="@+id/trend_txt"
-    android:drawableLeft="@drawable/ic_whatshot_vector"
-      android:drawableStart="@drawable/ic_whatshot_vector"
+    android:drawableLeft="@drawable/ic_whatshot_accent_18dp"
+      android:drawableStart="@drawable/ic_whatshot_accent_18dp"
     />
 </LinearLayout>
   </android.support.v7.widget.CardView>

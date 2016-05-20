@@ -3,8 +3,7 @@ package xyz.donot.quetzal
 import android.app.Application
 import android.app.UiModeManager
 import android.support.v7.app.AppCompatDelegate
-import com.crashlytics.android.Crashlytics
-import io.fabric.sdk.android.Fabric
+
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import org.greenrobot.eventbus.EventBus
@@ -15,8 +14,7 @@ import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
 class Quetzal : Application() {
     override fun onCreate() {
         super.onCreate()
-      //  val authConfig = TwitterAuthConfig(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret))
-        Fabric.with(this,  Crashlytics())
+
         Realm.setDefaultConfiguration(RealmConfiguration.Builder(applicationContext).build())
         EventBus.builder().installDefaultEventBus()
       val design=  when(defaultSharedPreferences.getString("night_mode","auto")){

@@ -48,12 +48,9 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
         viewHolder.binding.textViewIsRT.visibility=View.GONE
         list[i]
       }
+
       //mediaType
         val statusMediaIds=getImageUrls(item)
-
-
-
-
       if(statusMediaIds.isNotEmpty()){
           val manager = LinearLayoutManager(context).apply {
               orientation = LinearLayoutManager.HORIZONTAL
@@ -70,12 +67,24 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
       }
       //ビューホルダー
       viewHolder.binding.apply {
+          //引用
+          if(item.quotedStatus!=null){
+             itemQuotedTweet.visibility= View.VISIBLE
+              val q=item.quotedStatus
+             quotedUserName.text=q.user.name
+           quotedScreenName.text="@${q.user.screenName}"
+             quotedText.text=q.text
+              Picasso.with(context).load(q.user.profileImageURLHttps).transform(RoundCorner()).into(quotedIcon)
+          }else{
+           itemQuotedTweet.visibility=View.GONE
+          }
         if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed_24dp)}
         else{like.setImageResource(R.drawable.ic_favorite_grey_400_24dp)}
         if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_retweet_pressed_24dp)}
         else{ retweet.setImageResource(R.drawable.ic_retweet_grey_400_24dp)}
           if(item.user.isProtected){
-              val re= ResourcesCompat.getDrawable(context.resources,R.drawable.ic_lock_vector,null)
+
+              val re= ResourcesCompat.getDrawable(context.resources,R.drawable.ic_lock_grey_400_18dp,null)
               via.setCompoundDrawablesWithIntrinsicBounds(null,null,re,null)
           }
           else{
@@ -176,10 +185,16 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
 
     }
   }
+
+
+
   inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
    val binding :ItemTweetCardBinding
+
+
     init {
       binding = DataBindingUtil.bind(itemView)
+
     }
   }
 
