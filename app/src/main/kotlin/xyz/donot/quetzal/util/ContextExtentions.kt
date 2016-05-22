@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.content.ContextCompat
-import android.widget.Toast
 import com.klinker.android.link_builder.Link
 import org.greenrobot.eventbus.EventBus
 import twitter4j.TwitterException
@@ -20,7 +19,7 @@ import xyz.donot.quetzal.view.activity.UserActivity
 fun Context.twitterEx(exception: TwitterException)
 {
   fun toast(message: String) {
-    Handler(Looper.getMainLooper()).post {  Toast.makeText(this, message, Toast.LENGTH_LONG).show()  }
+    Handler(Looper.getMainLooper()).post { toast( message)  }
 
   }
   when(exception.errorCode)

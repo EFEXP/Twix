@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import com.klinker.android.link_builder.LinkBuilder
 import com.squareup.picasso.Picasso
 import org.greenrobot.eventbus.EventBus
+import rx.lang.kotlin.AsyncSubject
 import twitter4j.Status
 import twitter4j.Twitter
 import xyz.donot.quetzal.R
@@ -165,21 +166,13 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
         }
         like.setOnClickListener{
          if(!item.isFavorited){
-          TwitterUpdateObservable(context,twitter).createLikeAsync(item.id).subscribe(
-           object : TwitterSubscriber(context) {
-             override fun onStatus(status: Status) {
-               super.onStatus(status)
-               reload(status)
-             }
-           }) }
+             val t= AsyncSubject<Status>()
+             t.onNext(twitter.createFavorite(item.id))
+             t.subscribe { reload(it) } }
           else{
-           TwitterUpdateObservable(context,twitter).deleteLikeAsync(item.id).subscribe(
-             object : TwitterSubscriber(context) {
-               override fun onStatus(status: Status) {
-                 super.onStatus(status)
-                 reload(status)
-               }
-             })
+            val t= AsyncSubject<Status>()
+             t.onNext(twitter.destroyFavorite(item.id))
+             t.subscribe { reload(it) }
          }
       }}
 

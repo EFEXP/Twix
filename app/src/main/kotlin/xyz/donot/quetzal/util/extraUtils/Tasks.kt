@@ -11,7 +11,7 @@ private val uiHandler = Handler(Looper.getMainLooper())
  * Executes the provided code immediately on the UI Thread
  *
  */
-public fun Any?.mainThread(runnable: () -> Unit) {
+ fun mainThread(runnable: () -> Unit) {
   uiHandler.post(runnable)
 }
 
@@ -19,7 +19,7 @@ public fun Any?.mainThread(runnable: () -> Unit) {
  * Executes the provided code immediately on a background thread
  *
  */
-public fun Any?.async(runnable: () -> Unit) {
+ fun async(runnable: () -> Unit) {
   Thread(runnable).start()
 }
 
@@ -30,6 +30,6 @@ public fun Any?.async(runnable: () -> Unit) {
  * @param onBackgroundJob Interface that wraps the code to execute
  * @param executor        Will queue the provided code
  */
-public fun Any?.async(runnable: () -> Unit, executor: ExecutorService): Future<out Any?> {
+ fun async(runnable: () -> Unit, executor: ExecutorService): Future<out Any?> {
   return executor.submit(runnable)
 }

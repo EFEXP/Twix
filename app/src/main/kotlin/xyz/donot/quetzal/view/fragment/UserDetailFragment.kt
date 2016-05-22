@@ -27,11 +27,12 @@ import xyz.donot.quetzal.view.activity.UsersActivity
 import java.text.SimpleDateFormat
 
 
-class UserDetailFragment(val userId:Long) : RxFragment()
+class UserDetailFragment() : RxFragment()
 {
   val twitter by lazy { getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
+    val userId: Long = arguments.getLong("userId")
     TwitterObservable(context,twitter).showUser(userId)
      .bindToLifecycle(this@UserDetailFragment)
     .subscribe (object : TwitterUserSubscriber(activity) {

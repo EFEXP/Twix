@@ -1,5 +1,6 @@
 package xyz.donot.quetzal.view.adapter
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -12,7 +13,10 @@ class AnyUserTimeLineAdapter(fm: FragmentManager, val userId:Long) : FragmentPag
 {
 override fun getItem(position: Int): Fragment {
   return when(position){
-    0-> UserDetailFragment(userId)
+    0-> {
+      UserDetailFragment().apply {
+        arguments=   Bundle().apply { putLong("userId",userId) }
+      }}
     1->object :TimeLine(){
       override fun loadMore() {
         twitterObservable.getUserTimelineAsync(userId, Paging(page)).subscribe {mAdapter.addAll(it)}

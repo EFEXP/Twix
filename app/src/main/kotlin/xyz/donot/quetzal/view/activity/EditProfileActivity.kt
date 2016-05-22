@@ -22,6 +22,7 @@ import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getPath
+import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.util.getTwitterInstance
 import java.io.File
 import java.util.*
@@ -118,6 +119,14 @@ val twitter by lazy { getTwitterInstance()}
                           description = description.text.toString(),
                           url = web.text.toString())
           .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
+            override fun onNext(user: User) {
+              super.onNext(user)
+              val bundle =  Bundle()
+              bundle.putByteArray("userObject",user.getSerialized())
+              setResult(RESULT_OK,Intent().putExtras(bundle));
+              finish()
+            }
+
             override fun onCompleted() {
               super.onCompleted()
               longToast("更新しました")
@@ -125,10 +134,12 @@ val twitter by lazy { getTwitterInstance()}
             }
           })
           if (bannerUri != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, bannerUri!!)))
+            TwitterUpdateObservable(this@EditProfileActivity,twitter)
+                    .profileImageUpdateAsync(File(getPath(this@EditProfileActivity, bannerUri!!)))
           }
           if (iconUri != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, iconUri!!))).subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
+            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, iconUri!!)))
+                    .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
               override fun onCompleted() {
                 super.onCompleted()
               longToast("画像更新しました")
@@ -136,8 +147,6 @@ val twitter by lazy { getTwitterInstance()}
               }
             })
           }
-
-          finish()
 
         }
     }

@@ -134,7 +134,6 @@ class EditTweetActivity : RxAppCompatActivity() {
     }
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == AppCompatActivity.RESULT_OK &&data!=null) {
-   //   val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
       when(requestCode)
       {
           UCrop.REQUEST_CROP->{
@@ -146,7 +145,6 @@ class EditTweetActivity : RxAppCompatActivity() {
             resultUri.let {   addPhotos(it!!) }
         }
        START_GALLERY->{
-     //    contentResolver.takePersistableUriPermission( data.data, takeFlags)
            addPhotos(data.data)
         }
 

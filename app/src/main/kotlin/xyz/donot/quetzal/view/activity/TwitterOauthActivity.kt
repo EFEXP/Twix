@@ -72,10 +72,12 @@ class TwitterOauthActivity : RxAppCompatActivity() {
 
     fun saveToken(x: Twitter) {
      safeTry(this@TwitterOauthActivity){
+         val fire=  FirebaseAnalytics.getInstance(this@TwitterOauthActivity)
          val params =Bundle()
          params.putString(FirebaseAnalytics.Param.VALUE, x.screenName)
-         FirebaseAnalytics.getInstance(this@TwitterOauthActivity).logEvent(FirebaseAnalytics.Event.LOGIN, params);
-
+         
+         fire.logEvent(FirebaseAnalytics.Event.LOGIN, params);
+         fire.logEvent("Start App",   Bundle().apply { putString("name",x.screenName) })
 
         Realm.getDefaultInstance().use {
             realm->
@@ -121,7 +123,7 @@ class TwitterOauthActivity : RxAppCompatActivity() {
     }
     private fun showProgress() {
         waitDialog = ProgressDialog(this)
-        waitDialog?.setMessage("まずはメインアカウントの認証です！")
+        waitDialog?.setMessage("まずはアカウントの認証をしましょう！")
         waitDialog?.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         waitDialog?.show();
     }

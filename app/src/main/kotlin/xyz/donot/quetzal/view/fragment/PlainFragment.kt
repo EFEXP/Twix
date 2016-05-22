@@ -10,9 +10,12 @@ import android.view.ViewGroup
 import com.trello.rxlifecycle.components.support.RxDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
+import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import org.greenrobot.eventbus.EventBus
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterObservable
+import xyz.donot.quetzal.util.extrautils.hide
+import xyz.donot.quetzal.util.extrautils.show
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.listener.OnLoadMoreListener
 
@@ -49,11 +52,13 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
     swipeLayout.setOnRefreshListener { reload(swipeLayout) }
     return v}
     fun reload(sl:SwipeRefreshLayout){
+      progress_bar_load.show()
    page=0
     data.clear()
     mAdapter.notifyDataSetChanged()
     loadMore()
     sl.isRefreshing=false
+      progress_bar_load.hide()
   }
 
 }

@@ -33,7 +33,7 @@
 }
 
 -dontwarn com.squareup.okhttp.**
--keepattributes SourceFile,LineNumberTable,*Annotation*
+
 
 #twitter4j
 -dontwarn twitter4j.**
@@ -46,13 +46,11 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
-
-
 -dontwarn javax.**
 -dontwarn android.databinding.**
 -keep class xyz.donot.quetzal.view.activity.MainActivity { *; }
+-keep class xyz.donot.quetzal.util.RoundCorner{*;}
 -dontwarn xyz.donot.**
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
+
 
 
