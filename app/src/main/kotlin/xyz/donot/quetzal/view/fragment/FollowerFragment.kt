@@ -7,8 +7,8 @@ class FollowerFragment: UsersWatcher()
 {
     private var cursor :Long
     internal var load=true
-    val userId:Long by lazy { arguments.getLong("userId") }
-    val mode:Int by lazy { arguments.getInt("mode") }
+   private  val userId:Long by lazy { arguments.getLong("userId") }
+    private   val mode:Int by lazy {arguments.getInt("mode")  }
     companion object{
        val FOLLOWER=0
         val FRIEND=1

@@ -1,24 +1,25 @@
 package xyz.donot.quetzal.view.adapter
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import xyz.donot.quetzal.view.fragment.FollowerFragment
 
-class FFAdapter(val userId:Long,fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class FFAdapter(val mUserId:Long,fm: FragmentManager) : FragmentPagerAdapter(fm) {
   override fun getItem(position: Int): Fragment {
     return when(position){
       0-> FollowerFragment()
       .apply {
-        arguments.apply {
-          putLong("userId",userId)
+        arguments= Bundle().apply {
+          putLong("userId",mUserId)
           putInt("mode",FollowerFragment.FRIEND)
         }
       }
       1-> FollowerFragment()
               .apply {
-                arguments.apply {
-                  putLong("userId",userId)
+                arguments= Bundle().apply {
+                  putLong("userId",mUserId)
                   putInt("mode",FollowerFragment.FOLLOWER)
                 }
               }
