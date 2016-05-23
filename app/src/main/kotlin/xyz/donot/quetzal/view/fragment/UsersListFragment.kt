@@ -18,7 +18,9 @@ import xyz.donot.quetzal.view.adapter.UsersListAdapter
 import xyz.donot.quetzal.view.listener.OnLoadMoreListener
 import java.util.*
 
-class UsersListFragment(val userId:Long) : RxFragment() {
+class UsersListFragment: RxFragment() {
+
+
   val twitter by lazy {getTwitterInstance() }
   val data by lazy { LinkedList<UserList>() }
   val mAdapter by lazy { UsersListAdapter(context,data) }
@@ -27,6 +29,7 @@ class UsersListFragment(val userId:Long) : RxFragment() {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     val recycler=v.findViewById(R.id.base_recycler_view)as RecyclerView
+
     recycler.apply{
       itemAnimator= OvershootInRightAnimator(0.1f)
       adapter = AlphaInAnimationAdapter(mAdapter)
@@ -42,6 +45,7 @@ class UsersListFragment(val userId:Long) : RxFragment() {
   }
 
   fun TimelineLoader(){
+    val userId=  arguments.getLong("userId")
     if(userId==0L) {
       TwitterObservable(context,twitter).showOwnUsersList(getMyId(), cursor)
         .subscribe {

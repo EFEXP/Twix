@@ -14,7 +14,11 @@ class SeeMyListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_see_my_list)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
-      supportFragmentManager.beginTransaction().add(R.id.container, SeeMyListFragment(listId)).commitAllowingStateLoss()
+      supportFragmentManager.beginTransaction().add(R.id.container, SeeMyListFragment()
+      .apply {
+          arguments= Bundle().apply { putLong("listId",listId) }
+      }
+      ).commitAllowingStateLoss()
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {

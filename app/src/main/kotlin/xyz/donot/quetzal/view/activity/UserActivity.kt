@@ -39,7 +39,10 @@ class UserActivity : RxAppCompatActivity() {
     banner.setOnClickListener{startActivity(Intent(this@UserActivity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
-    viewpager_user.adapter=AnyUserTimeLineAdapter(supportFragmentManager,user.id)
+   val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
+    adapter.userId=userId
+    viewpager_user.adapter=adapter
+
     tabs_user.setupWithViewPager(viewpager_user)
   }
 }

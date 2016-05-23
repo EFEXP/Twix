@@ -9,8 +9,11 @@ import xyz.donot.quetzal.view.fragment.TimeLine
 import xyz.donot.quetzal.view.fragment.UserDetailFragment
 
 
-class AnyUserTimeLineAdapter(fm: FragmentManager, val userId:Long) : FragmentPagerAdapter(fm)
+class AnyUserTimeLineAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm)
 {
+
+var userId:Long=0
+
 override fun getItem(position: Int): Fragment {
   return when(position){
     0-> {

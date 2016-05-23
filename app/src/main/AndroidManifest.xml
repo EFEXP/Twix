@@ -32,10 +32,6 @@
             android:label="@string/title_activity_initial"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="6a54bc1be9e7f263796a0d1ea143f2f29dcbd3fe" />
-
         <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/title_activity_account_setting"
@@ -44,7 +40,9 @@
         <activity
             android:name=".view.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+
+            />
         <activity
             android:name=".view.activity.PictureActivity"
             android:label="@string/title_activity_picture"
@@ -106,7 +104,9 @@
             android:exported="false" />
 
 
-        <activity android:name=".view.activity.TwitterOauthActivity"/>
+        <activity android:name=".view.activity.TwitterOauthActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

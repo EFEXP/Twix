@@ -1,5 +1,6 @@
 package xyz.donot.quetzal.view.adapter
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -10,7 +11,9 @@ import xyz.donot.quetzal.view.fragment.UsersWatcher
 class SearchAdapter(val txt:String,fm: FragmentManager) : FragmentPagerAdapter(fm) {
   override fun getItem(position: Int): Fragment {
     return when(position){
-      0-> SearchTweet(txt)
+      0-> SearchTweet().apply { arguments= Bundle().apply {
+        putString("query_txt",txt)
+      } }
       1->object : UsersWatcher(){
         override fun loadMore() {
           twitterObservable.getUserSearchAsync(txt,page).subscribe(userSubscriber)

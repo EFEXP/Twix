@@ -3,11 +3,22 @@ package xyz.donot.quetzal.view.fragment
 import xyz.donot.quetzal.util.bindToLifecycle
 
 
-class FollowerFragment(val userId:Long,val mode:Mode): UsersWatcher()
+class FollowerFragment: UsersWatcher()
 {
+    private var cursor :Long
+    internal var load=true
+    val userId:Long by lazy { arguments.getLong("userId") }
+    val mode:Int by lazy { arguments.getInt("mode") }
+    companion object{
+       val FOLLOWER=0
+        val FRIEND=1
+    }
+    init {
+        cursor=-1L
+    }
   override fun loadMore() {
     when(mode){
-      Mode.Friend->{
+      FRIEND->{
         twitterObservable.getFriendsAsync(userId, cursor)
           .bindToLifecycle(this@FollowerFragment)
           .subscribe {
@@ -18,7 +29,7 @@ class FollowerFragment(val userId:Long,val mode:Mode): UsersWatcher()
             else{load=false}
           }
       }
-      Mode.Follower->{
+        FOLLOWER->{
         twitterObservable.getFollowerAsync(userId, cursor)
           .bindToLifecycle(this@FollowerFragment)
           .subscribe {
@@ -30,12 +41,6 @@ class FollowerFragment(val userId:Long,val mode:Mode): UsersWatcher()
           }
 
       }}
-  }
-  internal var cursor = -1L
-  internal var load=true
-  enum class Mode{
-    Follower,
-    Friend
   }
 }
 

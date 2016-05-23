@@ -81,7 +81,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_list -> {
-              start<ListsActivity>()
+              start<ListsActivity>(Bundle().apply { putLong("user_id",getMyId()) })
               drawer_layout.closeDrawers()
             }
             R.id.action_whats_new -> {
@@ -143,10 +143,14 @@ class MainActivity : RxAppCompatActivity() {
     //パーミッション要求
     fromApi(23, true){
     val EX_WRITE=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-    val LOCATION=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.LOCATION_HARDWARE)==PackageManager.PERMISSION_GRANTED
+    val LOCATION=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED
     val EX_READ=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
     if(!(EX_WRITE&&EX_READ&&LOCATION)){
-      requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.LOCATION_HARDWARE),REQUEST_WRITE_READ)
+      requestPermissions(
+              arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE
+              ,Manifest.permission.READ_EXTERNAL_STORAGE
+              ,Manifest.permission.ACCESS_FINE_LOCATION)
+              ,REQUEST_WRITE_READ)
     }
     }
 

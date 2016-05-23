@@ -17,7 +17,9 @@ class ListsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lists)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.setNavigationOnClickListener { finish() }
-        supportFragmentManager.beginTransaction().add(R.id.container, UsersListFragment(userId)).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().add(R.id.container,
+                UsersListFragment().apply { arguments= Bundle().apply { putLong("userId",userId) } }
+        ).commitAllowingStateLoss()
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {
               CreateListDialog().apply {

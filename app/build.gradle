@@ -32,7 +32,7 @@ android {
         debug {
             shrinkResources true
             applicationIdSuffix ".debug"
-            minifyEnabled true
+            minifyEnabled false
             manifestPlaceholders = [appName: "QuetzalDEBUG"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -82,8 +82,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'io.reactivex:rxkotlin:0.55.0'
     compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7-kotlin:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:0.4.0'
     compile 'org.twitter4j:twitter4j-core:4.0.4'
     compile 'org.twitter4j:twitter4j-media-support:4.0.4'
     compile 'org.twitter4j:twitter4j-stream:4.0.4'

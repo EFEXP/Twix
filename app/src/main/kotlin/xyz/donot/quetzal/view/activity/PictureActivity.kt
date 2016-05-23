@@ -16,7 +16,9 @@ class PictureActivity : AppCompatActivity() {
         toolbar.inflateMenu(R.menu.picture_menu)
         toolbar.setNavigationOnClickListener { finish() }
         val strings = intent.extras.getStringArrayList("picture_urls")
+        val starts = intent.extras.getInt("starts_with",0)
         pager.adapter = PicturePagerAdapter(supportFragmentManager, strings)
+        pager.currentItem=starts
         toolbar.setOnMenuItemClickListener {
         when(it.itemId){
           R.id.save_it->{

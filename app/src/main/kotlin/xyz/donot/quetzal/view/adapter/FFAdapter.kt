@@ -8,8 +8,20 @@ import xyz.donot.quetzal.view.fragment.FollowerFragment
 class FFAdapter(val userId:Long,fm: FragmentManager) : FragmentPagerAdapter(fm) {
   override fun getItem(position: Int): Fragment {
     return when(position){
-      0-> FollowerFragment(userId, FollowerFragment.Mode.Friend)
-      1-> FollowerFragment(userId, FollowerFragment.Mode.Follower)
+      0-> FollowerFragment()
+      .apply {
+        arguments.apply {
+          putLong("userId",userId)
+          putInt("mode",FollowerFragment.FRIEND)
+        }
+      }
+      1-> FollowerFragment()
+              .apply {
+                arguments.apply {
+                  putLong("userId",userId)
+                  putInt("mode",FollowerFragment.FOLLOWER)
+                }
+              }
       else->throw  IllegalStateException()
     }}
 
