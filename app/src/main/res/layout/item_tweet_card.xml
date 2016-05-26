@@ -104,9 +104,7 @@
           android:layout_alignStart="@+id/tweet_text"
           android:layout_below="@+id/tweet_card_recycler"
           android:layout_alignLeft="@+id/tweet_text"
-
           >
-
         <android.support.v7.widget.AppCompatImageView
             android:layout_width="40sp"
             android:layout_height="40sp"
@@ -142,14 +140,22 @@
             android:layout_alignLeft="@+id/quoted_user_name"
             android:layout_alignStart="@+id/quoted_user_name" />
       </RelativeLayout>
-
-
       <!--一時的-->
+      <io.github.kexanie.library.MathView
+          android:id="@+id/math_view"
+          android:minHeight="70dp"
+          android:layout_height="wrap_content"
+          android:layout_width="match_parent"
+          android:layout_below ="@+id/item_quoted_tweet"
+          android:layout_alignStart="@+id/tweet_text"
+          android:layout_alignLeft="@+id/tweet_text"
+          android:visibility="gone"
+          />
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item_quoted_tweet"
+        android:layout_below="@+id/math_view"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_alignStart="@+id/tweet_text"
         android:layout_alignLeft="@+id/tweet_text" />

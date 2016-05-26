@@ -14,12 +14,14 @@ import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.adapter.AnyUserTimeLineAdapter
 
 class UserActivity : RxAppCompatActivity() {
-  val userId by lazy { intent.getLongExtra("user_id",0L) }
-  val userName by lazy { intent.getStringExtra("user_name") }
+  var userId :Long=0
+
+    val userName by lazy { intent.getStringExtra("user_name") }
   val twitter by lazy {getTwitterInstance()}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
+        userId=intent.getLongExtra("user_id",0L)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
       toolbar.setNavigationOnClickListener { finish() }
       if(userName.isNullOrEmpty()){
@@ -30,13 +32,16 @@ class UserActivity : RxAppCompatActivity() {
       }
       else{
         TwitterObservable(applicationContext,twitter).showUser(userName).bindToLifecycle(this@UserActivity)
-          .subscribe{ setUp(it)}
+          .subscribe{
+              userId=it.id
+              setUp(it)}
       }
     }
 
   fun setUp(user: User){
     Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
-    banner.setOnClickListener{startActivity(Intent(this@UserActivity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
+    banner.setOnClickListener{startActivity(Intent(this@UserActivity, PictureActivity::class.java)
+            .putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
    val adapter= AnyUserTimeLineAdapter(supportFragmentManager)

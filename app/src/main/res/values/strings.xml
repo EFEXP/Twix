@@ -110,17 +110,25 @@
     <string name="title_activity_video">VideoActivity</string>
 
     <string name="tweet_detail_activity">会話</string>
+    <string-array name="text_tools">
+        <item>突然の死</item>
+        <item>e=mc^2</item>
+        <item>極限</item>
+        <item>ベクトル</item>
+        <item>積分</item>
+        <item>微分</item>
+    </string-array>
     <string-array name="tweet_menu">
         <item>会話</item>
         <item>RTした人</item>
-        <item> いいねした人</item>
+        <item>公式で見る</item>
         <item>コピー</item>
         <item>共有</item>
     </string-array>
     <string-array name="tweet_my_menu">
         <item>会話</item>
         <item>RTした人</item>
-        <item>いいねした人</item>
+        <item>公式で見る</item>
         <item>コピー</item>
         <item>共有</item>
         <item>削除</item>
@@ -150,4 +158,5 @@
     <string name="whats_this_app">ヘルプ</string>
     <string name="my_profile">プロフィール</string>
     <string name="design_setting">デザイン設定</string>
+    <string name="notification">通知</string>
 </resources>

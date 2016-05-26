@@ -1,6 +1,7 @@
 package xyz.donot.quetzal.view.fragment
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -32,12 +33,9 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
       return field
     }
 
-  val eventBus by lazy { EventBus.getDefault() }
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
-    val recycler=v.findViewById(R.id.base_recycler_view)as RecyclerView
-    val swipeLayout=v.findViewById(R.id.swipe_layout)as SwipeRefreshLayout
-    recycler.apply{
+  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    base_recycler_view.apply{
       itemAnimator= OvershootInRightAnimator(0.1f)
       adapter = AlphaInAnimationAdapter(mAdapter)
       layoutManager = LinearLayoutManager(activity)
@@ -46,10 +44,32 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
           loadMore()
         }
       }
-      )}
+      )
+    }
+    swipe_layout.setOnRefreshListener {
+      reload(swipe_layout)
+    }
+    reload(swipe_layout)
+  }
 
-    loadMore()
-    swipeLayout.setOnRefreshListener { reload(swipeLayout) }
+  override fun onDetach() {
+    super.onDetach()
+    try{
+      val childFm= Fragment::class.java.getDeclaredField("mChildFragmentManager")
+      childFm.isAccessible=true
+      childFm.set(this,null)
+    }
+    catch(e:NoSuchMethodException){
+      throw RuntimeException(e)
+    }
+    catch(e:IllegalAccessException){
+      throw RuntimeException(e)
+    }
+  }
+
+  val eventBus by lazy { EventBus.getDefault() }
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     return v}
     fun reload(sl:SwipeRefreshLayout){
       progress_bar_load.show()

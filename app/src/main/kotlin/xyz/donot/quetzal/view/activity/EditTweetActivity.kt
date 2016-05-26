@@ -34,11 +34,7 @@ class EditTweetActivity : RxAppCompatActivity() {
     val START_CAMERA :Int=0
   val START_GALLERY :Int=1
     val list=LinkedList<Uri>()
-  val intentGallery=
-            Intent()
-              .setAction(Intent.ACTION_PICK)
-                    .setType("image/*")
-
+  val intentGallery= Intent().setAction(Intent.ACTION_PICK).setType("image/*")
     var m_uri:Uri?= null
     var croppingUri:Uri?= null
   val  twitter  by lazy {  getTwitterInstance() }
@@ -71,6 +67,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                             croppingUri=item
                             UCrop.of(item,Uri.fromFile(File(getPictureStorePath(),"${Date().time}.jpg")))
                                     .withOptions( UCrop.Options().apply {
+                                        setFreeStyleCropEnabled(true)
                                         setToolbarColor(color)
                                         setActiveWidgetColor(color)
                                         setStatusBarColor(color)
@@ -92,6 +89,44 @@ class EditTweetActivity : RxAppCompatActivity() {
         show_drafts.setOnClickListener {
             dialog=DraftFragment()
             dialog?.show(supportFragmentManager,"")
+        }
+        text_tools.setOnClickListener {
+            val item=R.array.text_tools
+            AlertDialog.Builder(this@EditTweetActivity)
+                    .setItems(item, { dialogInterface, int ->
+                        val selectedItem=resources.getStringArray(item)[int]
+                        when (selectedItem) {
+                         "突然の死"->{
+                             val i=editText_status.text.count()-4
+                             var a=""
+                             var b=""
+                        for(v in 0..i){
+                            a +="人"
+                            b += "^Y"
+                        }
+                             val text="＿人人人人人人$a＿\n＞　${editText_status.text}　＜\n￣Y^Y^Y^Y^Y$b￣"
+                             editText_status.text.clear()
+                             editText_status.setText(text)                         }
+
+                            "e=mc^2"-> {
+                                editText_status.setText("\\[e = mc^2\\]")
+                            }
+                            "極限"-> {
+                                editText_status.setText(" \\[ \\lim_{h \\to 0} \\frac{\\sqrt{a+h}-\\sqrt{a}}{h} \\]")
+                            }
+                            "ベクトル"-> {
+                                editText_status.setText("\\(\\vec a \\cdot \\vec b \\)")
+                            }
+                            "積分"->{
+                                editText_status.setText("\\(  \\int_{0}^{R} mg dx =\\lim_{n \\to \\infty} \\sum_{i=1}^n mg \\Delta x_{i}  \\)")
+                            }
+                            "微分"->{
+                                editText_status.setText("\\[f'(x),f''(x),f^{(3)}(x)\\]")
+                            }
+
+                        }
+                    })
+                    .show()
         }
       use_camera.setOnClickListener {
           if(pic_recycler_view.layoutManager.itemCount<4

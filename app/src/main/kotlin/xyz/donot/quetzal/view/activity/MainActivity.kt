@@ -38,7 +38,7 @@ class MainActivity : RxAppCompatActivity() {
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy { getTwitterInstance() }
   private var accountChanged = true
-  val pagerAdapter by lazy { TimeLinePagerAdapter(supportFragmentManager) }
+  val viewPager by lazy { TimeLinePagerAdapter(supportFragmentManager) }
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (!haveToken()) {
@@ -49,17 +49,18 @@ class MainActivity : RxAppCompatActivity() {
       if (!haveNetworkConnection()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
-      viewpager.adapter = pagerAdapter
+      viewpager.adapter =viewPager
       toolbar.apply {
         inflateMenu(R.menu.menu_main)
         setOnMenuItemClickListener {
-          start<SearchActivity>()
+          when(it.itemId){
+            R.id.menu_search-> start<SearchActivity>()
+            R.id.menu_notification->start<NotificationActivity>()
+          }
           true
         }
         setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
       }
-
-      tabs.setupWithViewPager(viewpager)
       design_navigation_view.setNavigationItemSelectedListener({
         if (haveNetworkConnection()) {
           when (it.itemId) {
@@ -77,7 +78,6 @@ class MainActivity : RxAppCompatActivity() {
             }
             R.id.action_account -> {
               start<AccountSettingActivity>()
-              finish()
               drawer_layout.closeDrawers()
             }
             R.id.action_list -> {
@@ -85,7 +85,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_whats_new -> {
-              EventBus.getDefault().post(OnCustomtabEvent("http://donot.xyz/whats_new.html"))
+              EventBus.getDefault().post(OnCustomtabEvent("http://www.latex-cmd.com/index.html#equation"))
               drawer_layout.closeDrawers()
             }
           }
@@ -105,6 +105,7 @@ class MainActivity : RxAppCompatActivity() {
                   my_screen_name_header.text = "@${user.screenName}"
                 }
               })
+
 
 
 
@@ -154,6 +155,13 @@ class MainActivity : RxAppCompatActivity() {
     }
     }
 
+  }
+
+  override fun onStart() {
+    super.onStart()
+    if(accountChanged){
+
+      }
   }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

@@ -33,8 +33,9 @@
 }
 
 -dontwarn com.squareup.okhttp.**
-
-
+-dontwarn io.github.kexanie.**
+-keep class com.x5.** { *; }
+-dontwarn com.x5.**
 #twitter4j
 -dontwarn twitter4j.**
 -keep class twitter4j.** { *; }

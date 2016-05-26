@@ -74,8 +74,8 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        d("MENTION_PATTERN", "MENTION_PATTERN")
-        startActivity(Intent(this, UserActivity::class.java).putExtra("user_name", it.replace("@", "")))
+        d("MENTION_PATTERN", it)
+        startActivity(Intent(this, UserActivity::class.java).putExtra("user_name", it.replace("@","")))
       }
     ,
     Link(Regex.VALID_URL)
@@ -90,7 +90,7 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        d("HASHTAG_PATTERN", "HASHTAG_PATTERN")
+        d("HASHTAG_PATTERN",it)
         EventBus.getDefault().post(OnHashtagEvent(it))
       }
   ).toMutableList()

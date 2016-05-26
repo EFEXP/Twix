@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
@@ -23,7 +24,9 @@ import xyz.donot.quetzal.event.OnCustomtabEvent
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
+import xyz.donot.quetzal.util.extrautils.hide
 import xyz.donot.quetzal.util.extrautils.longToast
+import xyz.donot.quetzal.util.extrautils.show
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
@@ -67,6 +70,16 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
       }
       //ビューホルダー
       viewHolder.binding.apply {
+          if(item.text.contains("\\(")||item.text.contains("\\[")){
+              mathView.config("""MathJax.Hub.Config({ tex2jax: {inlineMath: [ ['$','$'], ['\\(','\\)'] ], processEscapes: true},
+                            TeX: {equationNumbers: {autoNumber: "AMS"}}});""");
+              mathView.text=item.text
+              mathView.setBackgroundColor(Color.WHITE)
+              mathView.show()
+          }
+          else{
+              mathView.hide()
+          }
           //引用
           if(item.quotedStatus!=null){
              itemQuotedTweet.visibility= View.VISIBLE
@@ -133,7 +146,7 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
                     putExtra(Intent.EXTRA_TEXT,"@${item.user.screenName}さんのツイート https://twitter.com/${item.user.screenName}/status/${item.id}をチェック")
                   })
                 }
-                "いいねした人"-> {EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))}
+                  "公式で見る"-> {EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))}
               }
 
 

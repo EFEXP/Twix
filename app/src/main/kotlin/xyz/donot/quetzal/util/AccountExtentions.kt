@@ -29,7 +29,7 @@ fun isIgnore(id: Long): Boolean {
 }
 
 fun isMentionToMe(status: Status): Boolean {
-  return  status.userMentionEntities.map { it.id }.filter { it==getMyId() }.isNotEmpty()
+  return  status.userMentionEntities.map { it.id }.contains(getMyId())
 }
 
 fun Status.save(context:Context){

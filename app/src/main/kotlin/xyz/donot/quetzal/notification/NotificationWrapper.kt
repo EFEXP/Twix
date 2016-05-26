@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import br.com.goncalves.pugnotification.notification.PugNotification
 import twitter4j.Status
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.view.activity.NotificationActivity
 
 class NotificationWrapper(val context: Context){
    val notification= PugNotification.with(context).load()
@@ -20,6 +21,8 @@ class NotificationWrapper(val context: Context){
                smallIcon(R.drawable.ic_reply_grey_400_24dp)
                largeIcon(R.drawable.ic_launcher)
                sound(Uri.parse(ringtone))
+         click (NotificationActivity::class.java)
+
        }
     notification.simple().build()
     }
@@ -31,6 +34,13 @@ class NotificationWrapper(val context: Context){
             autoCancel(false)
         }
         notification.progress().value(0,100,true).build()
+    }
+    fun sendingFailureNotification() {
+        notification.apply {
+            title("送信に失敗しました")
+            smallIcon(R.drawable.ic_launcher)
+            autoCancel(true)
+        }
     }
 
 

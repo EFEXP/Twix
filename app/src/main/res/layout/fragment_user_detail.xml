@@ -118,6 +118,7 @@
 </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
+        android:minHeight="40dp"
       android:foreground="?android:attr/selectableItemBackground"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -132,6 +133,7 @@
       android:layout_height="wrap_content"
       android:layout_centerHorizontal="true"
       android:id="@+id/ff_count"
+        android:gravity="center"
       >
       <TextView
         android:id="@+id/following_text"

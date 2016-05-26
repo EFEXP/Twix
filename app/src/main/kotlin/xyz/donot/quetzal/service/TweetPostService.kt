@@ -13,7 +13,7 @@ import java.util.*
 class TweetPostService() : IntentService("TweetPostService") {
     val twitter by lazy { getTwitterInstance() }
     override fun onHandleIntent(intent: Intent) {
-        var filePath: ArrayList<String>
+        val filePath: ArrayList<String>
         val id=Random().nextInt(100)+1
         if(intent.hasExtra("StatusUpdate")){
             val updateStatus= intent.getByteArrayExtra("StatusUpdate").getDeserialized<StatusUpdate>()
@@ -29,7 +29,13 @@ class TweetPostService() : IntentService("TweetPostService") {
                 }
                 updateStatus.setMediaIds(array)
             }
-            twitter.updateStatus(updateStatus)
+          try {
+              twitter.updateStatus(updateStatus)
+          }
+            catch(e:Exception){
+                PugNotification.with(this@TweetPostService).cancel(id)
+                NotificationWrapper(applicationContext).sendingFailureNotification()
+            }
             PugNotification.with(this@TweetPostService).cancel(id)
 
         }

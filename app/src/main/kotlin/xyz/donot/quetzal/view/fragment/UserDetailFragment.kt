@@ -29,13 +29,19 @@ import java.text.SimpleDateFormat
 
 class UserDetailFragment() : RxFragment()
 {
+  val userName by lazy {arguments.getString("user_name") }
   val twitter by lazy { getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
-    val userId: Long = arguments.getLong("userId")
-    TwitterObservable(context,twitter).showUser(userId)
-     .bindToLifecycle(this@UserDetailFragment)
-    .subscribe (object : TwitterUserSubscriber(activity) {
+    val userId: Long = arguments.getLong("userId",0L)
+
+   val observable=if(userId!=0L){TwitterObservable(context,twitter).showUser(userId)
+     .bindToLifecycle(this@UserDetailFragment)}
+    else{
+     TwitterObservable(context,twitter).showUser(userName)
+             .bindToLifecycle(this@UserDetailFragment)
+   }
+    observable.subscribe (object : TwitterUserSubscriber(activity) {
       override fun onNext(user: User) {
         super.onNext(user)
         if(user.id!=getMyId()) {

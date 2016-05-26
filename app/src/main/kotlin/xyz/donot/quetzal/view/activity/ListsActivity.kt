@@ -16,7 +16,7 @@ class ListsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lists)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.setNavigationOnClickListener { finish() }
+        toolbar.setNavigationOnClickListener {onBackPressed() }
         supportFragmentManager.beginTransaction().add(R.id.container,
                 UsersListFragment().apply { arguments= Bundle().apply { putLong("userId",userId) } }
         ).commitAllowingStateLoss()
