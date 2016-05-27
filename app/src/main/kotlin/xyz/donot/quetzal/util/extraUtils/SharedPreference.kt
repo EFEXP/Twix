@@ -5,54 +5,54 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.preference.PreferenceManager
 
-public val Context.defaultSharedPreferences: SharedPreferences
+val Context.defaultSharedPreferences: SharedPreferences
   get() {
     return PreferenceManager.getDefaultSharedPreferences(this)
   }
 
-public fun SharedPreferences.clear() {
+fun SharedPreferences.clear() {
   apply(getEditor().clear())
 }
 
-public fun SharedPreferences.putBoolean(key: String, value: Boolean) {
+fun SharedPreferences.putBoolean(key: String, value: Boolean) {
   apply(getEditor().putBoolean(key, value))
 }
 
-public fun SharedPreferences.putFloat(key: String, value: Float) {
+fun SharedPreferences.putFloat(key: String, value: Float) {
   apply(getEditor().putFloat(key, value))
 }
 
-public fun SharedPreferences.putInt(key: String, value: Int) {
+fun SharedPreferences.putInt(key: String, value: Int) {
   apply(getEditor().putInt(key, value))
 }
 
-public fun SharedPreferences.putLong(key: String, value: Long) {
+fun SharedPreferences.putLong(key: String, value: Long) {
   apply(getEditor().putLong(key, value))
 }
 
-public fun SharedPreferences.putString(key: String, value: String?) {
+fun SharedPreferences.putString(key: String, value: String?) {
   apply(getEditor().putString(key, value))
 }
 
-public fun SharedPreferences.putStringSet(key: String, values: Set<String>?) {
+fun SharedPreferences.putStringSet(key: String, values: Set<String>?) {
   apply(getEditor().putStringSet(key, values))
 }
 
-public fun SharedPreferences.remove(key: String) {
+fun SharedPreferences.remove(key: String) {
   apply(getEditor().remove(key))
 }
 
-public fun SharedPreferences.bulk(): SharedPreferences {
+fun SharedPreferences.bulk(): SharedPreferences {
   this.bulkEditor = this.edit()
   return this
 }
 
-public fun SharedPreferences.applyBulk(): SharedPreferences {
+fun SharedPreferences.applyBulk(): SharedPreferences {
   this.bulkEditor?.apply()
   return this
 }
 
-public fun SharedPreferences.discardBulk(): SharedPreferences {
+fun SharedPreferences.discardBulk(): SharedPreferences {
   this.bulkEditor = null
   return this
 }
@@ -78,7 +78,7 @@ private fun SharedPreferences.getEditor(): SharedPreferences.Editor {
   return this.edit()
 }
 
-private fun SharedPreferences.apply(editor: SharedPreferences.Editor) {
+private fun apply(editor: SharedPreferences.Editor) {
   if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
     editor.commit()
   } else {

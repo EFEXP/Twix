@@ -24,9 +24,10 @@ class EditTweetPicAdapter(val context: Context,val  list: MutableList<Uri>)
             val  item= list[i]
             viewHolder. binding.apply {
               textView.text="${i+1}/${list.size}"
-              Picasso.with(context).load(item)
-                      .resize(300,300)
-                      .onlyScaleDown()
+              Picasso.with(context)
+                      .load(item)
+                      .resize(400,400)
+                      .centerInside()
                       .into(imageView)
             }
         }

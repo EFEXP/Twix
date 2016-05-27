@@ -144,7 +144,6 @@ class EditTweetActivity : RxAppCompatActivity() {
           }
       }
       add_picture.setOnClickListener {
-
           if(pic_recycler_view.layoutManager.itemCount<4) {
               startActivityForResult(intentGallery,START_GALLERY)} }
 

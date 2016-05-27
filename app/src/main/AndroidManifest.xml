@@ -58,11 +58,6 @@
             android:name=".view.activity.VideoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activity.HelpActivity"
-            android:label="@string/title_activity_help"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".view.activity.EditTweetActivity"
             android:label="@string/title_activity_tweet_edit"
             android:theme="@style/AppTheme.NoActionBar" />

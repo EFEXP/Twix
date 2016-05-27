@@ -20,7 +20,10 @@ import org.greenrobot.eventbus.Subscribe
 import twitter4j.Status
 import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.*
+import xyz.donot.quetzal.event.OnCustomtabEvent
+import xyz.donot.quetzal.event.OnHashtagEvent
+import xyz.donot.quetzal.event.TwitterSubscriber
+import xyz.donot.quetzal.event.TwitterUserSubscriber
 import xyz.donot.quetzal.twitter.StreamManager
 import xyz.donot.quetzal.twitter.StreamType
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
@@ -37,7 +40,6 @@ class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
   val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy { getTwitterInstance() }
-  private var accountChanged = true
   val viewPager by lazy { TimeLinePagerAdapter(supportFragmentManager) }
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -137,7 +139,6 @@ class MainActivity : RxAppCompatActivity() {
                   editText_status.setText("")
                 }
               })
-      accountChanged = false
     }
 
     eventbus.register(this@MainActivity)
@@ -157,12 +158,6 @@ class MainActivity : RxAppCompatActivity() {
 
   }
 
-  override fun onStart() {
-    super.onStart()
-    if(accountChanged){
-
-      }
-  }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -180,11 +175,7 @@ class MainActivity : RxAppCompatActivity() {
     eventbus.unregister(this@MainActivity)
   }
 
-  @Subscribe
-  fun onAccountChanged(onAccountChanged: OnAccountChanged)
-  {
-    accountChanged=true
-  }
+
   @Subscribe
   fun onHashTagTouched(onHashtagEvent: OnHashtagEvent)
   {

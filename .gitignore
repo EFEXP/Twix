@@ -1,7 +1,5 @@
 *.iml
 .gradle
 /local.properties
-*.db
 /build
-/captures
 

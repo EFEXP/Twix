@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
-fun Any?.flags(flag: Int, vararg flags: Int): Int {
+fun flags(flag: Int, vararg flags: Int): Int {
   var orFlags = flag;
   for (i in flags) {
     orFlags = orFlags or i

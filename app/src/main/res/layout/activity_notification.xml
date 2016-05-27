@@ -5,11 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="xyz.donot.quetzal.view.activity.NotificationActivity">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@id/toolbar_layout"
-        android:theme="@style/AppTheme.AppBarOverlay">
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -19,11 +15,12 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/notification"
             app:navigationIcon="@drawable/ic_arrow_back_white_36dp"
+            android:theme="@style/AppTheme.AppBarOverlay"
             />
 
-    </android.support.design.widget.AppBarLayout>
+
 <fragment
-    android:layout_below="@id/toolbar_layout"
+    android:layout_below="@+id/toolbar"
     android:name="xyz.donot.quetzal.view.fragment.MentionTimeLine"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

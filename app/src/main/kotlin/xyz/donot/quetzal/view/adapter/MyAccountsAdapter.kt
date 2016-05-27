@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import io.realm.Realm
-import org.greenrobot.eventbus.EventBus
 import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemUserBinding
-import xyz.donot.quetzal.event.OnAccountChanged
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.util.RoundCorner
 
@@ -32,7 +30,6 @@ class MyAccountsAdapter(val context: Context,val list: MutableList<User>):BasicR
               it.where(DBAccount::class.java).equalTo("id", item.id).findFirst().apply {
                 isMain = true
               }
-              EventBus.getDefault().post(OnAccountChanged())
              Toast.makeText(context,"メインに設定しました、再起動してください",Toast.LENGTH_LONG).show()
             }
           }

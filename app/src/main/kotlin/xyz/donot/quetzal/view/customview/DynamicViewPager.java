@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +21,13 @@ public abstract class DynamicViewPager extends PagerAdapter {
 
 
     private static final String TAG = "ifpa";
-    private boolean DEBUG = false;
+    private final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
     private FragmentTransaction mCurTransaction = null;
 
-    private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
-    private ArrayList<Fragment> mFragments = new ArrayList<>();
+    private final ArrayList<Fragment.SavedState> mSavedState = new ArrayList<>();
+    private final ArrayList<Fragment> mFragments = new ArrayList<>();
     private Fragment mCurrentPrimaryItem = null;
     private Map<Fragment, Boolean> mFragmentIsDeleted = null;
 
@@ -127,6 +128,12 @@ public abstract class DynamicViewPager extends PagerAdapter {
         return ((Fragment) object).getView() == view;
     }
 
+        public Fragment findFragmentByPosition(ViewPager viewPager,
+                                               int position) {
+            return (Fragment) instantiateItem(viewPager, position);
+        }
+
+
     @Override
     public Parcelable saveState() {
         Bundle state = null;
@@ -158,8 +165,8 @@ public abstract class DynamicViewPager extends PagerAdapter {
             mSavedState.clear();
             mFragments.clear();
             if (fss != null) {
-                for (int i = 0; i < fss.length; i++) {
-                    mSavedState.add((Fragment.SavedState) fss[i]);
+                for (Parcelable fs : fss) {
+                    mSavedState.add((Fragment.SavedState) fs);
                 }
             }
             Iterable<String> keys = bundle.keySet();

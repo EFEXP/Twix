@@ -3,11 +3,11 @@ package xyz.donot.quetzal.view.adapter
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import xyz.donot.quetzal.view.customview.DynamicViewPager
 import xyz.donot.quetzal.view.fragment.PictureFragment
 import java.util.*
 
-class PicturePagerAdapter(fm: FragmentManager, var pictureUrls: ArrayList<String>) : FragmentPagerAdapter(fm) {
+class PicturePagerAdapter(fm: FragmentManager, var pictureUrls: ArrayList<String>) : DynamicViewPager(fm) {
 
   override fun getItem(i: Int): Fragment {
     val p = PictureFragment()

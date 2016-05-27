@@ -16,11 +16,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import com.squareup.picasso.Picasso
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import uk.co.senab.photoview.PhotoViewAttacher
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.OnSaveIt
 import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.util.getPictureStorePath
 import java.io.File
@@ -35,16 +32,6 @@ class PictureFragment : Fragment() {
 
   val stringURL by lazy {  arguments.getString("url") }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    EventBus.getDefault().register(this)
-  }
-
-  override fun onDestroy() {
-    super.onDestroy()
-    EventBus.getDefault().unregister(this)
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_picture, container, false)
     val img = v.findViewById(R.id.photo_view_image)as ImageView
@@ -53,8 +40,8 @@ class PictureFragment : Fragment() {
     return v
   }
 
-  @Subscribe
-  fun SavePics(onsave: OnSaveIt){
+
+  fun SavePics(){
     if(ContextCompat.checkSelfPermission(this@PictureFragment.activity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
       Save()
     }

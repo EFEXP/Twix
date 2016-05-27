@@ -19,7 +19,6 @@ import twitter4j.Status
 import twitter4j.Twitter
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemTweetCardBinding
-import xyz.donot.quetzal.event.OnCardViewTouchEvent
 import xyz.donot.quetzal.event.OnCustomtabEvent
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
@@ -152,7 +151,6 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
 
             })
             .show()
-          EventBus.getDefault().post(OnCardViewTouchEvent(item))
         }})
         icon.setOnClickListener{context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.user.id))}
         tweetText.text=getExpandedText(status = item)

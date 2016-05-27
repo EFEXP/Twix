@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_picture.*
 import kotlinx.android.synthetic.main.content_picture.*
-import org.greenrobot.eventbus.EventBus
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.OnSaveIt
 import xyz.donot.quetzal.view.adapter.PicturePagerAdapter
+import xyz.donot.quetzal.view.fragment.PictureFragment
 
 class PictureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,12 +16,17 @@ class PictureActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
         val strings = intent.extras.getStringArrayList("picture_urls")
         val starts = intent.extras.getInt("starts_with",0)
-        pager.adapter = PicturePagerAdapter(supportFragmentManager, strings)
+        val pagerAdapter=PicturePagerAdapter(supportFragmentManager, strings)
+
+        pager.adapter = pagerAdapter
         pager.currentItem=starts
         toolbar.setOnMenuItemClickListener {
         when(it.itemId){
           R.id.save_it->{
-            EventBus.getDefault().post(OnSaveIt())
+              val fragment=pagerAdapter.findFragmentByPosition(pager,pager.currentItem)
+              if(fragment is PictureFragment){
+                  fragment.SavePics()
+              }
             true
           }
           else->throw IllegalStateException()

@@ -4,7 +4,7 @@ package xyz.donot.quetzal.twitter;
 import twitter4j.StatusListener;
 import twitter4j.TwitterStream;
 
-class StreamCreateUtil {
+public class StreamCreateUtil {
   public static void addStatusListener(TwitterStream stream, StatusListener listener){
     stream.addListener(listener);
   }
