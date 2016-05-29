@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import twitter4j.Query
+import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.fragment.SearchTweet
 import xyz.donot.quetzal.view.fragment.TrendFragment
 import xyz.donot.quetzal.view.fragment.UsersWatcher
 
-class SearchAdapter(val txt:String,fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class SearchAdapter(val query: Query, fm: FragmentManager) : FragmentPagerAdapter(fm) {
   override fun getItem(position: Int): Fragment {
     return when(position){
       0-> SearchTweet().apply { arguments= Bundle().apply {
-        putString("query_txt",txt)
+      putByteArray("query_bundle",query.getSerialized())
       } }
       1->object : UsersWatcher(){
         override fun loadMore() {
-          twitterObservable.getUserSearchAsync(txt,page).subscribe(userSubscriber)
+          twitterObservable.getUserSearchAsync(query.query,page).subscribe(userSubscriber)
         }
       }
       2->TrendFragment()

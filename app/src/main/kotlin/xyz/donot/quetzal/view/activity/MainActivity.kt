@@ -56,7 +56,7 @@ class MainActivity : RxAppCompatActivity() {
         inflateMenu(R.menu.menu_main)
         setOnMenuItemClickListener {
           when(it.itemId){
-            R.id.menu_search-> start<SearchActivity>()
+            R.id.menu_search-> start<SearchSettingActivity>()
             R.id.menu_notification->start<NotificationActivity>()
           }
           true

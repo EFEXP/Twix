@@ -98,9 +98,13 @@
         <activity
             android:name=".view.activity.TwitterOauthActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.activity.NotificationActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-            >
+        <activity
+            android:name=".view.activity.NotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".view.activity.SearchSettingActivity"/>
     </application>
 
 </manifest>

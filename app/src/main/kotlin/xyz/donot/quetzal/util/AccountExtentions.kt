@@ -10,7 +10,7 @@ import twitter4j.Twitter
 import xyz.donot.quetzal.event.OnReplyEvent
 import xyz.donot.quetzal.event.OnStatusEvent
 import xyz.donot.quetzal.model.DBAccount
-import xyz.donot.quetzal.model.DBMuteUser
+import xyz.donot.quetzal.model.DBMute
 import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.extrautils.i
 import java.io.*
@@ -24,8 +24,8 @@ fun getPictureStorePath(): File {
 
 
 fun isIgnore(id: Long): Boolean {
- return  Realm.getDefaultInstance().where(DBMuteUser::class.java)
-  .equalTo("id",id).count()>0
+ return  Realm.getDefaultInstance().where(DBMute::class.java)
+  .equalTo("id",id).findAll().isEmpty()
 }
 
 fun isMentionToMe(status: Status): Boolean {

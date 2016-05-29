@@ -27,19 +27,24 @@ import java.util.*
 
 
 class PictureFragment : Fragment() {
-  val REQUEST_WRITE:Int=1
+ private  val REQUEST_WRITE:Int=1
 
 
-  val stringURL by lazy {  arguments.getString("url") }
-
+  private   val stringURL by lazy {  arguments.getString("url") }
+  private var photoAttacher:PhotoViewAttacher?=  null
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_picture, container, false)
     val img = v.findViewById(R.id.photo_view_image)as ImageView
     Picasso.with(activity).load(stringURL).into(img)
-    PhotoViewAttacher(img).update()
+   photoAttacher=  PhotoViewAttacher(img)
+    photoAttacher?.update()
     return v
   }
 
+  override fun onStop() {
+    super.onStop()
+    photoAttacher?.cleanup()
+  }
 
   fun SavePics(){
     if(ContextCompat.checkSelfPermission(this@PictureFragment.activity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
