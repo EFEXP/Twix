@@ -14,12 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.klinker.android.link_builder.LinkBuilder
 import com.squareup.picasso.Picasso
-import org.greenrobot.eventbus.EventBus
 import twitter4j.Status
 import twitter4j.Twitter
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemTweetCardBinding
-import xyz.donot.quetzal.event.OnCustomtabEvent
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
@@ -28,6 +26,7 @@ import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.extrautils.show
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.view.activity.EditTweetActivity
+import xyz.donot.quetzal.view.activity.MainActivity
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
 import xyz.donot.quetzal.view.activity.UserActivity
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
@@ -145,7 +144,11 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
                     putExtra(Intent.EXTRA_TEXT,"@${item.user.screenName}さんのツイート https://twitter.com/${item.user.screenName}/status/${item.id}をチェック")
                   })
                 }
-                  "公式で見る"-> {EventBus.getDefault().post(OnCustomtabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}"))}
+                  "公式で見る"-> {
+                      if(context is MainActivity){
+                          context.onCustomTabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}")
+                      }
+                  }
               }
 
 

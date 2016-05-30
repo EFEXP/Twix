@@ -79,7 +79,6 @@ dependencies {
     kapt 'com.android.databinding:compiler:2.1.0'
     compile 'io.realm:android-adapters:1.2.1'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
-    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'io.reactivex:rxkotlin:0.55.0'
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'org.twitter4j:twitter4j-core:4.0.4'

@@ -1,17 +1,11 @@
 package xyz.donot.quetzal.util;
 
-import android.content.Context
 import android.os.Environment
-import android.preference.PreferenceManager
 import io.realm.Realm
-import org.greenrobot.eventbus.EventBus
 import twitter4j.Status
 import twitter4j.Twitter
-import xyz.donot.quetzal.event.OnReplyEvent
-import xyz.donot.quetzal.event.OnStatusEvent
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.model.DBMute
-import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.extrautils.i
 import java.io.*
 import java.util.*
@@ -25,28 +19,12 @@ fun getPictureStorePath(): File {
 
 fun isIgnore(id: Long): Boolean {
  return  Realm.getDefaultInstance().where(DBMute::class.java)
-  .equalTo("id",id).findAll().isEmpty()
+  .equalTo("id",id).findAll().isNotEmpty()
 }
 
 fun isMentionToMe(status: Status): Boolean {
   return  status.userMentionEntities.map { it.id }.contains(getMyId())
 }
-
-fun Status.save(context:Context){
-  val status=this
-  if(!isIgnore(status.user.id)){
-    if(isMentionToMe(status)){
-      EventBus.getDefault().post(OnReplyEvent(status))
-      if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
-      {
-        NotificationWrapper(context).replyNotification(status)
-      }
-      }
-      EventBus.getDefault().post(OnStatusEvent(status))
-   }
-  }
-
-
 
 fun<T:Serializable> T.getSerialized():ByteArray{
   ByteArrayOutputStream().use {

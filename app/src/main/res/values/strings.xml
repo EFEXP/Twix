@@ -159,4 +159,5 @@
     <string name="my_profile">プロフィール</string>
     <string name="design_setting">デザイン設定</string>
     <string name="notification">通知</string>
+    <string name="menu_streaming">ストリーミング</string>
 </resources>

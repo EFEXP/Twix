@@ -1,17 +1,18 @@
 package xyz.donot.quetzal.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import com.klinker.android.link_builder.Link
-import org.greenrobot.eventbus.EventBus
 import twitter4j.TwitterException
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.OnCustomtabEvent
-import xyz.donot.quetzal.event.OnHashtagEvent
 import xyz.donot.quetzal.util.extrautils.d
+import xyz.donot.quetzal.view.activity.SearchActivity
 import xyz.donot.quetzal.view.activity.UserActivity
 
 
@@ -83,7 +84,9 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        EventBus.getDefault().post(OnCustomtabEvent(it))
+        if(this is Activity){
+          onCustomTabEvent(it)
+        }
       }
     ,
     Link(Regex.HASHTAG_PATTERN)
@@ -91,7 +94,23 @@ fun Context.getLinkList() :MutableList<Link> {
       .setBold(true)
       .setOnClickListener {
         d("HASHTAG_PATTERN",it)
-        EventBus.getDefault().post(OnHashtagEvent(it))
+        onHashTagTouched(it)
       }
   ).toMutableList()
+}
+fun  Context.onHashTagTouched(tag:String)
+{
+  startActivity(Intent(this, SearchActivity::class.java).putExtra("query_txt",tag))
+}
+
+
+
+fun Activity.onCustomTabEvent(string:String){
+  CustomTabsIntent.Builder()
+          .setShowTitle(true)
+          .addDefaultShareMenuItem()
+          .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+          .setStartAnimations(this, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+          .setExitAnimations(this, android.R.anim.slide_in_left, android.R.anim.slide_out_right).build()
+          .launchUrl(this, Uri.parse(string))
 }

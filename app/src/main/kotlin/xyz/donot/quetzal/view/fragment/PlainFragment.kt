@@ -12,7 +12,6 @@ import com.trello.rxlifecycle.components.support.RxDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
-import org.greenrobot.eventbus.EventBus
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.extrautils.hide
@@ -67,7 +66,7 @@ abstract class PlainFragment<L,T:RecyclerView.Adapter<X>,X:RecyclerView.ViewHold
     }
   }
 
-  val eventBus by lazy { EventBus.getDefault() }
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
     return v}

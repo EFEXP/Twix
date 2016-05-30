@@ -4,9 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
@@ -15,17 +14,14 @@ import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import twitter4j.Status
 import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.event.OnCustomtabEvent
-import xyz.donot.quetzal.event.OnHashtagEvent
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.event.TwitterUserSubscriber
-import xyz.donot.quetzal.twitter.StreamManager
-import xyz.donot.quetzal.twitter.StreamType
+import xyz.donot.quetzal.model.StreamType
+import xyz.donot.quetzal.model.TwitterStream
+import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
@@ -38,7 +34,6 @@ import xyz.donot.quetzal.view.fragment.HelpFragment
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
-  val eventbus by lazy { EventBus.getDefault() }
   val twitter by lazy { getTwitterInstance() }
   val viewPager by lazy { TimeLinePagerAdapter(supportFragmentManager) }
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +82,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_whats_new -> {
-              EventBus.getDefault().post(OnCustomtabEvent("http://www.latex-cmd.com/index.html#equation"))
+            onCustomTabEvent("http://www.latex-cmd.com/index.html#equation")
               drawer_layout.closeDrawers()
             }
           }
@@ -116,7 +111,27 @@ class MainActivity : RxAppCompatActivity() {
         start<EditTweetActivity>()
         true
       }
-      StreamManager.Factory.getStreamObject(applicationContext, twitter, StreamType.USER_STREAM).run()
+      //通知
+       TwitterStream(applicationContext).run(StreamType.USER_STREAM).apply {
+         isConnected.subscribe {
+
+           if(it){toast("ストリームに接続しました")}
+           else{ toast("ストリームから切断されました")}
+
+         }
+         statusSubject.subscribe {
+          if(isMentionToMe(it)){
+            if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
+            {
+              NotificationWrapper(applicationContext).replyNotification(it)
+            }
+
+        }
+        }
+
+      }
+
+
       button_tweet.setOnClickListener(
               {
 
@@ -140,8 +155,6 @@ class MainActivity : RxAppCompatActivity() {
                 }
               })
     }
-
-    eventbus.register(this@MainActivity)
     //パーミッション要求
     fromApi(23, true){
     val EX_WRITE=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
@@ -170,28 +183,6 @@ class MainActivity : RxAppCompatActivity() {
     }
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
-    eventbus.unregister(this@MainActivity)
-  }
 
-
-  @Subscribe
-  fun onHashTagTouched(onHashtagEvent: OnHashtagEvent)
-  {
-    startActivity(Intent(this@MainActivity,SearchActivity::class.java).putExtra("query_txt",onHashtagEvent.tag))
-  }
-
-
-  @Subscribe
-  fun onCustomTabEvent(onCustomTabEvent: OnCustomtabEvent){
-    CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .addDefaultShareMenuItem()
-            .setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
-            .setStartAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-            .setExitAnimations(this@MainActivity, android.R.anim.slide_in_left, android.R.anim.slide_out_right).build()
-            .launchUrl(this@MainActivity, Uri.parse(onCustomTabEvent.url))
-  }
 
 }
