@@ -15,12 +15,12 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       val query_txt :String?= intent.getStringExtra("query_txt")
-      val query_bundle :Query?=intent.getByteArrayExtra("query_bundle").getDeserialized<Query>()
+      val query_bundle=intent.getByteArrayExtra("query_bundle")
       setContentView(R.layout.activity_search)
       toolbar.setNavigationOnClickListener { onBackPressed() }
       if(query_bundle!=null)
       {
-        setUpViews(query_bundle)
+        setUpViews(query_bundle.getDeserialized<Query>())
       }
         else if (query_txt != null) {
         setUpViews(Query(query_txt))

@@ -120,15 +120,13 @@ class MainActivity : RxAppCompatActivity() {
           }
         }
       }
-    val stream=  TwitterStream(applicationContext).run(StreamType.USER_STREAM)
       //通知
-      stream.apply {
+     TwitterStream(applicationContext).run(StreamType.USER_STREAM).apply {
          isConnected.observeOn(AndroidSchedulers.mainThread()).subscribe {
            if(it){
              toast("ストリームに接続しました")
              connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
              connect_stream.tag=true
-
            }
            else{ toast("ストリームから切断されました")
              connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
@@ -141,7 +139,6 @@ class MainActivity : RxAppCompatActivity() {
             {
               NotificationWrapper(applicationContext).replyNotification(it)
             }
-
         }
         }
       }

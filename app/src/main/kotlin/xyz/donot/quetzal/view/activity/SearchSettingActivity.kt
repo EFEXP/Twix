@@ -15,11 +15,11 @@ class SearchSettingActivity : RxAppCompatActivity() {
    fun dateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int,isFrom:Boolean) {
        if(isFrom){
            day_from.text = "${year.toString()}年${monthOfYear.toString()}月${dayOfMonth.toString()}日～"
-           day_from.tag="since:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
+           day_from.tag=" since:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
        }
        else {
-           day_to.text = "${year.toString()}年${monthOfYear.toString()}月${dayOfMonth.toString()}日～"
-           day_to.tag="until:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
+           day_to.text = "～${year.toString()}年${monthOfYear.toString()}月${dayOfMonth.toString()}日"
+           day_to.tag=" until:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
        }
     }
 
@@ -59,9 +59,8 @@ class SearchSettingActivity : RxAppCompatActivity() {
             if(day_to.tag!=null&&day_to.tag is String){
                 querytext +=day_to.tag
             }
-                querytext +="  -rt"
-                query.lang="ja"
-                query.resultType=Query.MIXED
+                querytext +=" -rt"
+              query.resultType=Query.MIXED
 
                 query.query=querytext
                 d("query",querytext)
