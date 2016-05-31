@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+  <data>
+    <import type="xyz.donot.quetzal.R" />
+    <import type="android.view.View"/>
+    <variable name="status" type="twitter4j.Status" />
+  </data>
 <LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -44,6 +49,7 @@
         android:textStyle="bold"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/icon"
+        android:text="@{status.user.name}"
         />
 
       <android.support.v7.widget.AppCompatTextView
@@ -169,7 +175,8 @@
         android:layout_below="@id/count"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorHighlight"
-        android:layout_alignLeft="@+id/tweet_text" />
+        android:layout_alignLeft="@+id/tweet_text"
+          />
       <android.support.v7.widget.AppCompatTextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -177,7 +184,10 @@
           android:layout_below="@+id/tools_liner"
           android:layout_margin="5dp"
           android:layout_alignStart="@+id/tools_liner"
-          android:layout_alignLeft="@+id/tools_liner" />
+          android:layout_alignLeft="@+id/tools_liner"
+          android:drawableRight="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
+          android:drawableEnd="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
+          />
       <android.support.v7.widget.LinearLayoutCompat
           android:id="@+id/tools_liner"
         android:layout_below="@+id/textView_isRT"
@@ -200,19 +210,21 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_retweet_grey_400_24dp"
+            app:srcCompat="@{status.retweeted ? R.drawable.ic_retweet_pressed_24dp :  R.drawable.ic_retweet_grey_400_24dp}"
             />
         <android.support.v7.widget.AppCompatImageButton
           android:id="@+id/like"
           android:layout_weight="1"
           android:layout_width="24dp"
           android:layout_height="24dp"
-          app:srcCompat="@drawable/ic_favorite_grey_400_24dp"
+          app:srcCompat="@{status.favorited ?  R.drawable.ic_favorite_pressed_24dp :  R.drawable.ic_favorite_grey_400_24dp}"
           android:background="@android:color/transparent"
           />
       </android.support.v7.widget.LinearLayoutCompat>
     </RelativeLayout>
     </android.support.v7.widget.CardView>
+
+
 </LinearLayout>
 
   </layout>

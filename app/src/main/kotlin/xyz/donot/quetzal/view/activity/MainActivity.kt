@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.*
+import rx.android.schedulers.AndroidSchedulers
 import twitter4j.Status
 import twitter4j.User
 import xyz.donot.quetzal.R
@@ -111,13 +112,28 @@ class MainActivity : RxAppCompatActivity() {
         start<EditTweetActivity>()
         true
       }
+      connect_stream.setOnClickListener {
+        val boo=connect_stream.tag
+        if(connect_stream.tag!=null&&boo is Boolean){
+          if(boo){
+
+          }
+        }
+      }
+    val stream=  TwitterStream(applicationContext).run(StreamType.USER_STREAM)
       //通知
-       TwitterStream(applicationContext).run(StreamType.USER_STREAM).apply {
-         isConnected.subscribe {
+      stream.apply {
+         isConnected.observeOn(AndroidSchedulers.mainThread()).subscribe {
+           if(it){
+             toast("ストリームに接続しました")
+             connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
+             connect_stream.tag=true
 
-           if(it){toast("ストリームに接続しました")}
-           else{ toast("ストリームから切断されました")}
-
+           }
+           else{ toast("ストリームから切断されました")
+             connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
+             connect_stream.tag=false
+           }
          }
          statusSubject.subscribe {
           if(isMentionToMe(it)){
@@ -128,7 +144,6 @@ class MainActivity : RxAppCompatActivity() {
 
         }
         }
-
       }
 
 

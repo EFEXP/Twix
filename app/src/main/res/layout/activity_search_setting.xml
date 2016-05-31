@@ -53,7 +53,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/search_setting_to"
         android:layout_gravity="center_horizontal" />
-
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/day_from"
+        android:hint="期間(~から)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/day_to"
+            android:hint="期間(~まで)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

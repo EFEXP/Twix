@@ -6,7 +6,6 @@ import android.content.*
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -42,14 +41,14 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
   override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
     if (list.size > i ) {
       val item= if (list[i].isRetweet){
-        viewHolder.binding.textViewIsRT.visibility=View.VISIBLE
+          viewHolder.binding.textViewIsRT.show()
         viewHolder.binding.textViewIsRT.text="${list[i].user.name}がリツイート"
         list[i].retweetedStatus
       }else{
-        viewHolder.binding.textViewIsRT.visibility=View.GONE
+          viewHolder.binding.textViewIsRT.hide()
         list[i]
       }
-
+        viewHolder.binding.status=item
       //mediaType
         val statusMediaIds=getImageUrls(item)
       if(statusMediaIds.isNotEmpty()){
@@ -89,20 +88,7 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
           }else{
            itemQuotedTweet.visibility=View.GONE
           }
-        if(item.isFavorited){ like.setImageResource(R.drawable.ic_favorite_pressed_24dp)}
-        else{like.setImageResource(R.drawable.ic_favorite_grey_400_24dp)}
-        if(list[i].isRetweeted){retweet.setImageResource(R.drawable.ic_retweet_pressed_24dp)}
-        else{ retweet.setImageResource(R.drawable.ic_retweet_grey_400_24dp)}
-          if(item.user.isProtected){
-
-              val re= ResourcesCompat.getDrawable(context.resources,R.drawable.ic_lock_grey_400_18dp,null)
-              via.setCompoundDrawablesWithIntrinsicBounds(null,null,re,null)
-          }
-          else{
-              via.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null)
-          }
         via.text=getClientName(item.source)
-          userNameText.text = item.user.name
         screenName.text = "@${item.user.screenName}"
         textViewDate.text = getRelativeTime(item.createdAt)
         count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
@@ -201,8 +187,6 @@ class StatusAdapter(val context: Context,val  list: MutableList<Status>) : Basic
   }
   inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
    val binding :ItemTweetCardBinding
-
-
     init {
       binding = DataBindingUtil.bind(itemView)
 
