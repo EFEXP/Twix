@@ -30,13 +30,12 @@ import xyz.donot.quetzal.util.extrautils.fromApi
 import xyz.donot.quetzal.util.extrautils.intent
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.extrautils.toast
-import xyz.donot.quetzal.view.adapter.TimeLinePagerAdapter
 import xyz.donot.quetzal.view.fragment.HelpFragment
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
   val twitter by lazy { getTwitterInstance() }
-  val viewPager by lazy { TimeLinePagerAdapter(supportFragmentManager) }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (!haveToken()) {
@@ -47,7 +46,6 @@ class MainActivity : RxAppCompatActivity() {
       if (!haveNetworkConnection()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
-      viewpager.adapter =viewPager
       toolbar.apply {
         inflateMenu(R.menu.menu_main)
         setOnMenuItemClickListener {
@@ -103,14 +101,32 @@ class MainActivity : RxAppCompatActivity() {
                   my_screen_name_header.text = "@${user.screenName}"
                 }
               })
-
-
-
-
-
       button_tweet.setOnLongClickListener {
         start<EditTweetActivity>()
         true
+      }
+
+      //通知
+      val stream=  TwitterStream(applicationContext).run(StreamType.USER_STREAM).apply {
+        isConnected.observeOn(AndroidSchedulers.mainThread()).subscribe {
+          if(it){
+            toast("ストリームに接続しました")
+            connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
+            connect_stream.tag=true
+          }
+          else{ toast("ストリームから切断されました")
+            connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
+            connect_stream.tag=false
+          }
+        }
+        statusSubject.subscribe {
+          if(isMentionToMe(it)){
+            if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
+            {
+              NotificationWrapper(applicationContext).replyNotification(it)
+            }
+          }
+        }
       }
       connect_stream.setOnClickListener {
         val boo=connect_stream.tag
@@ -118,40 +134,25 @@ class MainActivity : RxAppCompatActivity() {
           if(boo){
 
           }
+          else{
+            stream.run(StreamType.USER_STREAM)
+          }
         }
       }
-      //通知
-     TwitterStream(applicationContext).run(StreamType.USER_STREAM).apply {
-         isConnected.observeOn(AndroidSchedulers.mainThread()).subscribe {
-           if(it){
-             toast("ストリームに接続しました")
-             connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
-             connect_stream.tag=true
-           }
-           else{ toast("ストリームから切断されました")
-             connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
-             connect_stream.tag=false
-           }
-         }
-         statusSubject.subscribe {
-          if(isMentionToMe(it)){
-            if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
-            {
-              NotificationWrapper(applicationContext).replyNotification(it)
-            }
-        }
-        }
-      }
+
+
 
 
       button_tweet.setOnClickListener(
               {
-
+               /* val status= StatusUpdate(editText_status.text.toString())
+                val intent=Intent(applicationContext, TweetPostService::class.java).apply { putExtra("StatusUpdate",status.getSerialized() }
+                startService(intent)*/
                 if (!editText_status.editableText.isNullOrBlank()&&editText_status.text.count()<=140) {
-                  val tObserver = TwitterUpdateObservable(this@MainActivity,twitter);
+                  val tObserver = TwitterUpdateObservable(applicationContext,twitter);
                   tObserver.updateStatusAsync(editText_status.editableText.toString())
                           .bindToLifecycle(this@MainActivity)
-                          .subscribe(object : TwitterSubscriber(this@MainActivity) {
+                          .subscribe(object : TwitterSubscriber(applicationContext) {
                             override fun onStatus(status: Status) {
                               val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                               inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)

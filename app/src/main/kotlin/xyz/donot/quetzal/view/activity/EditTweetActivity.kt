@@ -160,7 +160,6 @@ class EditTweetActivity : RxAppCompatActivity() {
           startService(Intent(this@EditTweetActivity, TweetPostService::class.java)
                   .putExtra("StatusUpdate",updateStatus.getSerialized())
                   .putStringArrayListExtra("FilePath",filePathList))
-
           finish()
       }}
 

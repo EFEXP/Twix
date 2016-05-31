@@ -27,10 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.activity.InitialActivity"
-            android:label="@string/title_activity_initial"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/title_activity_account_setting"

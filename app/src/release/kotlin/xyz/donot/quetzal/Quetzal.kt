@@ -22,7 +22,7 @@ class Quetzal : Application() {
         try{ Realm.migrateRealm(config,MyRealmMigration())}
         catch(e:FileNotFoundException){}
         Realm.setDefaultConfiguration(config)
-
+       
       val design=  when(defaultSharedPreferences.getString("night_mode","auto")){
             "black"->{
                 AppCompatDelegate.MODE_NIGHT_YES}

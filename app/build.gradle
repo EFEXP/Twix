@@ -14,22 +14,21 @@ android {
         applicationId "xyz.donot.quetzal"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 23
-        versionName "1.1.19"
+        versionCode 24
+        versionName "1.2.0"
         vectorDrawables.useSupportLibrary = true
     }
 
 
     buildTypes {
         release {
-
             shrinkResources true
             minifyEnabled true
             manifestPlaceholders = [appName: "@string/app_name"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            shrinkResources true
+            shrinkResources false
             applicationIdSuffix ".debug"
             minifyEnabled false
             manifestPlaceholders = [appName: "QuetzalDEBUG"]
@@ -64,6 +63,7 @@ dependencies {
     def supportLibVersion = "23.4.0"
     def realmVersion = "1.0.0"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     //realm
     kapt "io.realm:realm-annotations:${realmVersion}"
     kapt "io.realm:realm-annotations-processor:${realmVersion}"
@@ -75,7 +75,6 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.github.kexanie.library:MathView:0.0.6'
-    kapt 'org.greenrobot:eventbus:3.0.0'
     kapt 'com.android.databinding:compiler:2.1.0'
     compile 'io.realm:android-adapters:1.2.1'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
@@ -88,7 +87,7 @@ dependencies {
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.trello:rxlifecycle-components:0.6.1'
     compile 'com.klinkerapps:link_builder:1.3.2@aar'
-    compile 'com.yalantis:ucrop:1.5.0@aar'
+    compile 'com.yalantis:ucrop:2.0.0@aar'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.google.firebase:firebase-crash:9.0.0'

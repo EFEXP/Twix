@@ -58,7 +58,6 @@ inline fun <reified T : Activity> Service.start() {
 inline fun <reified T: Service> Context.start() {
   this.startService(intent<T>())
 }
-
 inline fun <reified T: Service> Context.start(flags: Int) {
   this.startService(intent<T>(flags))
 }

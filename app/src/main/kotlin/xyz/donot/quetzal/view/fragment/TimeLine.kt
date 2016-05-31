@@ -12,9 +12,6 @@ import java.util.*
 abstract  class TimeLine() : PlainFragment<Status, StatusAdapter, xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder>()
 {
 
-
-  open  fun onDeserialize(){}
-  open  fun onSerialize(sStatus: Status){}
   abstract  override  fun loadMore()
   protected  val tsm by lazy { TwitterStream(context).run(StreamType.USER_STREAM)}
   override val data: MutableList<Status> by lazy { LinkedList<Status>() }
@@ -26,7 +23,7 @@ abstract  class TimeLine() : PlainFragment<Status, StatusAdapter, xyz.donot.quet
             .subscribe {
      data.filter {de-> de.id==it.statusId}.mapNotNull { mAdapter.remove(it) }
     }
-   onDeserialize()
+
   }
 
 }

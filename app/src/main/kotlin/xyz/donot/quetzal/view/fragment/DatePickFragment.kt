@@ -25,7 +25,7 @@ class DatePickFragment:RxDialogFragment()
 
         val listener= DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             if(parentActivity is SearchSettingActivity) {
-                parentActivity.dateSet(view, year, monthOfYear+1, dayOfMonth,arguments.getBoolean("isFrom",false))
+                parentActivity.dateSet(year, monthOfYear+1, dayOfMonth,arguments.getBoolean("isFrom",false))
             }
 
         }

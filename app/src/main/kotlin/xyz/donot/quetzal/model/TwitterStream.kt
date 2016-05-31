@@ -2,38 +2,42 @@ package xyz.donot.quetzal.model
 
 import android.content.Context
 import rx.lang.kotlin.BehaviorSubject
+import rx.subjects.BehaviorSubject
 import twitter4j.*
 import xyz.donot.quetzal.twitter.StreamCreateUtil
 import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.util.isIgnore
 
+
 class TwitterStream(val context: Context){
-    val isConnected by lazy {val t= BehaviorSubject<Boolean>()
+
+        val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
+
+    val isConnected:BehaviorSubject<Boolean>  by lazy{val t= BehaviorSubject<Boolean>()
         t
     }
-    val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
-    val statusSubject by lazy { BehaviorSubject<Status>() }
-    val deleteSubject by lazy { BehaviorSubject<StatusDeletionNotice>() }
+    val statusSubject :BehaviorSubject<Status> by lazy { BehaviorSubject<Status>() }
+    val deleteSubject:BehaviorSubject<StatusDeletionNotice>  by lazy { BehaviorSubject<StatusDeletionNotice>() }
     fun run(streamType: StreamType):TwitterStream
     {
         if(!isConnected.hasValue()){
-            stream.addConnectionLifeCycleListener(MyConnectionAdapter())
+           stream.addConnectionLifeCycleListener(MyConnectionAdapter())
             StreamCreateUtil.addStatusListener(stream,MyStreamAdapter())
             when(streamType){
                 StreamType.USER_STREAM->{
                     stream.user()}
                 StreamType.FILTER_STREAM->{}
                 StreamType.RETWEET_STREAM->{}
-                StreamType.SAMPLE_STREAM->{stream.sample()}
+                StreamType.SAMPLE_STREAM->{ stream.sample()}
             }
         }
         else if(!isConnected.value){
             stream.addConnectionLifeCycleListener(MyConnectionAdapter())
-            StreamCreateUtil.addStatusListener(stream,MyStreamAdapter())
+            StreamCreateUtil.addStatusListener( stream,MyStreamAdapter())
             when(streamType){
                 StreamType.USER_STREAM->{
-                    stream.user()}
+                   stream.user()}
                 StreamType.FILTER_STREAM->{}
                 StreamType.RETWEET_STREAM->{}
                 StreamType.SAMPLE_STREAM->{stream.sample()}
@@ -47,7 +51,7 @@ class TwitterStream(val context: Context){
     fun clean()
     {
         if(isConnected.value){
-            stream.cleanUp()
+         stream.shutdown()
         }
         else{
             d("StreamManager", "You Have Already Disconnected to the Stream ")
@@ -59,9 +63,7 @@ class TwitterStream(val context: Context){
             if(!isIgnore(status.user.id)) {
                 statusSubject.onNext(status)
             }
-           // status.save(context)
-            // Realm.getDefaultInstance().executeTransaction { it.createObject(DBStatus::class.java).status=status.getSerialized() }
-        }
+           }
 
         override fun onException(ex: Exception) {
             super.onException(ex)

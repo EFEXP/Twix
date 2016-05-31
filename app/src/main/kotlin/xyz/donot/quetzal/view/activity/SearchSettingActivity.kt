@@ -1,7 +1,7 @@
 package xyz.donot.quetzal.view.activity
 
 import android.os.Bundle
-import android.widget.DatePicker
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_search_setting.*
 import twitter4j.Query
@@ -12,7 +12,7 @@ import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.fragment.DatePickFragment
 
 class SearchSettingActivity : RxAppCompatActivity() {
-   fun dateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int,isFrom:Boolean) {
+   fun dateSet(year: Int, monthOfYear: Int, dayOfMonth: Int,isFrom:Boolean) {
        if(isFrom){
            day_from.text = "${year.toString()}年${monthOfYear.toString()}月${dayOfMonth.toString()}日～"
            day_from.tag=" since:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
@@ -68,6 +68,15 @@ class SearchSettingActivity : RxAppCompatActivity() {
                 start<SearchActivity>(Bundle().apply {
                     putByteArray("query_bundle",query.getSerialized())
                 })
+            FirebaseAnalytics.getInstance(applicationContext).apply {
+                logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, Bundle().apply {
+                  putString(FirebaseAnalytics.Param.ITEM_NAME,querytext)
+                })
+            }
+
+
+
+
 
                 true
 

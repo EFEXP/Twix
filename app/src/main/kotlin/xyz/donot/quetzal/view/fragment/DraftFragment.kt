@@ -11,7 +11,6 @@ import com.trello.rxlifecycle.components.support.RxDialogFragment
 import io.realm.Realm
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.DBDraft
-import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.adapter.DraftAdapter
@@ -29,7 +28,6 @@ class DraftFragment : RxDialogFragment() {
         val list=view.findViewById(R.id.draft_list_view) as ListView
         list.adapter=mAdapter
         list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            d("$position Clicked")
             val parent_list=parent as ListView
             val item=parent_list.getItemAtPosition(position)as DBDraft
             if(activity is EditTweetActivity){
