@@ -33,7 +33,7 @@ abstract class PlainFragment<L,T:RecyclerArrayAdapter<L>,X: BaseViewHolder<L>>:R
     super.onViewCreated(view, savedInstanceState)
     base_recycler_view.apply{
       showProgress()
-      setItemAnimator(OvershootInRightAnimator(0.1f))
+      setItemAnimator(OvershootInRightAnimator(0.3f))
       setLayoutManager( LinearLayoutManager(context))
       mAdapter.setMore(R.layout.item_loadmore,{  loadMore()})
       adapter = AlphaInAnimationAdapter(mAdapter)

@@ -29,9 +29,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            shrinkResources true
+            shrinkResources false
             applicationIdSuffix ".debug"
-            minifyEnabled true
+            minifyEnabled false
             manifestPlaceholders = [appName: "QuetzalDEBUG"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
