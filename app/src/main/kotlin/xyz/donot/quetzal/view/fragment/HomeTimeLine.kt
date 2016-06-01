@@ -1,5 +1,6 @@
 package xyz.donot.quetzal.view.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
@@ -8,8 +9,8 @@ import twitter4j.Paging
 import xyz.donot.quetzal.util.bindToLifecycle
 
 class HomeTimeLine(): TimeLine(){
-
-  override fun onCreate(savedInstanceState: Bundle?) {
+    var waitDialog: ProgressDialog?=null
+    override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     tsm.statusSubject
             .observeOn(AndroidSchedulers.mainThread())
@@ -22,11 +23,20 @@ class HomeTimeLine(): TimeLine(){
   }
 
   override fun loadMore() {
+      showProgress()
     twitterObservable.getHomeTimelineAsync(Paging(page))
       .bindToLifecycle(this@HomeTimeLine)
-      .subscribe({mAdapter.addAll(it)})
+      .subscribe{mAdapter.addAll(it)
+          waitDialog?.dismiss()
+      }
   }
 
+    private fun showProgress() {
+        waitDialog = ProgressDialog(activity)
+        waitDialog?.setMessage("Loading!")
+        waitDialog?.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        waitDialog?.show();
+    }
 
 
 }

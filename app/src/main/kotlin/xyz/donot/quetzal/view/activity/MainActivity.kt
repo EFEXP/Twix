@@ -36,6 +36,7 @@ class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
   val twitter by lazy { getTwitterInstance() }
 
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (!haveToken()) {
@@ -69,6 +70,7 @@ class MainActivity : RxAppCompatActivity() {
                         drawer_layout.closeDrawers()
                        }
             R.id.action_setting -> {
+
               start<SettingsActivity>()
               drawer_layout.closeDrawers()
             }
@@ -139,15 +141,8 @@ class MainActivity : RxAppCompatActivity() {
           }
         }
       }
-
-
-
-
       button_tweet.setOnClickListener(
               {
-               /* val status= StatusUpdate(editText_status.text.toString())
-                val intent=Intent(applicationContext, TweetPostService::class.java).apply { putExtra("StatusUpdate",status.getSerialized() }
-                startService(intent)*/
                 if (!editText_status.editableText.isNullOrBlank()&&editText_status.text.count()<=140) {
                   val tObserver = TwitterUpdateObservable(applicationContext,twitter);
                   tObserver.updateStatusAsync(editText_status.editableText.toString())
@@ -183,6 +178,7 @@ class MainActivity : RxAppCompatActivity() {
     }
 
   }
+
 
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

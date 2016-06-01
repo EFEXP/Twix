@@ -15,6 +15,12 @@ abstract  class TimeLine() : PlainFragment<Status, StatusAdapter, xyz.donot.quet
   abstract  override  fun loadMore()
   protected  val tsm by lazy { TwitterStream(context).run(StreamType.USER_STREAM)}
   override val data: MutableList<Status> by lazy { LinkedList<Status>() }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    tsm.clean()
+  }
+
   override val mAdapter: StatusAdapter by lazy{ StatusAdapter(activity, data) }
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)
