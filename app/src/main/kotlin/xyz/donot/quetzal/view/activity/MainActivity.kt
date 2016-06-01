@@ -116,7 +116,8 @@ class MainActivity : RxAppCompatActivity() {
             connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
             connect_stream.tag=true
           }
-          else{ toast("ストリームから切断されました")
+          else if(isConnected.hasValue()){
+            toast("ストリームから切断されました")
             connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
             connect_stream.tag=false
           }
