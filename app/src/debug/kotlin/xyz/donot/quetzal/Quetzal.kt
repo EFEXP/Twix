@@ -3,7 +3,6 @@ package xyz.donot.quetzal
 import android.app.Application
 import android.app.UiModeManager
 import android.support.v7.app.AppCompatDelegate
-import com.squareup.leakcanary.LeakCanary
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import xyz.donot.quetzal.model.MyRealmMigration
@@ -22,7 +21,7 @@ class Quetzal : Application() {
         try{ Realm.migrateRealm(config,MyRealmMigration())}
         catch(e:FileNotFoundException){}
         Realm.setDefaultConfiguration(config)
-        LeakCanary.install(this)
+
       val design=  when(defaultSharedPreferences.getString("night_mode","auto")){
             "black"->{
                 AppCompatDelegate.MODE_NIGHT_YES}
