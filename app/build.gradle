@@ -91,6 +91,7 @@ dependencies {
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.google.firebase:firebase-crash:9.0.0'
+    compile 'com.jude:easyrecyclerview:3.5.8'
 }
 kapt {
     generateStubs = true

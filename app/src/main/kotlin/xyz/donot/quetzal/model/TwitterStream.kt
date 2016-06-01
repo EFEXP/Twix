@@ -50,11 +50,12 @@ class TwitterStream(val context: Context){
     }
     fun clean()
     {
-        if(isConnected.value){
-         stream.shutdown()
-        }
-        else{
-            d("StreamManager", "You Have Already Disconnected to the Stream ")
+        if(!isConnected.hasValue()) {
+            if (isConnected.value) {
+                stream.shutdown()
+            } else {
+                d("StreamManager", "You Have Already Disconnected to the Stream ")
+            }
         }
     }
 
