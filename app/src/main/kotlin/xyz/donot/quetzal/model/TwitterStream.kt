@@ -50,7 +50,7 @@ class TwitterStream(val context: Context){
     }
     fun clean()
     {
-        if(!isConnected.hasValue()) {
+        if(isConnected.hasValue()) {
             if (isConnected.value) {
                 stream.shutdown()
             } else {

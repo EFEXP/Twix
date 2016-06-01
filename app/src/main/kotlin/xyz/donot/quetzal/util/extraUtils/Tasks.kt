@@ -23,13 +23,7 @@ private val uiHandler = Handler(Looper.getMainLooper())
   Thread(runnable).start()
 }
 
-/**
- * Executes the provided code immediately on a background thread that will be submitted to the
- * provided ExecutorService
- *
- * @param onBackgroundJob Interface that wraps the code to execute
- * @param executor        Will queue the provided code
- */
+
  fun async(runnable: () -> Unit, executor: ExecutorService): Future<out Any?> {
   return executor.submit(runnable)
 }

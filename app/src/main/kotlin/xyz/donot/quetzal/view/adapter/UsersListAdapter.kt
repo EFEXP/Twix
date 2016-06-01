@@ -3,43 +3,40 @@ package xyz.donot.quetzal.view.adapter
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.jude.easyrecyclerview.adapter.BaseViewHolder
 import com.squareup.picasso.Picasso
 import twitter4j.UserList
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.RoundCorner
 import xyz.donot.quetzal.view.activity.SeeMyListActivity
-import java.util.*
 
-class UsersListAdapter(val  context: Context, val list: LinkedList<UserList>)
-: BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersListAdapter.ViewHolder,UserList>(context,list) {
-
-  override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-    // 表示するレイアウトを設定
-    return ViewHolder(mInflater.inflate(R.layout.item_users_list, viewGroup, false))
+class UsersListAdapter(context: Context)
+: BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersListAdapter.ViewHolder,UserList>(context) {
+  override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
+    return ViewHolder(mInflater.inflate(R.layout.item_users_list, parent, false))
   }
-  override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-    if (list.size > i ) {
-      val  item= list[i]
+
+
+
+
+  inner class ViewHolder(itemView: View) :BaseViewHolder<UserList>(itemView) {
+    override fun setData(data: UserList) {
+      super.setData(data)
+      val  item= data
       //ビューホルダー
-      viewHolder.apply {
+    this.apply {
         listName.text=item.name
         author.text="${item.user.name}が作成"
         Picasso.with(context).load(item.user.biggerProfileImageURLHttps).transform(RoundCorner()).into(icon)
         cardView.setOnClickListener{
-          context.startActivity(Intent(context,SeeMyListActivity::class.java).putExtra("list_id",item.id))
+          context.startActivity(Intent(context, SeeMyListActivity::class.java).putExtra("list_id",item.id))
         }
       }
-
-
     }
-  }
-
-  inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val icon: ImageView
     val cardView: CardView

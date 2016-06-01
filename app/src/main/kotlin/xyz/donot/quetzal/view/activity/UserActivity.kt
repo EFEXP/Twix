@@ -44,8 +44,8 @@ class UserActivity : RxAppCompatActivity() {
     }
 
   fun setUp(user: User){
-    Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
-    banner.setOnClickListener{startActivity(Intent(this@UserActivity, PictureActivity::class.java)
+    Picasso.with(applicationContext).load(user.profileBannerIPadURL).into(banner)
+    banner.setOnClickListener{startActivity(Intent(applicationContext, PictureActivity::class.java)
             .putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
     toolbar.title=user.name
     toolbar.subtitle=user.screenName

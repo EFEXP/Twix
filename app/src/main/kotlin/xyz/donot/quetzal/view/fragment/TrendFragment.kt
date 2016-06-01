@@ -3,49 +3,47 @@ package xyz.donot.quetzal.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.trello.rxlifecycle.components.support.RxDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
-import twitter4j.Trend
+import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterTrendObservable
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.SearchActivity
-import xyz.donot.quetzal.view.adapter.BasicRecyclerAdapter
 import xyz.donot.quetzal.view.adapter.TrendAdapter
-import java.util.*
 
 class TrendFragment():RxDialogFragment(){
    val twitter by lazy {getTwitterInstance() }
 
-   val data by lazy { LinkedList<Trend>() }
-   val  mAdapter by lazy { TrendAdapter(context, data) }
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val v = inflater.inflate(R.layout.fragment_timeline_base, container, false)
-    val recycler=v.findViewById(R.id.base_recycler_view)as RecyclerView
-    recycler.apply{
-      itemAnimator= OvershootInRightAnimator(1f)
+
+   val  mAdapter by lazy { TrendAdapter(context) }
+  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    base_recycler_view.apply{
+      setItemAnimator(OvershootInRightAnimator(1f))
       adapter = AlphaInAnimationAdapter(mAdapter)
-      mAdapter.setOnItemClickListener(object:BasicRecyclerAdapter.OnItemClickListener<TrendAdapter.ViewHolder,Trend>{
-        override fun onItemClick(adapter: BasicRecyclerAdapter<TrendAdapter.ViewHolder, Trend>, position: Int, item: Trend) {
-          if(activity is SearchActivity){
+      mAdapter.setOnItemClickListener {
+        val item=mAdapter.getItem(it)
+        if(activity is SearchActivity){
           this@TrendFragment.startActivity(Intent(context, SearchActivity::class.java).putExtra("query_txt",item.query))
         }
         else if(activity is EditTweetActivity){
-            (activity as EditTweetActivity).addTrendHashtag(item.name)
-            this@TrendFragment.dismiss()
-          }
+          (activity as EditTweetActivity).addTrendHashtag(item.name)
+          this@TrendFragment.dismiss()
         }
-      })
+      }
+      base_recycler_view.setLayoutManager(LinearLayoutManager(context))
 
-      layoutManager = LinearLayoutManager(context)
       TimelineLoader() }
-    return v}
+  }
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    return inflater.inflate(R.layout.fragment_timeline_base, container, false)}
 
   fun TimelineLoader(){
     TwitterTrendObservable(context,twitter).getTrend().subscribe {

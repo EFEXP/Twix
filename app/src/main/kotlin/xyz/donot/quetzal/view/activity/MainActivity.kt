@@ -62,7 +62,7 @@ class MainActivity : RxAppCompatActivity() {
         if (haveNetworkConnection()) {
           when (it.itemId) {
             R.id.my_profile -> {
-                             startActivity(Intent(this@MainActivity, UserActivity::class.java).putExtra("user_id",getMyId()))
+                             startActivity(Intent(applicationContext, UserActivity::class.java).putExtra("user_id",getMyId()))
                               drawer_layout.closeDrawers()
                           }
             R.id.action_help -> {
@@ -94,7 +94,7 @@ class MainActivity : RxAppCompatActivity() {
       UsersObservable(twitter)
               .getMyUserInstance()
               .bindToLifecycle(this@MainActivity)
-              .subscribe(object : TwitterUserSubscriber(this@MainActivity){
+              .subscribe(object : TwitterUserSubscriber(applicationContext){
                 override fun onUser(user: User) {
                   super.onUser(user)
                   Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
@@ -165,9 +165,9 @@ class MainActivity : RxAppCompatActivity() {
     }
     //パーミッション要求
     fromApi(23, true){
-    val EX_WRITE=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-    val LOCATION=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED
-    val EX_READ=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
+    val EX_WRITE=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
+    val LOCATION=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED
+    val EX_READ=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
     if(!(EX_WRITE&&EX_READ&&LOCATION)){
       requestPermissions(
               arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE

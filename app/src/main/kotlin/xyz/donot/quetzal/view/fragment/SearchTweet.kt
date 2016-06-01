@@ -23,7 +23,10 @@ class SearchTweet(): TimeLine(){
       else{
         load=false
       }
-       mAdapter.addAll(it.tweets)
+       it.tweets.forEach {
+           mAdapter.add(it)
+       }
+
     }
   }}
 }

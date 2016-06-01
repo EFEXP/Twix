@@ -23,7 +23,7 @@ class UsersListFragment: RxFragment() {
 
   val twitter by lazy {getTwitterInstance() }
   val data by lazy { LinkedList<UserList>() }
-  val mAdapter by lazy { UsersListAdapter(context,data) }
+  val mAdapter by lazy { UsersListAdapter(context) }
   internal var cursor = -1L
   internal var load=true
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -22,12 +22,12 @@ override fun getItem(position: Int): Fragment {
       }}
     1->object :TimeLine(){
       override fun loadMore() {
-        twitterObservable.getUserTimelineAsync(userId, Paging(page)).subscribe {mAdapter.addAll(it)}
+        twitterObservable.getUserTimelineAsync(userId, Paging(page)).subscribe { it.forEach { mAdapter.add(it) } }
       }
     }
     2-> object : TimeLine(){
       override fun loadMore() {
-        twitterObservable.getFavoritesAsync(userId,Paging(page)).subscribe  {mAdapter.addAll(it)}
+        twitterObservable.getFavoritesAsync(userId,Paging(page)).subscribe { it.forEach { mAdapter.add(it) } }
       }
     }
     else->throw  IllegalStateException()
