@@ -19,17 +19,20 @@ override fun getItem(position: Int): Fragment {
     0-> {
       UserDetailFragment().apply {
         arguments=   Bundle().apply { putLong("userId",userId) }
+
       }}
     1->object :TimeLine(){
       override fun loadMore() {
-        twitterObservable.getUserTimelineAsync(userId, Paging(page)).subscribe { it.forEach { mAdapter.add(it) } }
+        twitterObservable.getUserTimelineAsync(userId, Paging(page)).subscribe {
+          mAdapter.addAll(it.toList())
+        }
       }
     }
     2-> object : TimeLine(){
       override fun loadMore() {
-        twitterObservable.getFavoritesAsync(userId,Paging(page)).subscribe { it.forEach { mAdapter.add(it) } }
+        twitterObservable.getFavoritesAsync(userId, Paging(page)).subscribe {   mAdapter.addAll(it.toList()) } }
       }
-    }
+
     else->throw  IllegalStateException()
   }}
 

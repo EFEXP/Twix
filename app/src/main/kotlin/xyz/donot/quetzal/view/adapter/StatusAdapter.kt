@@ -168,7 +168,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
                               .subscribe(object : TwitterSubscriber(context) {
                           override fun onStatus(status: Status) {
                               super.onStatus(status)
-                              reload(status)
+                              insertWithPosition(data,status)
                               context.longToast("RTしました")
                           }
                       })
@@ -180,7 +180,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
                               object : TwitterSubscriber(context) {
                                   override fun onStatus(status: Status) {
                                       super.onStatus(status)
-                                      reload(status)
+                                       insertWithPosition(data,status)
                                   }
                               }) }
                   else{
@@ -188,7 +188,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
                               object : TwitterSubscriber(context) {
                                   override fun onStatus(status: Status) {
                                       super.onStatus(status)
-                                      reload(status)
+                                      insertWithPosition(item,status)
                                   }
                               })
                   }

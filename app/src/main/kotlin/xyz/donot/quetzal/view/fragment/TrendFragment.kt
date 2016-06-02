@@ -47,9 +47,7 @@ class TrendFragment():RxDialogFragment(){
 
   fun TimelineLoader(){
     TwitterTrendObservable(context,twitter).getTrend().subscribe {
-      it.forEach {
-        mAdapter.add(it)
-      }
+     mAdapter.addAll(it)
     }
 
   }

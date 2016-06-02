@@ -11,35 +11,53 @@ abstract class  FixedRecyclerArrayAdapter<T>(context: Context): RecyclerArrayAda
     override fun add(`object`: T) {
         mainThread {
             mObjects.add(`object`)
+            notifyItemInserted(count)
+
         }
-        notifyItemInserted(mObjects.size)
+
     }
 
     override fun remove(`object`: T) {
       val int=  mObjects.indexOf(`object`)
         mainThread {
             mObjects.removeAt(int)
+            notifyItemRemoved(int)
         }
-        notifyItemRemoved(int)
+
+
     }
 
     override fun remove(position: Int) {
         mainThread {
             mObjects.removeAt(position)
+            notifyItemRemoved(position)
         }
-        notifyItemRemoved(position)
+
+
     }
 
 
     override fun insert(`object`: T, index: Int) {
         mainThread {
             mObjects.add(index, `object`)
-        }
-        if(holderInsertListener !=null){
-            holderInsertListener?.itemInserted(index)
+            if(holderInsertListener !=null){
+                holderInsertListener?.itemInserted(index)
 
+            }
+            notifyItemInserted(index)
         }
-        notifyItemInserted(index)
+
+        holderInsertListener=null
+    }
+
+    fun replace(replacedItem: T,replaceItem: T) {
+        val int=  mObjects.indexOf(replacedItem)
+        mainThread {
+            mObjects.removeAt(int)
+            mObjects.add(int,replaceItem)
+            notifyItemChanged(int)
+        }
+
     }
 
 

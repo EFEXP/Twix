@@ -12,32 +12,9 @@ abstract class BasicRecyclerAdapter
 :  FixedRecyclerArrayAdapter<ListItem>(con)
 {
     val mInflater: LayoutInflater by lazy { LayoutInflater.from(context) }
-  fun reload(item:ListItem)
-  {
-
-      allData.
-        filter{ it== item }
-        .mapNotNull { allData.indexOf(it) }
-        .forEach {
-            insert(item,it)
-            remove(it)
-
-        }
-
-  }
-
-
     fun insertWithPosition(replacedItem:ListItem,replaceItem: ListItem)
     {
-
-            allData.
-                    filter{ it==replacedItem }
-                    .mapNotNull {allData.indexOf(it) }
-                    .forEach {
-                        remove(it)
-                        insert(replaceItem,it)
-                    }
-
+        replace(replacedItem,replaceItem)
     }
 
 

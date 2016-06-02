@@ -12,7 +12,7 @@ abstract class UsersWatcher : PlainFragment<User, UsersAdapter,UsersAdapter.View
 
   inner class TwitterUserSubscriber: Subscriber<ResponseList<User>>() {
     override fun onNext(p0: ResponseList<User>) {
-      p0.forEach {  mAdapter.add(it) }
+     mAdapter.addAll(p0.toMutableList())
     }
     override fun onCompleted() {
     }

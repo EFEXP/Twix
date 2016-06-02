@@ -10,10 +10,7 @@ class SearchTweet(): TimeLine(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         query=arguments.getByteArray("query_bundle").getDeserialized<Query>()
-
     }
-
-
     override fun loadMore() {
     if(load){
    twitterObservable.getSearchAsync(query!!).subscribe {
@@ -23,9 +20,7 @@ class SearchTweet(): TimeLine(){
       else{
         load=false
       }
-       it.tweets.forEach {
-           mAdapter.add(it)
-       }
+      mAdapter.addAll(it.tweets)
 
     }
   }}

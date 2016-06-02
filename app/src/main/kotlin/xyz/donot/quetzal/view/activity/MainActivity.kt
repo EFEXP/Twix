@@ -58,6 +58,7 @@ class MainActivity : RxAppCompatActivity() {
         }
         setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
       }
+
       design_navigation_view.setNavigationItemSelectedListener({
         if (haveNetworkConnection()) {
           when (it.itemId) {
