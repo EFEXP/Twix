@@ -9,6 +9,7 @@ import com.trello.rxlifecycle.components.support.RxFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
+import rx.lang.kotlin.BehaviorSubject
 import twitter4j.UserList
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterObservable
@@ -24,16 +25,19 @@ class UsersListFragment: RxFragment() {
   val data by lazy { LinkedList<UserList>() }
   val mAdapter by lazy { UsersListAdapter(context) }
   internal var cursor = -1L
-  internal var load=true
+  val load by lazy { BehaviorSubject(true) }
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mAdapter.setMore(R.layout.item_loadmore, { TimelineLoader()})
        base_recycler_view.apply {
            setItemAnimator(OvershootInRightAnimator(0.1f))
            adapter = AlphaInAnimationAdapter(mAdapter)
            setLayoutManager(LinearLayoutManager(activity))
-           mAdapter.setMore(R.layout.item_loadmore, { TimelineLoader()})
        }
         TimelineLoader()
+        load.subscribe {
+            if(!it){mAdapter.stopMore()}
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,24 +51,29 @@ class UsersListFragment: RxFragment() {
       TwitterObservable(context,twitter).showOwnUsersList(getMyId(), cursor)
         .subscribe {
           result ->
-          if (load) {
+          if (load.value) {
             mAdapter.addAll(result)
         }
           if (result.hasNext()) {
             cursor = result.nextCursor
           } else {
-            load = false
+            load.onNext(false)
           }
         }
     }
-    else{
-      TwitterObservable(context,twitter).showUsersList(userId)
-        .subscribe {
-          result ->
-            mAdapter.addAll(result)
-        }
-    }
-  }
+    else{ TwitterObservable(context,twitter).showOwnUsersList(userId, cursor)
+            .subscribe {
+                result ->
+                if (load.value) {
+                    mAdapter.addAll(result)
+                }
+                if (result.hasNext()) {
+                    cursor = result.nextCursor
+                } else {
+                    load.onNext(false)
+                }
+            }
+  }}
 
 
 

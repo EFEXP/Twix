@@ -12,6 +12,7 @@ import com.trello.rxlifecycle.components.support.RxDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
+import rx.lang.kotlin.BehaviorSubject
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.getTwitterInstance
@@ -20,7 +21,7 @@ abstract class PlainFragment<L,T:RecyclerArrayAdapter<L>,X: BaseViewHolder<L>>:R
 {
   val twitterObservable : TwitterObservable by lazy { TwitterObservable(context,twitter) }
   val twitter by lazy {getTwitterInstance()}
-
+  val load by lazy { BehaviorSubject(true) }
   abstract val  mAdapter : T
   abstract fun loadMore()
   var page : Int = 0
@@ -38,7 +39,12 @@ abstract class PlainFragment<L,T:RecyclerArrayAdapter<L>,X: BaseViewHolder<L>>:R
       mAdapter.setMore(R.layout.item_loadmore,{  loadMore()})
       adapter = AlphaInAnimationAdapter(mAdapter)
       setRefreshListener { reload()}
-
+    }
+    load.subscribe {
+      if(!it){
+        mAdapter.setNoMore(R.layout.item_stop_more)
+        mAdapter.stopMore()
+      }
     }
 
     reload()

@@ -79,9 +79,6 @@ class TwitterObservable(val context: Context,val twitter : Twitter)
    fun showFriendShip(long: Long) :Observable<Relationship>{
      return safeTry(context){twitter.showFriendship(getMyId(),long)}
   }
-  fun showUsersList(long: Long) :Observable<ResponseList<UserList>>{
-    return safeTry(context){twitter.getUserLists(long)}
-  }
 
   fun showOwnUsersList(userid: Long,cursor: Long) :Observable<PagableResponseList<UserList>>{
     return safeTry(context){twitter.getUserListsOwnerships(userid,cursor)}
