@@ -6,7 +6,7 @@ import twitter4j.Status
 import twitter4j.Twitter
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.model.DBMute
-import xyz.donot.quetzal.util.extrautils.i
+import xyz.donot.quetzal.util.extrautils.logi
 import java.io.*
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -75,7 +75,7 @@ fun getTwitterInstance(): twitter4j.Twitter {
 
 fun haveToken(): Boolean {
   Realm.getDefaultInstance().use {
-   i( "AddedAccounts","You have ${it.where(DBAccount::class.java).count()} accounts!")
+   logi( "AddedAccounts","You have ${it.where(DBAccount::class.java).count()} accounts!")
  return  it.where(DBAccount::class.java).count()>0
  }
   }

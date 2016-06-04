@@ -21,6 +21,8 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.DBDraft
 import xyz.donot.quetzal.service.TweetPostService
 import xyz.donot.quetzal.util.*
+import xyz.donot.quetzal.util.extrautils.newIntent
+import xyz.donot.quetzal.util.extrautils.onClick
 import xyz.donot.quetzal.util.rximage.RxImagePicker
 import xyz.donot.quetzal.util.rximage.Sources
 import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
@@ -76,15 +78,15 @@ class EditTweetActivity : RxAppCompatActivity() {
 
         pic_recycler_view.hasFixedSize()
       //listener
-       trend_hashtag.setOnClickListener {
-           dialog=TrendFragment()
-           dialog?.show(supportFragmentManager,"")
-       }
-        show_drafts.setOnClickListener {
+        trend_hashtag.onClick {
+            dialog=TrendFragment()
+            dialog?.show(supportFragmentManager,"")
+        }
+        show_drafts.onClick {
             dialog=DraftFragment()
             dialog?.show(supportFragmentManager,"")
         }
-        text_tools.setOnClickListener {
+        text_tools.onClick{
             val item=R.array.text_tools
             AlertDialog.Builder(this@EditTweetActivity)
                     .setItems(item, { dialogInterface, int ->
@@ -101,23 +103,6 @@ class EditTweetActivity : RxAppCompatActivity() {
                              val text="＿人人人人人人$a＿\n＞　${editText_status.text}　＜\n￣Y^Y^Y^Y^Y$b￣"
                              editText_status.text.clear()
                              editText_status.setText(text)                         }
-
-                            "e=mc^2"-> {
-                                editText_status.setText("\\[e = mc^2\\]")
-                            }
-                            "極限"-> {
-                                editText_status.setText(" \\[ \\lim_{h \\to 0} \\frac{\\sqrt{a+h}-\\sqrt{a}}{h} \\]")
-                            }
-                            "ベクトル"-> {
-                                editText_status.setText("\\(\\vec a \\cdot \\vec b \\)")
-                            }
-                            "積分"->{
-                                editText_status.setText("\\(  \\int_{0}^{R} mg dx =\\lim_{n \\to \\infty} \\sum_{i=1}^n mg \\Delta x_{i}  \\)")
-                            }
-                            "微分"->{
-                                editText_status.setText("\\[f'(x),f''(x),f^{(3)}(x)\\]")
-                            }
-
                         }
                     })
                     .show()
@@ -152,7 +137,8 @@ class EditTweetActivity : RxAppCompatActivity() {
           updateStatus.inReplyToStatusId=statusId
           val filePathList =ArrayList<String>()
           mAdapter.allData.forEach { filePathList.add(getPath(this@EditTweetActivity,it)!!) }
-          startService(Intent(this@EditTweetActivity, TweetPostService::class.java)
+
+          startService(newIntent<TweetPostService>()
                   .putExtra("StatusUpdate",updateStatus.getSerialized())
                   .putStringArrayListExtra("FilePath",filePathList))
           finish()

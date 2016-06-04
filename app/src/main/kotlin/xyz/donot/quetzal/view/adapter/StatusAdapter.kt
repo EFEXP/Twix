@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -77,16 +76,6 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
           }
           //ビューホルダー
           binding.apply {
-              if(item.text.contains("\\(")||item.text.contains("\\[")){
-                  mathView.config("""MathJax.Hub.Config({ tex2jax: {inlineMath: [ ['$','$'], ['\\(','\\)'] ], processEscapes: true},
-                            TeX: {equationNumbers: {autoNumber: "AMS"}}});""");
-                  mathView.text=item.text
-                  mathView.setBackgroundColor(Color.WHITE)
-                  mathView.show()
-              }
-              else{
-                  mathView.hide()
-              }
               //引用
               if(item.quotedStatus!=null){
                   itemQuotedTweet.visibility= View.VISIBLE

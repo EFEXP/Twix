@@ -1,15 +1,12 @@
 package xyz.donot.quetzal.view.activity
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
-import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,10 +23,7 @@ import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
-import xyz.donot.quetzal.util.extrautils.fromApi
-import xyz.donot.quetzal.util.extrautils.intent
-import xyz.donot.quetzal.util.extrautils.start
-import xyz.donot.quetzal.util.extrautils.toast
+import xyz.donot.quetzal.util.extrautils.*
 import xyz.donot.quetzal.view.fragment.HelpFragment
 
 class MainActivity : RxAppCompatActivity() {
@@ -44,7 +38,7 @@ class MainActivity : RxAppCompatActivity() {
       finish()
     } else {
       setContentView(R.layout.activity_main)
-      if (!haveNetworkConnection()) {
+      if (!isConnected()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
       toolbar.apply {
@@ -60,10 +54,11 @@ class MainActivity : RxAppCompatActivity() {
       }
 
       design_navigation_view.setNavigationItemSelectedListener({
-        if (haveNetworkConnection()) {
+        if (isConnected()) {
           when (it.itemId) {
             R.id.my_profile -> {
-                             startActivity(Intent(applicationContext, UserActivity::class.java).putExtra("user_id",getMyId()))
+                             startActivity(
+                                     newIntent<UserActivity>(Bundle { putLong("user_id",getMyId()) }))
                               drawer_layout.closeDrawers()
                           }
             R.id.action_help -> {
@@ -151,8 +146,7 @@ class MainActivity : RxAppCompatActivity() {
                           .bindToLifecycle(this@MainActivity)
                           .subscribe(object : TwitterSubscriber(applicationContext) {
                             override fun onStatus(status: Status) {
-                              val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                              inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                              editText_status.hideSoftKeyboard()
                               Snackbar.make(coordinatorLayout, "投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
                                 tObserver.deleteStatusAsync(status.id).subscribe {
                                   toast("削除しました")

@@ -5,7 +5,6 @@ import rx.lang.kotlin.BehaviorSubject
 import rx.subjects.BehaviorSubject
 import twitter4j.*
 import xyz.donot.quetzal.twitter.StreamCreateUtil
-import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.util.isIgnore
 
@@ -42,7 +41,7 @@ class TwitterStream(val context: Context){
             }
         }
         else{
-            d("StreamManager", "You Have Already Connected to the Stream ")
+
         }
        return  this
     }
@@ -52,7 +51,7 @@ class TwitterStream(val context: Context){
             if (isConnected.value) {
                 stream.shutdown()
             } else {
-                d("StreamManager", "You Have Already Disconnected to the Stream ")
+
             }
         }
     }

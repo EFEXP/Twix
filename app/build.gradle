@@ -14,8 +14,8 @@ android {
         applicationId "xyz.donot.quetzal"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 26
-        versionName "1.2.2"
+        versionCode 27
+        versionName "1.2.24"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -62,6 +62,7 @@ android {
 dependencies {
     def supportLibVersion = "23.4.0"
     def realmVersion = "1.0.0"
+    compile 'nl.komponents.kovenant:kovenant:3.2.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //realm
     kapt "io.realm:realm-annotations:${realmVersion}"
@@ -73,7 +74,6 @@ dependencies {
     compile "com.android.support:support-v4:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.github.kexanie.library:MathView:0.0.6'
     kapt 'com.android.databinding:compiler:2.1.0'
     compile 'io.realm:android-adapters:1.2.1'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
