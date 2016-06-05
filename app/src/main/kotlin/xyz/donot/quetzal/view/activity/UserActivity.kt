@@ -45,12 +45,11 @@ class UserActivity : RxAppCompatActivity() {
 
   fun setUp(user: User){
     Picasso.with(applicationContext).load(user.profileBannerIPadURL).into(banner)
-    banner.setOnClickListener{startActivity(Intent(applicationContext, PictureActivity::class.java)
-            .putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
+    banner.setOnClickListener{startActivity(Intent(applicationContext, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
    val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
-    adapter.userId=userId
+      adapter.user=user
     viewpager_user.adapter=adapter
     tabs_user.setupWithViewPager(viewpager_user)
       toolbar.setOnMenuItemClickListener {

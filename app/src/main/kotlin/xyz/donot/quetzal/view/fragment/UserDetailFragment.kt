@@ -90,6 +90,7 @@ class UserDetailFragment() : RxFragment()
         description.text=user.description.replace("\n","")
         web_txt.text=user.urlEntity.expandedURL
         geo_txt.text=user.location
+        tweet_count.text="${user.statusesCount}回のツイート"
         created_at.text= "${SimpleDateFormat("yyyy/MM/dd").format(user.createdAt)}にTwitterを開始"
         listed.text="${user.listedCount}個のリストに追加されています"
         followed_text.text="Followers:${user.followersCount}"

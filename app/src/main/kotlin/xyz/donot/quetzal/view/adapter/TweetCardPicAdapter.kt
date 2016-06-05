@@ -13,10 +13,10 @@ import twitter4j.Status
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
 import xyz.donot.quetzal.util.extrautils.start
+import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.util.getVideoURL
 import xyz.donot.quetzal.view.activity.PictureActivity
 import xyz.donot.quetzal.view.activity.VideoActivity
-import java.util.*
 
 
 class TweetCardPicAdapter(context: Context,val status: Status)
@@ -34,7 +34,6 @@ class TweetCardPicAdapter(context: Context,val status: Status)
         override fun setData(data: String) {
             super.setData(data)
 
-           val all=ArrayList<String>(allData)
            binding.apply {
                 Picasso.with(context).load(data).placeholder(R.drawable.ic_launcher).into(imageView)
                 textView.text="${layoutPosition+1}/$count"
@@ -45,7 +44,7 @@ class TweetCardPicAdapter(context: Context,val status: Status)
                     } else {
                         ( context as Activity).start<PictureActivity>(Bundle().apply {
                             putInt("starts_with",layoutPosition)
-                            putStringArrayList("picture_urls",all)
+                            putByteArray("status",status.getSerialized())
                         })
                     }
                 }

@@ -33,13 +33,14 @@ abstract class PlainFragment<L,T:RecyclerArrayAdapter<L>,X: BaseViewHolder<L>>:R
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     base_recycler_view.apply{
-      showProgress()
+      showEmpty()
       setItemAnimator(OvershootInRightAnimator(0.3f))
       setLayoutManager( LinearLayoutManager(context))
       mAdapter.setMore(R.layout.item_loadmore,{  loadMore()})
       adapter = AlphaInAnimationAdapter(mAdapter)
       setRefreshListener { reload()}
     }
+
     load.subscribe {
       if(!it){
         mAdapter.setNoMore(R.layout.item_stop_more)

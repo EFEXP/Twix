@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import rx.lang.kotlin.BehaviorSubject
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterObservable
-import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.view.customview.EqualItemSpacingDecoration
 import xyz.donot.quetzal.view.listener.OnLoadMoreListener
@@ -35,19 +34,17 @@ abstract class StaggeredFragment<L,T: RecyclerArrayAdapter<L>,X: BaseViewHolder<
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        base_recycler_view.apply{
-            showProgress()
+        base_recycler_view.apply {
+            showEmpty()
             addItemDecoration(EqualItemSpacingDecoration(0))
-            setLayoutManager(StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL))
-            mAdapter.setOnItemClickListener { context.toast("Click") }
-           //mAdapter.setMore(R.layout.item_loadmore,{loadMore()})
-            setOnScrollListener(object:OnLoadMoreListener(){
+            setLayoutManager(StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
+            setOnScrollListener(object : OnLoadMoreListener() {
                 override fun onScrolledToBottom() {
                     loadMore()
                 }
             })
             adapter = AlphaInAnimationAdapter(mAdapter)
-            setRefreshListener { reload()}
+            setRefreshListener { reload() }
         }
         load.subscribe {
             if(!it){

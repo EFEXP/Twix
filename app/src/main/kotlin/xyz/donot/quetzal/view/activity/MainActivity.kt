@@ -79,7 +79,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_whats_new -> {
-            onCustomTabEvent("http://www.latex-cmd.com/index.html#equation")
+            onCustomTabEvent("http://donot.xyz/")
               drawer_layout.closeDrawers()
             }
           }
