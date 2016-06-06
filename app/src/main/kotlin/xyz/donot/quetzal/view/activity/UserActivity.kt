@@ -49,6 +49,7 @@ class UserActivity : RxAppCompatActivity() {
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
    val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
+      viewpager_user.offscreenPageLimit=4
       adapter.user=user
     viewpager_user.adapter=adapter
     tabs_user.setupWithViewPager(viewpager_user)

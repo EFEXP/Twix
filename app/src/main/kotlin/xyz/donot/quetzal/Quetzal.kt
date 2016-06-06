@@ -15,7 +15,7 @@ class Quetzal : Application() {
     override fun onCreate() {
         super.onCreate()
            val config= RealmConfiguration.Builder(this)
-                    .schemaVersion(1L)
+                    .schemaVersion(2L)
                     .migration(MyRealmMigration())
                     .build()
         try{ Realm.migrateRealm(config,MyRealmMigration())}
