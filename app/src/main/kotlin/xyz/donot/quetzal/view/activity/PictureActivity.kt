@@ -43,14 +43,18 @@ class PictureActivity : AppCompatActivity() {
             null
         }
         val pagerAdapter=if(status!=null&&strings==null){
+            val imageUrls=getImageUrls(status)
             status_text.text = getExpandedText(status)
-            PicturePagerAdapter(supportFragmentManager,getImageUrls(status))
+            pager.offscreenPageLimit=imageUrls.count()
+            PicturePagerAdapter(supportFragmentManager,imageUrls)
         }else{
             BottomSheetBehavior.from(bottom_sheet).state=BottomSheetBehavior.STATE_HIDDEN
+            pager.offscreenPageLimit=1
             PicturePagerAdapter(supportFragmentManager,strings)
         }
         pager.adapter = pagerAdapter
         pager.currentItem=starts
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -13,6 +13,7 @@ class SearchTweet(): TimeLine(){
     override fun loadMore() {
     if(load.value){
    twitterObservable.getSearchAsync(query!!).subscribe {
+    if(it.tweets.isNotEmpty()){
       if(it.hasNext()){
         query=it.nextQuery()
       }
@@ -21,8 +22,14 @@ class SearchTweet(): TimeLine(){
       }
       mAdapter.addAll(it.tweets)
 
+    }}
+
+  } else{
+    empty.onNext(true)
+        load.onNext(false)
     }
-  }}
+
+    }
 }
 
 

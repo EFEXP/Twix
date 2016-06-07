@@ -27,13 +27,21 @@ override fun getItem(position: Int): Fragment {
     1->object :TimeLine(){
       override fun loadMore() {
         twitterObservable.getUserTimelineAsync(user!!.id, Paging(page)).subscribe {
-          mAdapter.addAll(it.toList())
+          if(it.isNotEmpty()){
+          mAdapter.addAll(it.toList())}
+          else{
+            empty.onNext(true)
+          }
         }
       }
     }
     2-> object : TimeLine(){
       override fun loadMore() {
-        twitterObservable.getFavoritesAsync(user!!.id, Paging(page)).subscribe {   mAdapter.addAll(it.toList()) } }
+        twitterObservable.getFavoritesAsync(user!!.id, Paging(page)).subscribe { if(it.isNotEmpty()){
+          mAdapter.addAll(it.toList())}
+        else{
+          empty.onNext(true)
+        } } }
       }
      3->{
       val query=Query()

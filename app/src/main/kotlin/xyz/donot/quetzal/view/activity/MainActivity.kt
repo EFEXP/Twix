@@ -1,6 +1,8 @@
 package xyz.donot.quetzal.view.activity
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -12,6 +14,7 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.*
 import rx.android.schedulers.AndroidSchedulers
+import rx.lang.kotlin.BehaviorSubject
 import twitter4j.Status
 import twitter4j.User
 import xyz.donot.quetzal.R
@@ -29,7 +32,7 @@ import xyz.donot.quetzal.view.fragment.HelpFragment
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
   val twitter by lazy { getTwitterInstance() }
-
+  val accountChanged by lazy { BehaviorSubject<Boolean>() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -71,7 +74,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_account -> {
-              start<AccountSettingActivity>()
+              startForResult<AccountSettingActivity>(0)
               drawer_layout.closeDrawers()
             }
             R.id.action_list -> {
@@ -93,8 +96,8 @@ class MainActivity : RxAppCompatActivity() {
               .subscribe(object : TwitterUserSubscriber(applicationContext){
                 override fun onUser(user: User) {
                   super.onUser(user)
-                  Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
-                  Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).transform(RoundCorner()).into(my_icon)
+                  Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).placeholder(R.drawable.picture_place_holder).into(my_header)
+                  Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).placeholder(R.drawable.avater_place_holder).transform(RoundCorner()).into(my_icon)
                   my_name_header.text="${user.name}"
                   my_screen_name_header.text = "@${user.screenName}"
                 }
@@ -158,6 +161,10 @@ class MainActivity : RxAppCompatActivity() {
                   editText_status.setText("")
                 }
               })
+
+    }
+    accountChanged.subscribe {
+      restart()
     }
     //パーミッション要求
     fromApi(23, true){
@@ -175,7 +182,14 @@ class MainActivity : RxAppCompatActivity() {
 
   }
 
-
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if(resultCode== Activity.RESULT_OK){
+      if(requestCode==0){
+        accountChanged.onNext(true)
+      }
+    }
+  }
 
   override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)

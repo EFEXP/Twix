@@ -38,7 +38,6 @@ class TrendFragment():RxDialogFragment(){
         }
       }
       base_recycler_view.setLayoutManager(LinearLayoutManager(context))
-
       TimelineLoader() }
   }
 

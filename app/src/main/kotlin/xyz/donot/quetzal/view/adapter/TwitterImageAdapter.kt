@@ -18,7 +18,7 @@ class TwitterImageAdapter(context: Context)
         override fun setData(data:String) {
             super.setData(data)
             val  item= data
-            Picasso.with(context).load(item).placeholder(R.drawable.pugnotification_ic_placeholder).into(picture)
+            Picasso.with(context).load(item).placeholder(R.drawable.picture_place_holder).into(picture)
         }
         val picture by lazy { itemView.findViewById(R.id.picture) as AppCompatImageView}
     }

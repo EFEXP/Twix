@@ -41,11 +41,11 @@ val twitter by lazy { getTwitterInstance()}
       {
       3->{
         iconUri =UCrop.getOutput(data)
-        Picasso.with(this@EditProfileActivity).load(iconUri).into(icon)
+        Picasso.with(this@EditProfileActivity).load(iconUri).placeholder(R.drawable.avater_place_holder).into(icon)
       }
         4->{
           bannerUri =UCrop.getOutput(data)
-          Picasso.with(this@EditProfileActivity).load(bannerUri).into(profile_banner)
+          Picasso.with(this@EditProfileActivity).load(bannerUri).placeholder(R.drawable.picture_place_holder).into(profile_banner)
         }
 
       }

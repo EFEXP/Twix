@@ -62,7 +62,6 @@ android {
 dependencies {
     def supportLibVersion = "23.4.0"
     def realmVersion = "1.0.0"
-    compile 'nl.komponents.kovenant:kovenant:3.2.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //realm
     kapt "io.realm:realm-annotations:${realmVersion}"

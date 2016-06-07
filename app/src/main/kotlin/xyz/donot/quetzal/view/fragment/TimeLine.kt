@@ -25,8 +25,7 @@ abstract  class TimeLine() : PlainFragment<Status, StatusAdapter,StatusAdapter.V
     super.onCreate(savedInstanceState)
     tsm.deleteSubject
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-              mAdapter.allData.filter {de-> de.id==it.statusId}.mapNotNull { mAdapter.remove(it) }
+            .subscribe { mAdapter.allData.filter {de-> de.id==it.statusId}.mapNotNull { mAdapter.remove(it) }
     }
 
   }

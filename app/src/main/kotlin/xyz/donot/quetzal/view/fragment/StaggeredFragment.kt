@@ -24,6 +24,7 @@ abstract class StaggeredFragment<L,T: RecyclerArrayAdapter<L>,X: BaseViewHolder<
     val twitterObservable : TwitterObservable by lazy { TwitterObservable(context, twitter) }
     val twitter by lazy { getTwitterInstance() }
     val load by lazy { BehaviorSubject(true) }
+    val empty by lazy { BehaviorSubject(true) }
     abstract val  mAdapter : T
     abstract fun loadMore()
     var page : Int = 0
@@ -35,7 +36,11 @@ abstract class StaggeredFragment<L,T: RecyclerArrayAdapter<L>,X: BaseViewHolder<
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         base_recycler_view.apply {
-            showEmpty()
+            empty.subscribe {
+                if(it){
+                    showEmpty()
+                }
+            }
             addItemDecoration(EqualItemSpacingDecoration(0))
             setLayoutManager(StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
             setOnScrollListener(object : OnLoadMoreListener() {

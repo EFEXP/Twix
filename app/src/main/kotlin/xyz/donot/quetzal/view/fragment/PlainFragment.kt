@@ -22,6 +22,7 @@ abstract class PlainFragment<L,T:RecyclerArrayAdapter<L>,X: BaseViewHolder<L>>:R
   val twitterObservable : TwitterObservable by lazy { TwitterObservable(context,twitter) }
   val twitter by lazy {getTwitterInstance()}
   val load by lazy { BehaviorSubject(true) }
+  val empty by lazy { BehaviorSubject(true) }
   abstract val  mAdapter : T
   abstract fun loadMore()
   var page : Int = 0
@@ -33,7 +34,11 @@ abstract class PlainFragment<L,T:RecyclerArrayAdapter<L>,X: BaseViewHolder<L>>:R
   override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     base_recycler_view.apply{
-      showEmpty()
+      empty.subscribe {
+        if(it){
+          showEmpty()
+        }
+      }
       setItemAnimator(OvershootInRightAnimator(0.3f))
       setLayoutManager( LinearLayoutManager(context))
       mAdapter.setMore(R.layout.item_loadmore,{  loadMore()})

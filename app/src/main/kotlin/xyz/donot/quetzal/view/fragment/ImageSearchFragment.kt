@@ -1,7 +1,6 @@
 package xyz.donot.quetzal.view.fragment
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import twitter4j.Query
 import twitter4j.Status
 import xyz.donot.quetzal.util.extrautils.Bundle
@@ -32,6 +31,7 @@ class ImageSearchFragment :StaggeredFragment<String,TwitterImageAdapter,TwitterI
 
             twitterObservable.getSearchAsync(query!!).subscribe {
                 if(!it.tweets.isEmpty()){
+                    empty.onNext(false)
                 if(it.hasNext()){
                     query=it.nextQuery()
                 }
@@ -47,7 +47,7 @@ class ImageSearchFragment :StaggeredFragment<String,TwitterImageAdapter,TwitterI
 
                 }}
                 else{
-                    base_recycler_view.showEmpty()
+                    empty.onNext(true)
                 }
 
 

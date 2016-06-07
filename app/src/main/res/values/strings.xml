@@ -150,4 +150,7 @@
     <string name="design_setting">デザイン設定</string>
     <string name="notification">通知</string>
     <string name="menu_streaming">ストリーミング</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_twitter_firebase">TwitterFirebaseActivity</string>
+    <string name="title_activity_oauth_fire">OauthFireActivity</string>
 </resources>
