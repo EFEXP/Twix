@@ -10,19 +10,18 @@ import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
 import java.io.FileNotFoundException
 
 
-@Suppress
+
 class Quetzal : Application() {
     override fun onCreate() {
         super.onCreate()
-
            val config= RealmConfiguration.Builder(this)
-                    .schemaVersion(1L)
+                    .schemaVersion(2L)
                     .migration(MyRealmMigration())
                     .build()
         try{ Realm.migrateRealm(config,MyRealmMigration())}
         catch(e:FileNotFoundException){}
         Realm.setDefaultConfiguration(config)
-       
+
       val design=  when(defaultSharedPreferences.getString("night_mode","auto")){
             "black"->{
                 AppCompatDelegate.MODE_NIGHT_YES}

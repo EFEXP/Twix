@@ -147,21 +147,11 @@
             android:layout_alignStart="@+id/quoted_user_name" />
       </RelativeLayout>
       <!--一時的-->
-      <io.github.kexanie.library.MathView
-          android:id="@+id/math_view"
-          android:minHeight="70dp"
-          android:layout_height="wrap_content"
-          android:layout_width="match_parent"
-          android:layout_below ="@+id/item_quoted_tweet"
-          android:layout_alignStart="@+id/tweet_text"
-          android:layout_alignLeft="@+id/tweet_text"
-          android:visibility="gone"
-          />
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/math_view"
+        android:layout_below="@+id/item_quoted_tweet"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_alignStart="@+id/tweet_text"
         android:layout_alignLeft="@+id/tweet_text" />

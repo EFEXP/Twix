@@ -25,11 +25,12 @@ class AccountSettingActivity : AppCompatActivity() {
         fab.setOnClickListener { start<TwitterOauthActivity>()
         finish()
         }
-        val accountDataList= Realm.getDefaultInstance().where(DBAccount::class.java).findAll().mapNotNull { it.user?.getDeserialized<User>() }.toMutableList()
+       val mAdapter= MyAccountsAdapter(context = this@AccountSettingActivity)
       accountList.apply {
-        adapter= MyAccountsAdapter(context = this@AccountSettingActivity, list = accountDataList)
+        adapter= mAdapter
         layoutManager=LinearLayoutManager(this@AccountSettingActivity)
       }
+        mAdapter.addAll(Realm.getDefaultInstance().where(DBAccount::class.java).findAll().mapNotNull { it.user?.getDeserialized<User>() }.toMutableList())
 
     }
 

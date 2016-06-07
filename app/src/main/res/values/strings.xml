@@ -107,11 +107,6 @@
     <string name="tweet_detail_activity">会話</string>
     <string-array name="text_tools">
         <item>突然の死</item>
-        <item>e=mc^2</item>
-        <item>極限</item>
-        <item>ベクトル</item>
-        <item>積分</item>
-        <item>微分</item>
     </string-array>
     <string-array name="tweet_menu">
         <item>会話</item>

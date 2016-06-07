@@ -16,7 +16,7 @@ import java.util.*
 class TweetDetailActivity : AppCompatActivity() {
 
    val data by lazy { LinkedList<Status>() }
-  val  mAdapter by lazy { StatusAdapter(this@TweetDetailActivity, data) }
+  val  mAdapter by lazy { StatusAdapter(this@TweetDetailActivity) }
   val twitter by lazy { getTwitterInstance()}
   override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class TweetDetailActivity : AppCompatActivity() {
     observer.subscribe (object : TwitterSubscriber(this@TweetDetailActivity) {
       override fun onStatus(status: Status) {
         super.onStatus(status)
-        mAdapter.insert(status)
+        mAdapter.insert(status,0)
         observer.subscribe {
           val voo=it.inReplyToStatusId>0
           if(voo){

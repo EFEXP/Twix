@@ -5,7 +5,6 @@ import rx.lang.kotlin.BehaviorSubject
 import rx.subjects.BehaviorSubject
 import twitter4j.*
 import xyz.donot.quetzal.twitter.StreamCreateUtil
-import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.util.isIgnore
 
@@ -14,9 +13,7 @@ class TwitterStream(val context: Context){
 
         val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
 
-    val isConnected:BehaviorSubject<Boolean>  by lazy{val t= BehaviorSubject<Boolean>()
-        t
-    }
+    val isConnected:BehaviorSubject<Boolean>  by lazy{ BehaviorSubject<Boolean>() }
     val statusSubject :BehaviorSubject<Status> by lazy { BehaviorSubject<Status>() }
     val deleteSubject:BehaviorSubject<StatusDeletionNotice>  by lazy { BehaviorSubject<StatusDeletionNotice>() }
     fun run(streamType: StreamType):TwitterStream
@@ -44,17 +41,18 @@ class TwitterStream(val context: Context){
             }
         }
         else{
-            d("StreamManager", "You Have Already Connected to the Stream ")
+
         }
        return  this
     }
     fun clean()
     {
-        if(isConnected.value){
-         stream.shutdown()
-        }
-        else{
-            d("StreamManager", "You Have Already Disconnected to the Stream ")
+        if(isConnected.hasValue()) {
+            if (isConnected.value) {
+                stream.shutdown()
+            } else {
+
+            }
         }
     }
 
@@ -84,6 +82,7 @@ class TwitterStream(val context: Context){
 
     inner class MyConnectionAdapter: ConnectionLifeCycleListener {
         override fun onCleanUp() {
+            isConnected.onNext(false)
         }
 
         override fun onConnect() {
@@ -91,8 +90,9 @@ class TwitterStream(val context: Context){
         }
 
         override fun onDisconnect() {
+            if(isConnected.hasValue()){
             isConnected.onNext(false)
-        }
+        }}
 
     }
 }

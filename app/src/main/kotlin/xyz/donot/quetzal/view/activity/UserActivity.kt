@@ -44,13 +44,13 @@ class UserActivity : RxAppCompatActivity() {
     }
 
   fun setUp(user: User){
-    Picasso.with(this@UserActivity).load(user.profileBannerIPadURL).into(banner)
-    banner.setOnClickListener{startActivity(Intent(this@UserActivity, PictureActivity::class.java)
-            .putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
+    Picasso.with(applicationContext).load(user.profileBannerIPadURL).into(banner)
+    banner.setOnClickListener{startActivity(Intent(applicationContext, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
    val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
-    adapter.userId=userId
+      viewpager_user.offscreenPageLimit=4
+      adapter.user=user
     viewpager_user.adapter=adapter
     tabs_user.setupWithViewPager(viewpager_user)
       toolbar.setOnMenuItemClickListener {

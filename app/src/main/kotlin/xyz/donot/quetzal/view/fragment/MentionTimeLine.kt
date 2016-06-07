@@ -34,10 +34,9 @@ class MentionTimeLine() : TimeLine() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
       if(isMentionToMe(it)) {
-        data.add(0,it)
-        val t=base_recycler_view.layoutManager as LinearLayoutManager
+        mAdapter.insert(it,0)
+        val t=base_recycler_view.recyclerView.layoutManager as LinearLayoutManager
         if(t.findFirstCompletelyVisibleItemPosition()==0){base_recycler_view.scrollToPosition(0)}
-        mAdapter.notifyItemInserted(0)
       }
     }
     val t=  Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()

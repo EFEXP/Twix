@@ -6,7 +6,6 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_search_setting.*
 import twitter4j.Query
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.util.extrautils.d
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.fragment.DatePickFragment
@@ -63,7 +62,7 @@ class SearchSettingActivity : RxAppCompatActivity() {
               query.resultType=Query.MIXED
 
                 query.query=querytext
-                d("query",querytext)
+
 
                 start<SearchActivity>(Bundle().apply {
                     putByteArray("query_bundle",query.getSerialized())

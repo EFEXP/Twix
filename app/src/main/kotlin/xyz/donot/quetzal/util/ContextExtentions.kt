@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import com.klinker.android.link_builder.Link
 import twitter4j.TwitterException
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.util.extrautils.d
+import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.view.activity.SearchActivity
 import xyz.donot.quetzal.view.activity.UserActivity
 
@@ -20,7 +18,7 @@ import xyz.donot.quetzal.view.activity.UserActivity
 fun Context.twitterEx(exception: TwitterException)
 {
   fun toast(message: String) {
-    Handler(Looper.getMainLooper()).post { toast( message)  }
+  this.toast(message)
 
   }
   when(exception.errorCode)
@@ -75,7 +73,7 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        d("MENTION_PATTERN", it)
+
         startActivity(Intent(this, UserActivity::class.java).putExtra("user_name", it.replace("@","")))
       }
     ,
@@ -93,7 +91,7 @@ fun Context.getLinkList() :MutableList<Link> {
       .setTextColor(ContextCompat.getColor(this, R.color.colorAccent))
       .setBold(true)
       .setOnClickListener {
-        d("HASHTAG_PATTERN",it)
+
         onHashTagTouched(it)
       }
   ).toMutableList()

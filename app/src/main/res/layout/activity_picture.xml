@@ -7,26 +7,30 @@
   android:fitsSystemWindows="true"
   android:background="@null"
   tools:context=".view.activity.PictureActivity">
-
-  <android.support.design.widget.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/AppTheme.AppBarOverlay">
-
-    <android.support.v7.widget.Toolbar
+  <include layout="@layout/content_picture" />
+  <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      android:background="?attr/colorPrimary"
-      app:navigationIcon="@drawable/ic_arrow_back_white_36dp"
       app:popupTheme="@style/AppTheme.PopupOverlay"
       app:menu="@menu/picture_menu"
       app:title="@string/picture_activity"
+      app:theme="@style/Theme.AppCompat.DayNight"
       />
-
-  </android.support.design.widget.AppBarLayout>
-
-
-  <include layout="@layout/content_picture" />
-
+  <android.support.v7.widget.LinearLayoutCompat
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:id="@+id/bottom_sheet"
+      app:layout_behavior="@string/bottom_sheet_behavior"
+      app:behavior_peekHeight="200dp"
+      app:behavior_hideable="true"
+      android:layout_alignParentBottom="true"
+      >
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/status_text"
+        />
+  </android.support.v7.widget.LinearLayoutCompat>
 </android.support.design.widget.CoordinatorLayout>

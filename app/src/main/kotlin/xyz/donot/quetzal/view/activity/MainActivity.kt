@@ -1,15 +1,12 @@
 package xyz.donot.quetzal.view.activity
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
-import android.view.inputmethod.InputMethodManager
 import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,10 +23,7 @@ import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
-import xyz.donot.quetzal.util.extrautils.fromApi
-import xyz.donot.quetzal.util.extrautils.intent
-import xyz.donot.quetzal.util.extrautils.start
-import xyz.donot.quetzal.util.extrautils.toast
+import xyz.donot.quetzal.util.extrautils.*
 import xyz.donot.quetzal.view.fragment.HelpFragment
 
 class MainActivity : RxAppCompatActivity() {
@@ -44,7 +38,7 @@ class MainActivity : RxAppCompatActivity() {
       finish()
     } else {
       setContentView(R.layout.activity_main)
-      if (!haveNetworkConnection()) {
+      if (!isConnected()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
       toolbar.apply {
@@ -58,11 +52,13 @@ class MainActivity : RxAppCompatActivity() {
         }
         setNavigationOnClickListener { drawer_layout.openDrawer(GravityCompat.START) }
       }
+
       design_navigation_view.setNavigationItemSelectedListener({
-        if (haveNetworkConnection()) {
+        if (isConnected()) {
           when (it.itemId) {
             R.id.my_profile -> {
-                             startActivity(Intent(this@MainActivity, UserActivity::class.java).putExtra("user_id",getMyId()))
+                             startActivity(
+                                     newIntent<UserActivity>(Bundle { putLong("user_id",getMyId()) }))
                               drawer_layout.closeDrawers()
                           }
             R.id.action_help -> {
@@ -83,7 +79,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_whats_new -> {
-            onCustomTabEvent("http://www.latex-cmd.com/index.html#equation")
+            onCustomTabEvent("http://donot.xyz/")
               drawer_layout.closeDrawers()
             }
           }
@@ -94,7 +90,7 @@ class MainActivity : RxAppCompatActivity() {
       UsersObservable(twitter)
               .getMyUserInstance()
               .bindToLifecycle(this@MainActivity)
-              .subscribe(object : TwitterUserSubscriber(this@MainActivity){
+              .subscribe(object : TwitterUserSubscriber(applicationContext){
                 override fun onUser(user: User) {
                   super.onUser(user)
                   Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
@@ -116,7 +112,8 @@ class MainActivity : RxAppCompatActivity() {
             connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
             connect_stream.tag=true
           }
-          else{ toast("ストリームから切断されました")
+          else if(isConnected.hasValue()){
+            toast("ストリームから切断されました")
             connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
             connect_stream.tag=false
           }
@@ -149,8 +146,7 @@ class MainActivity : RxAppCompatActivity() {
                           .bindToLifecycle(this@MainActivity)
                           .subscribe(object : TwitterSubscriber(applicationContext) {
                             override fun onStatus(status: Status) {
-                              val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                              inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                              editText_status.hideSoftKeyboard()
                               Snackbar.make(coordinatorLayout, "投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
                                 tObserver.deleteStatusAsync(status.id).subscribe {
                                   toast("削除しました")
@@ -165,9 +161,9 @@ class MainActivity : RxAppCompatActivity() {
     }
     //パーミッション要求
     fromApi(23, true){
-    val EX_WRITE=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-    val LOCATION=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED
-    val EX_READ=ContextCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
+    val EX_WRITE=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
+    val LOCATION=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED
+    val EX_READ=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED
     if(!(EX_WRITE&&EX_READ&&LOCATION)){
       requestPermissions(
               arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE

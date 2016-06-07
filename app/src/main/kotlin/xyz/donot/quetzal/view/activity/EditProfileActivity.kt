@@ -24,6 +24,8 @@ import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getPath
 import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.util.rximage.RxImagePicker
+import xyz.donot.quetzal.util.rximage.Sources
 import java.io.File
 import java.util.*
 
@@ -32,41 +34,11 @@ class EditProfileActivity : AppCompatActivity() {
 val twitter by lazy { getTwitterInstance()}
   var iconUri: Uri?=null
   var bannerUri: Uri?=null
-  val intentGallery= Intent()
-          .setAction(Intent.ACTION_PICK)
-          .setType("image/*")
+
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == RESULT_OK&&data!=null) {
-      val color=ContextCompat.getColor(this@EditProfileActivity,R.color.colorPrimary)
       when(requestCode)
       {
-        //banner
-      1->{
-        bannerUri = data.data
-        UCrop.of(bannerUri!!,Uri.fromFile(File(cacheDir,"${Date().time}.jpg")))
-                .withOptions( UCrop.Options().apply {
-                  setToolbarColor(color)
-                  setActiveWidgetColor(color)
-                  setStatusBarColor(color)
-                  setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
-                })
-                .withAspectRatio(3F,1F)
-                .start(this@EditProfileActivity,4)
-
-      }
-        2->{
-          iconUri = data.data
-          UCrop.of(iconUri!!,Uri.fromFile(File(cacheDir,"${Date().time}.jpg")))
-                  .withOptions( UCrop.Options().apply {
-                    setToolbarColor(color)
-                    setActiveWidgetColor(color)
-                    setStatusBarColor(color)
-                    setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
-                  })
-                  .withAspectRatio(1F,1F)
-                  .start(this@EditProfileActivity,3)
-
-        }
       3->{
         iconUri =UCrop.getOutput(data)
         Picasso.with(this@EditProfileActivity).load(iconUri).into(icon)
@@ -94,15 +66,44 @@ val twitter by lazy { getTwitterInstance()}
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
+    val color=ContextCompat.getColor(this@EditProfileActivity,R.color.colorPrimary)
       toolbar.setNavigationOnClickListener { onBackPressed() }
         TwitterObservable(applicationContext,twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(this@EditProfileActivity){
           override fun onNext(user: User) {
             Picasso.with(this@EditProfileActivity).load(user.profileBannerIPadRetinaURL).into(profile_banner)
             Picasso.with(this@EditProfileActivity).load(user.originalProfileImageURLHttps).into(icon)
             profile_banner.setOnClickListener{
-              startActivityForResult(intentGallery,1) }
+              RxImagePicker.with(this@EditProfileActivity).requestImage(Sources.GALLERY)
+              .subscribe {
+                bannerUri = it
+                UCrop.of(bannerUri!!,Uri.fromFile(File(cacheDir,"${Date().time}.jpg")))
+                        .withOptions( UCrop.Options().apply {
+                          setToolbarColor(color)
+                          setActiveWidgetColor(color)
+                          setStatusBarColor(color)
+                          setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+                        })
+                        .withAspectRatio(3F,1F)
+                        .start(this@EditProfileActivity,4)
+              }
+
+              }
             icon.setOnClickListener{
-              startActivityForResult(intentGallery,2) }
+              RxImagePicker.with(context).requestImage(Sources.GALLERY)
+              .subscribe {
+                iconUri = it
+                UCrop.of(iconUri!!,Uri.fromFile(File(cacheDir,"${Date().time}.jpg")))
+                        .withOptions( UCrop.Options().apply {
+                          setToolbarColor(color)
+                          setActiveWidgetColor(color)
+                          setStatusBarColor(color)
+                          setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+                        })
+                        .withAspectRatio(1F,1F)
+                        .start(this@EditProfileActivity,3)
+              }
+
+            }
             web.text.insert(0,user.urlEntity.expandedURL)
             user_name.text.insert(0,user.name)
             geo.text.insert(0,user.location)

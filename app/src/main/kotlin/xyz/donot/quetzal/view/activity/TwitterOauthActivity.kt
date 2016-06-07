@@ -30,20 +30,19 @@ class TwitterOauthActivity : RxAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_twitter_oauth)
         showProgress()
-
+        t.setOAuthConsumer(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret))
         safeTry(this@TwitterOauthActivity) {
-            t.setOAuthConsumer(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret))
             requestToken= t.getOAuthRequestToken(getString(R.string.twitter_callback_url))
-            requestToken!!.authorizationURL
         }.bindToLifecycle(this@TwitterOauthActivity)
         .subscribe {
-            web_view.loadUrl(it)
+            web_view.loadUrl(requestToken!!.authorizationURL)
             web_view.setWebViewClient(object :WebViewClient(){
                 //認証
                 fun getAccessToken(uri: Uri){
                     val  verifier = uri.getQueryParameter("oauth_verifier")
                     safeTry(this@TwitterOauthActivity){ t.getOAuthAccessToken(requestToken,verifier)}
-                    .subscribe { saveToken(t) }
+                    .subscribe {
+                        saveToken(t) }
 
                 }
 
@@ -94,6 +93,7 @@ class TwitterOauthActivity : RxAppCompatActivity() {
                         isMain = true
                         twitter = x.getSerialized()} }
             }
+
 
         }
         //Userインスタンス

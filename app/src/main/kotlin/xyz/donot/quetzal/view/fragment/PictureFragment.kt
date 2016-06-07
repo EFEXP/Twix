@@ -28,14 +28,15 @@ import java.util.*
 
 class PictureFragment : Fragment() {
  private  val REQUEST_WRITE:Int=1
-
-
   private   val stringURL by lazy {  arguments.getString("url") }
   private var photoAttacher:PhotoViewAttacher?=  null
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_picture, container, false)
     val img = v.findViewById(R.id.photo_view_image)as ImageView
     Picasso.with(activity).load(stringURL).into(img)
+    img.setOnClickListener{
+
+    }
    photoAttacher=  PhotoViewAttacher(img)
     photoAttacher?.update()
     return v
@@ -101,5 +102,6 @@ class PictureFragment : Fragment() {
     })
 
   }
+
 
 }

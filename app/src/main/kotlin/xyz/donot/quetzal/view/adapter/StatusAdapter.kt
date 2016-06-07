@@ -4,13 +4,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.jude.easyrecyclerview.adapter.BaseViewHolder
 import com.klinker.android.link_builder.LinkBuilder
 import com.squareup.picasso.Picasso
 import twitter4j.Status
@@ -25,172 +24,170 @@ import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.extrautils.show
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.view.activity.EditTweetActivity
-import xyz.donot.quetzal.view.activity.MainActivity
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
 import xyz.donot.quetzal.view.activity.UserActivity
 import xyz.donot.quetzal.view.dialog.RetweeterDialog
 
-class StatusAdapter(val context: Context,val  list: MutableList<Status>) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context,list) {
-  private val twitter: Twitter by  lazy { getTwitterInstance() }
-  override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-    return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, viewGroup, false))
-  }
+class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context) {
+    override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
+        return ViewHolder(mInflater.inflate(R.layout.item_tweet_card, parent, false))
+    }
+
+    private val twitter: Twitter by  lazy { getTwitterInstance() }
+
   enum class media{
     NONE
   }
-  override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-    if (list.size > i ) {
-      val item= if (list[i].isRetweet){
-          viewHolder.binding.textViewIsRT.show()
-        viewHolder.binding.textViewIsRT.text="${list[i].user.name}がリツイート"
-        list[i].retweetedStatus
-      }else{
-          viewHolder.binding.textViewIsRT.hide()
-        list[i]
+
+  inner class ViewHolder(itemView: View) :BaseViewHolder<Status>(itemView) {
+   val binding :ItemTweetCardBinding
+      init {
+          binding = DataBindingUtil.bind(itemView)
+
       }
-        viewHolder.binding.status=item
-      //mediaType
-        val statusMediaIds=getImageUrls(item)
-      if(statusMediaIds.isNotEmpty()){
-          val manager = LinearLayoutManager(context).apply {
-              orientation = LinearLayoutManager.HORIZONTAL
+      override fun setData(data: Status) {
+          super.setData(data)
+          val item= if (data.isRetweet){
+              binding.textViewIsRT.show()
+              binding.textViewIsRT.text="${data.user.name}がリツイート"
+              data.retweetedStatus
+          }else{
+              binding.textViewIsRT.hide()
+              data
           }
-          viewHolder.binding.tweetCardRecycler.apply {
-              adapter=TweetCardPicAdapter(context,statusMediaIds,item)
-              layoutManager=manager
-              visibility = View.VISIBLE
-              hasFixedSize()
-          }
-      }
-        else{
-          viewHolder.binding.tweetCardRecycler.visibility = View.GONE
-      }
-      //ビューホルダー
-      viewHolder.binding.apply {
-          if(item.text.contains("\\(")||item.text.contains("\\[")){
-              mathView.config("""MathJax.Hub.Config({ tex2jax: {inlineMath: [ ['$','$'], ['\\(','\\)'] ], processEscapes: true},
-                            TeX: {equationNumbers: {autoNumber: "AMS"}}});""");
-              mathView.text=item.text
-              mathView.setBackgroundColor(Color.WHITE)
-              mathView.show()
+         binding.status=item
+          //mediaType
+          val statusMediaIds=getImageUrls(item)
+          if(statusMediaIds.isNotEmpty()){
+              val mAdapter=TweetCardPicAdapter(context,item)
+              val manager = LinearLayoutManager(context).apply {
+                  orientation = LinearLayoutManager.HORIZONTAL
+              }
+             binding.tweetCardRecycler.apply {
+                  adapter=mAdapter
+                  layoutManager=manager
+                  visibility = View.VISIBLE
+                  hasFixedSize()
+              }
+              mAdapter.addAll(statusMediaIds)
           }
           else{
-              mathView.hide()
+              binding.tweetCardRecycler.visibility = View.GONE
           }
-          //引用
-          if(item.quotedStatus!=null){
-             itemQuotedTweet.visibility= View.VISIBLE
-              val q=item.quotedStatus
-             quotedUserName.text=q.user.name
-           quotedScreenName.text="@${q.user.screenName}"
-             quotedText.text=q.text
-              Picasso.with(context).load(q.user.profileImageURLHttps).transform(RoundCorner()).into(quotedIcon)
-          }else{
-           itemQuotedTweet.visibility=View.GONE
-          }
-        via.text=getClientName(item.source)
-        screenName.text = "@${item.user.screenName}"
-        textViewDate.text = getRelativeTime(item.createdAt)
-        count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
-        Picasso.with(context).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
-        //cardview
-        cardView.setOnClickListener({
-         if( !(context as Activity).isFinishing){
-          val tweetItem=if(getMyId() ==list[i].user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
-          AlertDialog.Builder(context)
-            .setItems(tweetItem, { dialogInterface, int ->
-              val selectedItem=context.resources.getStringArray(tweetItem)[int]
-              when (selectedItem) {
-                "削除" -> {
-                  TwitterUpdateObservable(context,twitter).deleteStatusAsync(list[i].id).subscribe (object : TwitterSubscriber(context) {
-                    override fun onStatus(status: Status) {
-                      super.onStatus(status)
-                    context.longToast("削除しました")
-                    }
-                  })
-                }
-                "会話" -> {
+          //ビューホルダー
+          binding.apply {
+              //引用
+              if(item.quotedStatus!=null){
+                  itemQuotedTweet.visibility= View.VISIBLE
+                  val q=item.quotedStatus
+                  quotedUserName.text=q.user.name
+                  quotedScreenName.text="@${q.user.screenName}"
+                  quotedText.text=q.text
+                  Picasso.with(context).load(q.user.profileImageURLHttps).transform(RoundCorner()).into(quotedIcon)
+              }else{
+                  itemQuotedTweet.visibility=View.GONE
+              }
+              via.text=getClientName(item.source)
+              screenName.text = "@${item.user.screenName}"
+              textViewDate.text = getRelativeTime(item.createdAt)
+              count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
+              Picasso.with(context).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
+              //cardview
+              cardView.setOnClickListener({
+                  if( !(context as Activity).isFinishing){
+                      val tweetItem=if(getMyId() ==data.user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
+                      AlertDialog.Builder(context)
+                              .setItems(tweetItem, { dialogInterface, int ->
+                                  val selectedItem=context.resources.getStringArray(tweetItem)[int]
+                                  when (selectedItem) {
+                                      "削除" -> {
+                                          TwitterUpdateObservable(context,twitter).deleteStatusAsync(data.id).subscribe (object : TwitterSubscriber(context) {
+                                              override fun onStatus(status: Status) {
+                                                  super.onStatus(status)
+                                                  context.longToast("削除しました")
+                                              }
+                                          })
+                                      }
+                                      "会話" -> {
+                                          if(context is Activity) {
+                                              (context as Activity).start<TweetDetailActivity>(Bundle().apply { putLong("status_id", data.id) })
+                                          }
+                                      }
+                                      "コピー" -> {
+                                          (context.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager)
+                                                  .primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
+                                      }
 
-                  context.start<TweetDetailActivity>(Bundle().apply { putLong("status_id", list[i].id) })
+                                      "RTした人"-> {
+                                          RetweeterDialog().apply {
+                                              arguments= Bundle().apply { putLong("statusId",item.id) }
+                                          }
 
-                }
-                "コピー" -> {
-                (context.getSystemService(Context.CLIPBOARD_SERVICE)as ClipboardManager)
-                  .primaryClip = ClipData.newPlainText(ClipDescription.MIMETYPE_TEXT_URILIST,item.text)
-                }
+                                                  .show((context as AppCompatActivity).supportFragmentManager ,"")
 
-                "RTした人"-> {
-                  RetweeterDialog(item.id).show((context as AppCompatActivity).supportFragmentManager ,"")
+                                      }
+                                      "共有"-> {
+                                          context. startActivity( Intent().apply {
+                                              action = Intent.ACTION_SEND
+                                              type = "text/plain"
+                                              putExtra(Intent.EXTRA_TEXT,"@${item.user.screenName}さんのツイート https://twitter.com/${item.user.screenName}/status/${item.id}をチェック")
+                                          })
+                                      }
+                                      "公式で見る"-> {
+                                          if(context is Activity){
+                                             (context as Activity).onCustomTabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}")
+                                          }
+                                      }
+                                  }
 
-                }
-                "共有"-> {
-                  context. startActivity( Intent().apply {
-                    action = Intent.ACTION_SEND
-                      type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT,"@${item.user.screenName}さんのツイート https://twitter.com/${item.user.screenName}/status/${item.id}をチェック")
-                  })
-                }
-                  "公式で見る"-> {
-                      if(context is MainActivity){
-                          context.onCustomTabEvent("https://twitter.com/${item.user.screenName}/status/${item.id}")
-                      }
+
+                              })
+                              .show()
+                  }})
+              icon.setOnClickListener{context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.user.id))}
+              tweetText.text=getExpandedText(status = item)
+              LinkBuilder.on(tweetText).addLinks(context.getLinkList()).build()
+              reply.setOnClickListener{
+                  val bundle=   Bundle().apply {
+                      putString("status_txt",item.text)
+                      putLong("status_id",item.id)
+                      putString("user_screen_name",item.user.screenName)
+                  }
+                  (context as Activity).start<EditTweetActivity>(bundle)
+              }
+              retweet.setOnClickListener{
+                  if(!item.isRetweeted){
+                      TwitterUpdateObservable(context,twitter).createRetweetAsync(item.id)
+                              .subscribe(object : TwitterSubscriber(context) {
+                          override fun onStatus(status: Status) {
+                              super.onStatus(status)
+                              insertWithPosition(data,status)
+                              context.longToast("RTしました")
+                          }
+                      })
                   }
               }
+              like.setOnClickListener{
+                  if(!item.isFavorited){
+                      TwitterUpdateObservable(context,twitter).createLikeAsync(item.id).subscribe(
+                              object : TwitterSubscriber(context) {
+                                  override fun onStatus(status: Status) {
+                                      super.onStatus(status)
+                                       insertWithPosition(data,status)
+                                  }
+                              }) }
+                  else{
+                      TwitterUpdateObservable(context,twitter).deleteLikeAsync(item.id).subscribe(
+                              object : TwitterSubscriber(context) {
+                                  override fun onStatus(status: Status) {
+                                      super.onStatus(status)
+                                      insertWithPosition(item,status)
+                                  }
+                              })
+                  }
+              }}
+      }
 
-
-            })
-            .show()
-        }})
-        icon.setOnClickListener{context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.user.id))}
-        tweetText.text=getExpandedText(status = item)
-        LinkBuilder.on(tweetText).addLinks(context.getLinkList()).build()
-        reply.setOnClickListener{
-       val bundle=   Bundle().apply {
-            putString("status_txt",item.text)
-            putLong("status_id",item.id)
-            putString("user_screen_name",item.user.screenName)
-          }
-          (context as Activity).start<EditTweetActivity>(bundle)
-        }
-        retweet.setOnClickListener{
-          if(!item.isRetweeted){
-            TwitterUpdateObservable(context,twitter).createRetweetAsync(item.id).subscribe(object : TwitterSubscriber(context) {
-              override fun onStatus(status: Status) {
-                super.onStatus(status)
-                reload(status)
-                context.longToast("RTしました")
-              }
-            })
-          }
-        }
-          like.setOnClickListener{
-              if(!item.isFavorited){
-                  TwitterUpdateObservable(context,twitter).createLikeAsync(item.id).subscribe(
-                          object : TwitterSubscriber(context) {
-                              override fun onStatus(status: Status) {
-                                  super.onStatus(status)
-                                  reload(status)
-                              }
-                          }) }
-              else{
-                  TwitterUpdateObservable(context,twitter).deleteLikeAsync(item.id).subscribe(
-                          object : TwitterSubscriber(context) {
-                              override fun onStatus(status: Status) {
-                                  super.onStatus(status)
-                                  reload(status)
-                              }
-                          })
-              }
-          }}
-
-    }
-  }
-  inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
-   val binding :ItemTweetCardBinding
-    init {
-      binding = DataBindingUtil.bind(itemView)
-
-    }
   }
 
 }

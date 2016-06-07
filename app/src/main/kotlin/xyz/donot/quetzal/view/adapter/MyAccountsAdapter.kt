@@ -2,10 +2,10 @@ package xyz.donot.quetzal.view.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.jude.easyrecyclerview.adapter.BaseViewHolder
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import twitter4j.User
@@ -14,11 +14,17 @@ import xyz.donot.quetzal.databinding.ItemUserBinding
 import xyz.donot.quetzal.model.DBAccount
 import xyz.donot.quetzal.util.RoundCorner
 
-class MyAccountsAdapter(val context: Context,val list: MutableList<User>):BasicRecyclerAdapter<MyAccountsAdapter.ViewHolder, User>(context,list){
-  override fun onBindViewHolder( viewHolder: ViewHolder, i: Int) {
-    if (list.size > i ) {
-      val  item= list[i]
-      viewHolder. binding.apply {
+class MyAccountsAdapter(context: Context):BasicRecyclerAdapter<MyAccountsAdapter.ViewHolder, User>(context){
+  override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
+    return ViewHolder(mInflater.inflate(R.layout.item_user, parent, false))
+  }
+
+  inner class ViewHolder(itemView: View) : BaseViewHolder<User>(itemView) {
+    val binding : ItemUserBinding
+    override fun setData(data: User) {
+      super.setData(data)
+      val  item= data
+       binding.apply {
         screenName.text=item.screenName
         description.text=item.description
         userName.text=item.name
@@ -30,20 +36,13 @@ class MyAccountsAdapter(val context: Context,val list: MutableList<User>):BasicR
               it.where(DBAccount::class.java).equalTo("id", item.id).findFirst().apply {
                 isMain = true
               }
-             Toast.makeText(context,"メインに設定しました、再起動してください",Toast.LENGTH_LONG).show()
+              Toast.makeText(context,"メインに設定しました、再起動してください",Toast.LENGTH_LONG).show()
             }
           }
         }
       }
     }
-  }
 
-  override fun onCreateViewHolder(viewGroup: ViewGroup?, p1: Int): ViewHolder? {
-    return ViewHolder(mInflater.inflate(R.layout.item_user, viewGroup, false))
-  }
-
-  inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val binding : ItemUserBinding
     init {
       binding = DataBindingUtil.bind(itemView)
     }

@@ -6,28 +6,27 @@ import twitter4j.Status
 import xyz.donot.quetzal.model.StreamType
 import xyz.donot.quetzal.model.TwitterStream
 import xyz.donot.quetzal.view.adapter.StatusAdapter
-import java.util.*
 
 
-abstract  class TimeLine() : PlainFragment<Status, StatusAdapter, xyz.donot.quetzal.view.adapter.StatusAdapter.ViewHolder>()
+abstract  class TimeLine() : PlainFragment<Status, StatusAdapter,StatusAdapter.ViewHolder>()
 {
 
   abstract  override  fun loadMore()
   protected  val tsm by lazy { TwitterStream(context).run(StreamType.USER_STREAM)}
-  override val data: MutableList<Status> by lazy { LinkedList<Status>() }
+
 
   override fun onDestroy() {
     super.onDestroy()
     tsm.clean()
   }
 
-  override val mAdapter: StatusAdapter by lazy{ StatusAdapter(activity, data) }
+  override val mAdapter: StatusAdapter by lazy{ StatusAdapter(activity) }
   override fun onCreate(savedInstanceState: Bundle?){
     super.onCreate(savedInstanceState)
     tsm.deleteSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-     data.filter {de-> de.id==it.statusId}.mapNotNull { mAdapter.remove(it) }
+              mAdapter.allData.filter {de-> de.id==it.statusId}.mapNotNull { mAdapter.remove(it) }
     }
 
   }

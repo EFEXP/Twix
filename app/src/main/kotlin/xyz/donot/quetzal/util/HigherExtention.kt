@@ -4,7 +4,6 @@ import android.content.Context
 import rx.Observable
 import rx.lang.kotlin.observable
 import twitter4j.TwitterException
-import xyz.donot.quetzal.util.extrautils.e
 
 
 inline fun <T> safeTry(context: Context,crossinline  body: () -> T):Observable<T> {
@@ -14,12 +13,12 @@ inline fun <T> safeTry(context: Context,crossinline  body: () -> T):Observable<T
       subscriber.onNext(toNext)
       subscriber.onCompleted()
     } catch(ex: TwitterException) {
-      e(ex.cause.toString(), ex.stackTrace.toString())
+
   //    subscriber.onError(ex)
       ex.printStackTrace()
       context.twitterEx(ex)
     } catch(ex: Exception) {
-      e(ex.cause.toString(), ex.stackTrace.toString())
+
       //subscriber.onError(ex)
       ex.printStackTrace()
     }

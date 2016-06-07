@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".util.rximage.HiddenActivity" />
         <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/title_activity_account_setting"

@@ -6,24 +6,21 @@ import xyz.donot.quetzal.util.getDeserialized
 
 class SearchTweet(): TimeLine(){
    private  var query :Query?=null
-    private  var load =true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         query=arguments.getByteArray("query_bundle").getDeserialized<Query>()
-
     }
-
-
     override fun loadMore() {
-    if(load){
+    if(load.value){
    twitterObservable.getSearchAsync(query!!).subscribe {
       if(it.hasNext()){
         query=it.nextQuery()
       }
       else{
-        load=false
+        load.onNext(false)
       }
-       mAdapter.addAll(it.tweets)
+      mAdapter.addAll(it.tweets)
+
     }
   }}
 }

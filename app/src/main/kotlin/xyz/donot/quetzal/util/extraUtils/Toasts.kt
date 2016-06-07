@@ -9,7 +9,7 @@ fun Context.toast(messageResId: Int) {
 }
 
 fun Context.longToast(messageResId: Int) {
-  Toast.makeText(this, messageResId, Toast.LENGTH_LONG).show()
+  mainThread {  Toast.makeText(this, messageResId, Toast.LENGTH_LONG).show()}
 }
 
 fun Context.toast(message: String) {
@@ -21,7 +21,7 @@ fun Context.longToast(message: String) {
 }
 
 fun Fragment.toast(messageResId: Int) {
-  Toast.makeText(activity, messageResId, Toast.LENGTH_SHORT).show()
+  mainThread {  Toast.makeText(activity, messageResId, Toast.LENGTH_SHORT).show()}
 }
 
 fun Fragment.longToast(messageResId: Int) {

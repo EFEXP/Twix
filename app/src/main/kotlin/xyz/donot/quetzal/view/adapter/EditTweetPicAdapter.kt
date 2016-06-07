@@ -3,40 +3,38 @@ package xyz.donot.quetzal.view.adapter
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.jude.easyrecyclerview.adapter.BaseViewHolder
 import com.squareup.picasso.Picasso
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
 
 
-class EditTweetPicAdapter(val context: Context,val  list: MutableList<Uri>)
-:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context,list) {
-
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val view:View =mInflater.inflate(R.layout.item_bitmap, viewGroup, false)
-        view.setOnClickListener(this)
-        return ViewHolder(view)
+class EditTweetPicAdapter(context: Context)
+:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context) {
+    override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
+        val view:View = mInflater.inflate(R.layout.item_bitmap, parent, false)
+        return  ViewHolder(view)
     }
-    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        if (list.size > i ) {
-            val  item= list[i]
-            viewHolder. binding.apply {
-              textView.text="${i+1}/${list.size}"
-              Picasso.with(context)
-                      .load(item)
-                      .resize(400,400)
-                      .centerInside()
-                      .into(imageView)
+
+    inner class ViewHolder(itemView: View) : BaseViewHolder<Uri>(itemView) {
+        val binding: ItemBitmapBinding
+
+        init {
+            binding = DataBindingUtil.bind(itemView)
+        }
+
+        override fun setData(data: Uri) {
+            super.setData(data)
+            val item = data
+            binding.apply {
+                textView.text = "${layoutPosition+1}/$count"
+                Picasso.with(context)
+                        .load(item)
+                        .resize(400, 400)
+                        .centerInside()
+                        .into(imageView)
             }
         }
-    }
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding: ItemBitmapBinding
-        init {
-            binding= DataBindingUtil.bind(itemView)
-        }
-    }
-}
+    }}

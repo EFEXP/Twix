@@ -9,7 +9,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.view.activity.NotificationActivity
 
 class NotificationWrapper(val context: Context){
-   val notification= PugNotification.with(context).load()
+   val notification=PugNotification.with(context).load()
     val res = context.resources
     val ringtone = PreferenceManager.getDefaultSharedPreferences(context).getString("notifications_ringtone", "")
     fun replyNotification(status: Status): Unit {
