@@ -25,10 +25,18 @@
 -dontwarn android.databinding.**
 -keep class xyz.donot.quetzal.util.RoundCorner{*;}
 -dontwarn xyz.donot.**
+# Add this global rule
+-keepattributes Signature
 
+# This rule will properly ProGuard all the model classes in
+# the package com.yourcompany.models. Modify to fit the structure
+# of your app.
+-keepclassmembers class com.yourcompany.models.** {
+  *;
+}
 
 ##---------------Begin: proguard configuration common for all Android apps ----------
--optimizationpasses 2
+-optimizationpasses 5
 -dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
 -dontpreverify
