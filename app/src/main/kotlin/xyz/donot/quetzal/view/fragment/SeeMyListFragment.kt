@@ -2,13 +2,13 @@ package xyz.donot.quetzal.view.fragment
 
 import twitter4j.Paging
 
-class SeeMyListFragment(): TimeLine() {
+class SeeMyListFragment() : TimeLineFragment() {
 
   override fun loadMore() {
     twitterObservable.getMyListAsync(
             arguments.getLong("listId"), Paging(page))
             .subscribe  {
-              if(it.isEmpty()){
+                if (it.isNotEmpty()) {
                 mAdapter.addAll(it)
               }
               else{

@@ -12,7 +12,7 @@ import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.isMentionToMe
 
 
-class MentionTimeLine() : TimeLine() {
+class MentionTimeLine() : TimeLineFragment() {
  /* override fun onDeserialize() {
     super.onDeserialize()
     val t=   Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()

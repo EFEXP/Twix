@@ -1,6 +1,5 @@
 package xyz.donot.quetzal.view.adapter
 import android.content.Context
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemUserBinding
 import xyz.donot.quetzal.util.RoundCorner
-import xyz.donot.quetzal.view.activity.UserActivity
 
 class UsersAdapter(context: Context) :BasicRecyclerAdapter<UsersAdapter.ViewHolder,User>(context) {
 
@@ -30,7 +28,6 @@ class UsersAdapter(context: Context) :BasicRecyclerAdapter<UsersAdapter.ViewHold
         description.text=item.description
         userName.text=item.name
         Picasso.with(context).load(item.biggerProfileImageURLHttps).transform(RoundCorner()).into(icon)
-        cardView.setOnClickListener{ context.startActivity(Intent(context, UserActivity::class.java).putExtra("user_id",item.id))}
       }
     }
 

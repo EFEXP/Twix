@@ -11,7 +11,7 @@ import xyz.donot.quetzal.view.activity.PictureActivity
 import xyz.donot.quetzal.view.adapter.TwitterImageAdapter
 import java.util.*
 
-class ImageSearchFragment :StaggeredFragment<String,TwitterImageAdapter,TwitterImageAdapter.ViewHolder>()
+class ImageSearchFragment : StaggeredFragment<String, TwitterImageAdapter>()
 {
     override val mAdapter by lazy {  TwitterImageAdapter(activity) }
     private  var query : Query?=null
@@ -28,7 +28,6 @@ class ImageSearchFragment :StaggeredFragment<String,TwitterImageAdapter,TwitterI
     }
     override fun loadMore() {
         if(load.value){
-
             twitterObservable.getSearchAsync(query!!).subscribe {
                 if(!it.tweets.isEmpty()){
                     empty.onNext(false)
@@ -44,7 +43,6 @@ class ImageSearchFragment :StaggeredFragment<String,TwitterImageAdapter,TwitterI
                         statusList.add(status)
                         mAdapter.add(it.mediaURLHttps)
                     }
-
                 }}
                 else{
                     empty.onNext(true)

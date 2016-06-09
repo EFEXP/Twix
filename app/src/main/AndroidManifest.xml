@@ -18,6 +18,7 @@
         android:label="${appName}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:label"
         >
         <activity
             android:name=".view.activity.MainActivity"
@@ -103,18 +104,6 @@
         <activity
             android:name=".view.activity.SearchSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.TwitterFirebaseActivity"
-            android:label="@string/title_activity_twitter_firebase"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.OauthFireActivity"
-            android:label="@string/title_activity_oauth_fire"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -3,7 +3,7 @@ package xyz.donot.quetzal.view.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
+import kotlinx.android.synthetic.main.activity_tweet_detail.*
 import kotlinx.android.synthetic.main.content_tweet_detail.*
 import twitter4j.Status
 import xyz.donot.quetzal.R
@@ -21,8 +21,7 @@ class TweetDetailActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tweet_detail)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-      toolbar.setNavigationOnClickListener {finish()}
+      toolbar.setNavigationOnClickListener { onBackPressed() }
       loadReply(intent.extras.getLong("status_id"))
       detail_recycler_view.adapter = mAdapter
       detail_recycler_view.layoutManager = LinearLayoutManager(this@TweetDetailActivity)

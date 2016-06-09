@@ -13,7 +13,7 @@ open class TwitterSubscriber(val context: Context) : Subscriber<Status>() {
     }
 
   override fun onError(ex: Throwable) {
-      Toast.makeText(context,"エラーが発生しました",Toast.LENGTH_LONG).show()
+    Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
 
     }
 
@@ -30,7 +30,7 @@ open class TwitterUserSubscriber(val context: Context) : Subscriber<User>() {
   }
 
   override fun onError(ex: Throwable) {
-    Toast.makeText(context,"エラーが発生しました",Toast.LENGTH_LONG).show()
+    Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
 
   }
 
