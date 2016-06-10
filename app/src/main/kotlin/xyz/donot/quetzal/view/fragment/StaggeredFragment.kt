@@ -10,11 +10,7 @@ abstract class StaggeredFragment<L, T : RecyclerArrayAdapter<L>> : BaseRecyclerF
 {
     override fun setUpRecycler() {
         base_recycler_view.setLayoutManager(StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))
-        base_recycler_view.setOnScrollListener(object : OnLoadMoreListener() {
-            override fun onScrolledToBottom() {
-                loadMore()
-            }
-        })
+        base_recycler_view.setOnScrollListener(object : OnLoadMoreListener({ loadMore() }) {})
     }
 
     abstract override fun loadMore()

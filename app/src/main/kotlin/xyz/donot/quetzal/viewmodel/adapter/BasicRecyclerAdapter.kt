@@ -17,7 +17,6 @@ abstract class BasicRecyclerAdapter
         replace(replacedItem,replaceItem)
     }
 
-
     }
 
 

@@ -19,7 +19,6 @@ abstract class UserList : BaseRecyclerFragment<User, UsersAdapter>() {
     mAdapter.setOnItemClickListener {
       val item = mAdapter.getItem(it)
       activity.start<UserActivity>(Bundle { putLong("user_id", item.id) })
-
     }
   }
 

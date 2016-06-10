@@ -18,7 +18,7 @@ abstract class TimeLineFragment : BaseRecyclerFragment<Status, StatusAdapter>() 
     }
 
     abstract override fun loadMore()
-    protected val tsm by lazy { TwitterStream(context).run(StreamType.USER_STREAM) }
+    protected val tsm by lazy { TwitterStream().run(StreamType.USER_STREAM) }
     override fun onDestroy() {
         super.onDestroy()
         tsm.clean()

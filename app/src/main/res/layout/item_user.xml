@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
       android:scaleType="centerCrop"
-        app:avatarImageUri="@{user.originalProfileImageURLHttps}" />
+        app:avatarImageUrl="@{user.originalProfileImageURLHttps}" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/user_name"

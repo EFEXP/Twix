@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import com.jude.easyrecyclerview.adapter.BaseViewHolder
-import com.squareup.picasso.Picasso
 import twitter4j.Status
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
@@ -33,9 +32,8 @@ class TweetCardPicAdapter(context: Context,val status: Status)
         }
         override fun setData(data: String) {
             super.setData(data)
-
+            binding.url = data
            binding.apply {
-                Picasso.with(context).load(data).placeholder(R.drawable.picture_place_holder).into(imageView)
                 textView.text="${layoutPosition+1}/$count"
                 imageView.setOnClickListener {
                     val videourl: String? = getVideoURL(status.mediaEntities, status.extendedMediaEntities)

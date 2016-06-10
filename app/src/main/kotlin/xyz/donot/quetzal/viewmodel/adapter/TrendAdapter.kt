@@ -21,10 +21,8 @@ class TrendAdapter(context: Context)
   inner class ViewHolder(itemView: View) : BaseViewHolder<Trend>(itemView) {
     override fun setData(data: Trend) {
       super.setData(data)
-      val  item= data
-      binding.apply {
-        trend = item
-      }
+      binding.trend = data
+
     }
 
     val binding:ItemTrendBinding

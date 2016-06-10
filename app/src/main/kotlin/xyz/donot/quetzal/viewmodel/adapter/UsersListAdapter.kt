@@ -27,7 +27,6 @@ class UsersListAdapter(context: Context)
       //ビューホルダー
     this.apply {
       binding.list = item
-
       Picasso.with(context).load(item.user.biggerProfileImageURLHttps).transform(RoundCorner()).into(binding.icon)
       }
     }

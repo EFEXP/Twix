@@ -26,21 +26,24 @@ import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.*
 import xyz.donot.quetzal.view.fragment.HelpFragment
 import xyz.donot.quetzal.viewmodel.activity.MainViewModel
+import xyz.donot.quetzal.viewmodel.adapter.MainTimeLineAdapter
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
   val twitter by lazy { getTwitterInstance() }
   val accountChanged by lazy { BehaviorSubject<Boolean>() }
-
+    val viewModel by lazy { MainViewModel(applicationContext) }
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (!haveToken()) {
       startActivity(intent<TwitterOauthActivity>())
       finish()
     } else {
-        val viewModel = MainViewModel(applicationContext)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this@MainActivity, R.layout.activity_main)
         binding.viewModel = viewModel
+        viewpager.adapter = MainTimeLineAdapter(supportFragmentManager)
+        viewpager.offscreenPageLimit = 2
+
       if (!isConnected()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
@@ -155,7 +158,12 @@ class MainActivity : RxAppCompatActivity() {
     }
   }
 
-  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onDestroy() {
+        viewModel.clean()
+        super.onDestroy()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
       if (requestCode == REQUEST_WRITE_READ) {
           if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
