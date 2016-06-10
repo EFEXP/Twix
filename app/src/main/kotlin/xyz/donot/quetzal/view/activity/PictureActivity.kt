@@ -12,8 +12,8 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getExpandedText
 import xyz.donot.quetzal.util.getImageUrls
-import xyz.donot.quetzal.view.adapter.PicturePagerAdapter
 import xyz.donot.quetzal.view.fragment.PictureFragment
+import xyz.donot.quetzal.viewmodel.adapter.PicturePagerAdapter
 
 class PictureActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -43,14 +43,18 @@ class PictureActivity : AppCompatActivity() {
             null
         }
         val pagerAdapter=if(status!=null&&strings==null){
+            val imageUrls=getImageUrls(status)
             status_text.text = getExpandedText(status)
-            PicturePagerAdapter(supportFragmentManager,getImageUrls(status))
+            pager.offscreenPageLimit=imageUrls.count()
+            PicturePagerAdapter(supportFragmentManager,imageUrls)
         }else{
             BottomSheetBehavior.from(bottom_sheet).state=BottomSheetBehavior.STATE_HIDDEN
+            pager.offscreenPageLimit=1
             PicturePagerAdapter(supportFragmentManager,strings)
         }
         pager.adapter = pagerAdapter
         pager.currentItem=starts
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

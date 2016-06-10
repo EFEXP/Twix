@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
   <data>
     <import type="xyz.donot.quetzal.R" />
@@ -9,34 +10,36 @@
     <variable name="status" type="twitter4j.Status" />
   </data>
 <LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-  <android.support.v7.widget.CardView
-    android:foreground="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+    android:orientation="vertical">
+  <android.support.v7.widget.CardView
+      android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:id="@+id/cardView"
+      android:foreground="?android:attr/selectableItemBackground"
+      card_view:cardCornerRadius="@dimen/cardview_default_radius"
     >
-    <RelativeLayout android:id="@+id/tweet_back"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tweet_back"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:descendantFocusability="blocksDescendants"
-      xmlns:android="http://schemas.android.com/apk/res/android">
+        android:descendantFocusability="blocksDescendants">
       <android.support.v7.widget.AppCompatImageView
         android:id="@+id/icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
+          android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="5dp"
+          android:layout_marginBottom="10dp"
         android:layout_marginEnd="5dp"
+          android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
-        />
+          app:avatarImageUri="@{status.user.originalProfileImageURLHttps}" />
 
 
       <android.support.v7.widget.AppCompatTextView
@@ -44,12 +47,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/icon"
+          android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/icon"
-        android:textStyle="bold"
-        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/icon"
         android:text="@{status.user.name}"
+          android:textStyle="bold"
+          tools:text="user_name"
         />
 
       <android.support.v7.widget.AppCompatTextView
@@ -59,14 +63,15 @@
         android:layout_alignBottom="@+id/textView_date"
         android:layout_alignTop="@+id/user_name_text"
         android:layout_toEndOf="@+id/textView_date"
+          android:layout_toRightOf="@+id/textView_date"
         android:ellipsize="end"
-        android:paddingEnd="0dp"
-        android:paddingStart="5dp"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_toRightOf="@+id/textView_date"
-        android:paddingRight="0dp"
-        android:paddingLeft="5dp" />
+          android:maxLines="1"
+          android:paddingEnd="0dp"
+          android:paddingLeft="5dp"
+          android:paddingRight="0dp"
+          android:paddingStart="5dp"
+          android:textAppearance="?android:attr/textAppearanceSmall"
+          tools:text="screen" />
 
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/textView_date"
@@ -74,141 +79,151 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/user_name_text"
         android:layout_toEndOf="@+id/user_name_text"
+          android:layout_toRightOf="@+id/user_name_text"
         android:ellipsize="end"
-        android:paddingEnd="0dp"
+          android:maxLines="1"
+          android:paddingEnd="0dp"
+          android:paddingLeft="5dp"
+          android:paddingRight="0dp"
         android:paddingStart="5dp"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_toRightOf="@+id/user_name_text"
-        android:paddingRight="0dp"
-        android:paddingLeft="5dp" />
+          android:textAppearance="?android:attr/textAppearanceSmall"
+          tools:text="date" />
       <com.klinker.android.link_builder.LinkConsumableTextView
         android:id="@+id/tweet_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/user_name_text"
         android:layout_alignStart="@+id/user_name_text"
         android:layout_below="@+id/user_name_text"
-        android:layout_alignLeft="@+id/user_name_text"
         android:textColor="?android:textColorPrimary"
+          tools:text="Tweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet"
         />
       <android.support.v7.widget.RecyclerView
+          android:id="@+id/tweet_card_recycler"
           android:layout_width="match_parent"
           android:layout_height="250dp"
-          android:id="@+id/tweet_card_recycler"
+          android:layout_alignLeft="@+id/tweet_text"
           android:layout_alignStart="@+id/tweet_text"
           android:layout_below="@+id/tweet_text"
-          android:layout_alignLeft="@+id/tweet_text"
-          android:visibility="gone"
           android:scrollbars="horizontal"
+          android:visibility="gone"
           />
       <!--一時的-->
-      <RelativeLayout
-          android:minHeight="40dp"
-          android:id="@+id/item_quoted_tweet"
-          android:layout_height="wrap_content"
+      <android.support.v7.widget.CardView
+          android:id="@+id/quoted_cardview"
           android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/tweet_text"
           android:layout_alignStart="@+id/tweet_text"
           android:layout_below="@+id/tweet_card_recycler"
-          android:layout_alignLeft="@+id/tweet_text"
-          >
+          android:visibility="@{status.quotedStatus==null ? View.GONE:View.VISIBLE}">
+
+        <RelativeLayout
+            android:id="@+id/item_quoted_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp">
         <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/quoted_icon"
             android:layout_width="40sp"
             android:layout_height="40sp"
-            android:id="@+id/quoted_icon"
-            android:layout_margin="5sp"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5sp" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/quoted_screen_name"
-            android:layout_margin="5sp"
-            android:layout_alignBottom="@+id/quoted_user_name"
-            android:layout_toRightOf="@+id/quoted_user_name"
-            android:layout_toEndOf="@+id/quoted_user_name"/>
-        <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/quoted_user_name"
+            android:layout_alignBottom="@+id/quoted_user_name"
             android:layout_margin="5sp"
+            android:layout_toEndOf="@+id/quoted_user_name"
+            android:layout_toRightOf="@+id/quoted_user_name" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/quoted_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/quoted_icon"
-            android:layout_toRightOf="@+id/quoted_icon"
-            android:layout_toEndOf="@+id/quoted_icon" />
+            android:layout_margin="5sp"
+            android:layout_toEndOf="@+id/quoted_icon"
+            android:layout_toRightOf="@+id/quoted_icon" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/quoted_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/quoted_text"
-            android:layout_margin="5sp"
-            android:layout_below="@+id/quoted_user_name"
             android:layout_alignLeft="@+id/quoted_user_name"
-            android:layout_alignStart="@+id/quoted_user_name" />
-      </RelativeLayout>
+            android:layout_alignStart="@+id/quoted_user_name"
+            android:layout_below="@+id/quoted_user_name"
+            android:layout_margin="5sp" />
+        </RelativeLayout>
+      </android.support.v7.widget.CardView>
+
       <!--一時的-->
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item_quoted_tweet"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+          android:layout_alignLeft="@+id/tweet_text"
         android:layout_alignStart="@+id/tweet_text"
-        android:layout_alignLeft="@+id/tweet_text" />
+          android:layout_below="@+id/quoted_cardview"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/textView_isRT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/tweet_text"
         android:layout_alignStart="@+id/tweet_text"
         android:layout_below="@id/count"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorHighlight"
-        android:layout_alignLeft="@+id/tweet_text"
           />
       <android.support.v7.widget.AppCompatTextView
+          android:id="@+id/via"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:id="@+id/via"
+          android:layout_alignLeft="@+id/tools_liner"
+          android:layout_alignStart="@+id/tools_liner"
           android:layout_below="@+id/tools_liner"
           android:layout_margin="5dp"
-          android:layout_alignStart="@+id/tools_liner"
-          android:layout_alignLeft="@+id/tools_liner"
-          android:drawableRight="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
           android:drawableEnd="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
+          android:drawableRight="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
+          tools:text="ClientName"
           />
       <android.support.v7.widget.LinearLayoutCompat
           android:id="@+id/tools_liner"
-        android:layout_below="@+id/textView_isRT"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/textView_isRT"
         android:layout_alignStart="@id/textView_isRT"
+          android:layout_below="@+id/textView_isRT"
+          android:orientation="horizontal"
         >
           <android.support.v7.widget.AppCompatImageButton
               android:id="@+id/reply"
-              android:layout_weight="1"
               android:layout_width="24dp"
               android:layout_height="24dp"
+              android:layout_weight="1"
               android:background="@android:color/transparent"
               android:src="@drawable/ic_reply_grey_400_24dp" />
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/retweet"
-            android:layout_weight="1"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
             app:srcCompat="@{status.retweeted ? R.drawable.ic_retweet_pressed_24dp :  R.drawable.ic_retweet_grey_400_24dp}"
             />
         <android.support.v7.widget.AppCompatImageButton
           android:id="@+id/like"
-          android:layout_weight="1"
           android:layout_width="24dp"
           android:layout_height="24dp"
-          app:srcCompat="@{status.favorited ?  R.drawable.ic_favorite_pressed_24dp :  R.drawable.ic_favorite_grey_400_24dp}"
+            android:layout_weight="1"
           android:background="@android:color/transparent"
+            app:srcCompat="@{status.favorited ?  R.drawable.ic_favorite_pressed_24dp :  R.drawable.ic_favorite_grey_400_24dp}"
           />
       </android.support.v7.widget.LinearLayoutCompat>
     </RelativeLayout>

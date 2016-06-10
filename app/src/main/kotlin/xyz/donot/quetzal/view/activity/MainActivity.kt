@@ -1,9 +1,11 @@
 package xyz.donot.quetzal.view.activity
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
@@ -11,25 +13,24 @@ import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.*
-import rx.android.schedulers.AndroidSchedulers
+import rx.lang.kotlin.BehaviorSubject
 import twitter4j.Status
 import twitter4j.User
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.databinding.ActivityMainBinding
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.event.TwitterUserSubscriber
-import xyz.donot.quetzal.model.StreamType
-import xyz.donot.quetzal.model.TwitterStream
-import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.*
 import xyz.donot.quetzal.view.fragment.HelpFragment
+import xyz.donot.quetzal.viewmodel.activity.MainViewModel
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
   val twitter by lazy { getTwitterInstance() }
-
+  val accountChanged by lazy { BehaviorSubject<Boolean>() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -37,7 +38,9 @@ class MainActivity : RxAppCompatActivity() {
       startActivity(intent<TwitterOauthActivity>())
       finish()
     } else {
-      setContentView(R.layout.activity_main)
+        val viewModel = MainViewModel(applicationContext)
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this@MainActivity, R.layout.activity_main)
+        binding.viewModel = viewModel
       if (!isConnected()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
@@ -71,7 +74,7 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_account -> {
-              start<AccountSettingActivity>()
+              startForResult<AccountSettingActivity>(0)
               drawer_layout.closeDrawers()
             }
             R.id.action_list -> {
@@ -93,8 +96,8 @@ class MainActivity : RxAppCompatActivity() {
               .subscribe(object : TwitterUserSubscriber(applicationContext){
                 override fun onUser(user: User) {
                   super.onUser(user)
-                  Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).into(my_header)
-                  Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).transform(RoundCorner()).into(my_icon)
+                  Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).placeholder(R.drawable.picture_place_holder).into(my_header)
+                    Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).placeholder(R.drawable.avatar_place_holder).transform(RoundCorner()).into(my_icon)
                   my_name_header.text="${user.name}"
                   my_screen_name_header.text = "@${user.screenName}"
                 }
@@ -105,42 +108,8 @@ class MainActivity : RxAppCompatActivity() {
       }
 
       //通知
-      val stream=  TwitterStream(applicationContext).run(StreamType.USER_STREAM).apply {
-        isConnected.observeOn(AndroidSchedulers.mainThread()).subscribe {
-          if(it){
-            toast("ストリームに接続しました")
-            connect_stream.setImageResource(R.drawable.ic_cloud_white_24dp)
-            connect_stream.tag=true
-          }
-          else if(isConnected.hasValue()){
-            toast("ストリームから切断されました")
-            connect_stream.setImageResource(R.drawable.ic_cloud_off_white_24dp)
-            connect_stream.tag=false
-          }
-        }
-        statusSubject.subscribe {
-          if(isMentionToMe(it)){
-            if(PreferenceManager.getDefaultSharedPreferences(context).getBoolean("notifications",false))
-            {
-              NotificationWrapper(applicationContext).replyNotification(it)
-            }
-          }
-        }
-      }
-      connect_stream.setOnClickListener {
-        val boo=connect_stream.tag
-        if(connect_stream.tag!=null&&boo is Boolean){
-          if(boo){
-
-          }
-          else{
-            stream.run(StreamType.USER_STREAM)
-          }
-        }
-      }
-      button_tweet.setOnClickListener(
+        button_tweet.setOnClickListener(
               {
-                if (!editText_status.editableText.isNullOrBlank()&&editText_status.text.count()<=140) {
                   val tObserver = TwitterUpdateObservable(applicationContext,twitter);
                   tObserver.updateStatusAsync(editText_status.editableText.toString())
                           .bindToLifecycle(this@MainActivity)
@@ -156,8 +125,10 @@ class MainActivity : RxAppCompatActivity() {
 
                           })
                   editText_status.setText("")
-                }
               })
+    }
+    accountChanged.subscribe {
+      restart()
     }
     //パーミッション要求
     fromApi(23, true){
@@ -175,19 +146,26 @@ class MainActivity : RxAppCompatActivity() {
 
   }
 
-
-
-  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if(requestCode==REQUEST_WRITE_READ){
-      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-      }
-      if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-        toast("権限がないため画像の保存ができません")
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if(resultCode== Activity.RESULT_OK){
+      if(requestCode==0){
+        accountChanged.onNext(true)
       }
     }
   }
 
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+      if (requestCode == REQUEST_WRITE_READ) {
+          if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          }
+          if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+              toast("権限がないため画像の保存ができません")
+          }
+      }
 
-
+  }
 }
+
+

@@ -10,10 +10,10 @@ import android.widget.ListView
 import com.trello.rxlifecycle.components.support.RxDialogFragment
 import io.realm.Realm
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBDraft
+import xyz.donot.quetzal.model.realm.DBDraft
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.view.activity.EditTweetActivity
-import xyz.donot.quetzal.view.adapter.DraftAdapter
+import xyz.donot.quetzal.viewmodel.adapter.DraftAdapter
 
 
 class DraftFragment : RxDialogFragment() {

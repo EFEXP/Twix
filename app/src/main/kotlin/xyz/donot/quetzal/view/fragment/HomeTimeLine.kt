@@ -8,7 +8,7 @@ import twitter4j.Paging
 import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.view.customview.ItemInsertListener
 
-class HomeTimeLine(): TimeLine(){
+class HomeTimeLine() : TimeLineFragment() {
        override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     tsm.statusSubject

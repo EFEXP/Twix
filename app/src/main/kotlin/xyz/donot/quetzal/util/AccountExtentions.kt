@@ -4,8 +4,8 @@ import android.os.Environment
 import io.realm.Realm
 import twitter4j.Status
 import twitter4j.Twitter
-import xyz.donot.quetzal.model.DBAccount
-import xyz.donot.quetzal.model.DBMute
+import xyz.donot.quetzal.model.realm.DBAccount
+import xyz.donot.quetzal.model.realm.DBMute
 import xyz.donot.quetzal.util.extrautils.logi
 import java.io.*
 import java.util.*

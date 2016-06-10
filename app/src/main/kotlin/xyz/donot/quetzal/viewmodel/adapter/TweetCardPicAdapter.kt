@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.app.Activity
 import android.content.Context
@@ -35,7 +35,7 @@ class TweetCardPicAdapter(context: Context,val status: Status)
             super.setData(data)
 
            binding.apply {
-                Picasso.with(context).load(data).placeholder(R.drawable.ic_launcher).into(imageView)
+                Picasso.with(context).load(data).placeholder(R.drawable.picture_place_holder).into(imageView)
                 textView.text="${layoutPosition+1}/$count"
                 imageView.setOnClickListener {
                     val videourl: String? = getVideoURL(status.mediaEntities, status.extendedMediaEntities)

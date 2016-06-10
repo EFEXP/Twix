@@ -35,6 +35,10 @@ class TwitterUpdateObservable(val context: Context,val twitter: Twitter){
     return  safeTry(context){twitter.updateProfileImage(file)}
   }
 
+    fun profileImageBannerUpdateAsync(file: File): Observable<Unit> {
+        return safeTry(context) { twitter.updateProfileBanner(file) }
+    }
+
   fun createFriendShipAsync(long: Long): Observable<User> {
     return  safeTry(context){twitter.createFriendship(long)}
   }

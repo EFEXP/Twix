@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="xyz.donot.quetzal">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,22 +12,25 @@
     <application
         android:name=".Quetzal"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="${appName}"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label"
+        >
         <activity
             android:name=".view.activity.MainActivity"
             android:label="${appName}"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".util.rximage.HiddenActivity" />
+        <activity android:name=".util.rximage.HiddenActivity" />
         <activity
             android:name=".view.activity.AccountSettingActivity"
             android:label="@string/title_activity_account_setting"
@@ -97,10 +101,9 @@
         <activity
             android:name=".view.activity.NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".view.activity.SearchSettingActivity"/>
+            android:name=".view.activity.SearchSettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

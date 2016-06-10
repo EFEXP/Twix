@@ -9,13 +9,13 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_user.*
 import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBMute
+import xyz.donot.quetzal.model.realm.DBMute
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getTwitterInstance
-import xyz.donot.quetzal.view.adapter.AnyUserTimeLineAdapter
+import xyz.donot.quetzal.viewmodel.adapter.AnyUserTimeLineAdapter
 
 class UserActivity : RxAppCompatActivity() {
   var userId :Long=0

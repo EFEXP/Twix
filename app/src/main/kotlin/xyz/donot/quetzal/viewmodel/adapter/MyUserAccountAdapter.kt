@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
 import android.util.Log
@@ -10,7 +10,7 @@ import io.realm.RealmBaseAdapter
 import io.realm.RealmResults
 import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBAccount
+import xyz.donot.quetzal.model.realm.DBAccount
 import xyz.donot.quetzal.util.getDeserialized
 
 

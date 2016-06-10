@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -19,14 +19,11 @@ import xyz.donot.quetzal.databinding.ItemTweetCardBinding
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.*
-import xyz.donot.quetzal.util.extrautils.hide
-import xyz.donot.quetzal.util.extrautils.longToast
-import xyz.donot.quetzal.util.extrautils.show
-import xyz.donot.quetzal.util.extrautils.start
+import xyz.donot.quetzal.util.extrautils.*
 import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.TweetDetailActivity
 import xyz.donot.quetzal.view.activity.UserActivity
-import xyz.donot.quetzal.view.dialog.RetweeterDialog
+import xyz.donot.quetzal.view.fragment.RetweeterDialog
 
 class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewHolder,Status>(context) {
     override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
@@ -80,10 +77,11 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
               if(item.quotedStatus!=null){
                   itemQuotedTweet.visibility= View.VISIBLE
                   val q=item.quotedStatus
+                  quotedCardview.setOnClickListener { (context as Activity).start<TweetDetailActivity>(Bundle { putLong("status_id", q.id) }) }
                   quotedUserName.text=q.user.name
                   quotedScreenName.text="@${q.user.screenName}"
                   quotedText.text=q.text
-                  Picasso.with(context).load(q.user.profileImageURLHttps).transform(RoundCorner()).into(quotedIcon)
+                  Picasso.with(context).load(q.user.profileImageURLHttps).placeholder(R.drawable.avatar_place_holder).transform(RoundCorner()).into(quotedIcon)
               }else{
                   itemQuotedTweet.visibility=View.GONE
               }
@@ -91,7 +89,6 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
               screenName.text = "@${item.user.screenName}"
               textViewDate.text = getRelativeTime(item.createdAt)
               count.text= "RT:${item.retweetCount} いいね:${item.favoriteCount}"
-              Picasso.with(context).load(item.user.originalProfileImageURLHttps).transform(RoundCorner()).into(icon)
               //cardview
               cardView.setOnClickListener({
                   if( !(context as Activity).isFinishing){

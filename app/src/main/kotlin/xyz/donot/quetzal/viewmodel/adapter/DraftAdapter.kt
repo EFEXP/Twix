@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
 import android.support.v7.widget.AppCompatImageButton
@@ -11,7 +11,7 @@ import io.realm.OrderedRealmCollection
 import io.realm.Realm
 import io.realm.RealmBaseAdapter
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBDraft
+import xyz.donot.quetzal.model.realm.DBDraft
 
 class DraftAdapter(context: Context,
                   val  realmResults: OrderedRealmCollection<DBDraft>) : RealmBaseAdapter<DBDraft>(context, realmResults), ListAdapter {

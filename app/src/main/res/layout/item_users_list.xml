@@ -1,46 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
+  <data>
+
+    <variable
+        name="list"
+        type="twitter4j.UserList" />
+  </data>
 <android.support.v7.widget.CardView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:card_view="http://schemas.android.com/apk/res-auto"
-  android:foreground="?android:attr/selectableItemBackground"
+    android:id="@+id/cardView"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  card_view:cardCornerRadius="@dimen/cardview_default_radius"
   android:layout_margin="3dp"
-  android:id="@+id/cardView"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
   >
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/relative_userlist"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-  android:layout_margin="5dp"
+    android:layout_margin="5dp"
   android:minHeight="40sp"
+    android:orientation="vertical"
   >
 
-  <TextView
+  <android.support.v7.widget.AppCompatTextView
+      android:id="@+id/list_name"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="Large Text"
-    android:id="@+id/list_name" />
+      android:layout_height="wrap_content"
+      android:text="@{list.name}"
+    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-  <TextView
+  <android.support.v7.widget.AppCompatTextView
+      android:id="@+id/author"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="New Text"
-    android:id="@+id/author"
-    android:layout_below="@+id/list_name"
+      android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
+      android:layout_alignParentStart="true"
+      android:layout_below="@+id/list_name"
+      android:text="@{list.user.name}"
 
-  <ImageView
+      />
+
+  <android.support.v7.widget.AppCompatImageView
+      android:id="@+id/icon"
     android:layout_width="50dp"
     android:layout_height="50dp"
-    android:id="@+id/icon"
-    android:scaleType="centerCrop"
-    android:layout_alignParentTop="true"
+      android:layout_alignParentEnd="true"
     android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true" />
+      android:layout_alignParentTop="true"
+      android:scaleType="centerCrop" />
 </RelativeLayout>
 </android.support.v7.widget.CardView>
+</layout>

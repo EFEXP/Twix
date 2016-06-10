@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import kotlinx.android.synthetic.main.content_edit_profile.*
+import rx.lang.kotlin.onError
 import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.TwitterUserSubscriber
@@ -41,11 +42,11 @@ val twitter by lazy { getTwitterInstance()}
       {
       3->{
         iconUri =UCrop.getOutput(data)
-        Picasso.with(this@EditProfileActivity).load(iconUri).into(icon)
+          Picasso.with(this@EditProfileActivity).load(iconUri).placeholder(R.drawable.avatar_place_holder).into(icon)
       }
         4->{
           bannerUri =UCrop.getOutput(data)
-          Picasso.with(this@EditProfileActivity).load(bannerUri).into(profile_banner)
+          Picasso.with(this@EditProfileActivity).load(bannerUri).placeholder(R.drawable.picture_place_holder).into(profile_banner)
         }
 
       }
@@ -112,8 +113,6 @@ val twitter by lazy { getTwitterInstance()}
         })
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener {
-          val id=Random().nextInt(100)+1
-          NotificationWrapper(this).sendingNotification(id)
           TwitterUpdateObservable(this@EditProfileActivity,twitter)
                   .updateProfileAsync(name = user_name.text.toString(),
                           location = geo.text.toString(),
@@ -125,28 +124,38 @@ val twitter by lazy { getTwitterInstance()}
               val bundle =  Bundle()
               bundle.putByteArray("userObject",user.getSerialized())
               setResult(RESULT_OK,Intent().putExtras(bundle));
-              finish()
             }
 
             override fun onCompleted() {
               super.onCompleted()
               longToast("更新しました")
-              PugNotification.with(this@EditProfileActivity).cancel(id)
             }
           })
-          if (bannerUri != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter)
-                    .profileImageUpdateAsync(File(getPath(this@EditProfileActivity, bannerUri!!)))
-          }
-          if (iconUri != null) {
-            TwitterUpdateObservable(this@EditProfileActivity,twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, iconUri!!)))
-                    .subscribe (object:TwitterUserSubscriber(this@EditProfileActivity){
-              override fun onCompleted() {
-                super.onCompleted()
-              longToast("画像更新しました")
-                PugNotification.with(this@EditProfileActivity).cancel(id)
-              }
-            })
+
+
+
+            if (bannerUri != null || iconUri != null) {
+                val id = Random().nextInt(100) + 1
+                NotificationWrapper(this).sendingNotification(id)
+                if (iconUri != null) {
+                    TwitterUpdateObservable(this@EditProfileActivity, twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, iconUri!!)))
+                            .subscribe {
+                                longToast("画像更新しました")
+                                PugNotification.with(this@EditProfileActivity).cancel(id)
+                                finish()
+                            }
+                } else if (bannerUri != null) {
+                    TwitterUpdateObservable(this@EditProfileActivity, twitter)
+                            .profileImageBannerUpdateAsync(File(getPath(this@EditProfileActivity, bannerUri!!)))
+                            .onError { longToast("Error") }
+                            .subscribe {
+                                longToast("画像更新しました")
+                                PugNotification.with(this@EditProfileActivity).cancel(id)
+                                finish()
+                            }
+                }
+
+
           }
 
         }

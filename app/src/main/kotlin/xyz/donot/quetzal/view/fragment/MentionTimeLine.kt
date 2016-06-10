@@ -7,12 +7,12 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import rx.android.schedulers.AndroidSchedulers
 import twitter4j.Paging
-import xyz.donot.quetzal.model.DBNotification
+import xyz.donot.quetzal.model.realm.DBNotification
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.isMentionToMe
 
 
-class MentionTimeLine() : TimeLine() {
+class MentionTimeLine() : TimeLineFragment() {
  /* override fun onDeserialize() {
     super.onDeserialize()
     val t=   Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()

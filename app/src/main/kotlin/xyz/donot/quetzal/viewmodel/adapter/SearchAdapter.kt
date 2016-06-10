@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -8,15 +8,15 @@ import xyz.donot.quetzal.util.extrautils.Bundle
 import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.fragment.SearchTweet
 import xyz.donot.quetzal.view.fragment.TrendFragment
-import xyz.donot.quetzal.view.fragment.UsersWatcher
+import xyz.donot.quetzal.view.fragment.UserList
 
 class SearchAdapter(val query: Query, fm: FragmentManager) : FragmentPagerAdapter(fm) {
   override fun getItem(position: Int): Fragment {
     return when(position){
       0-> SearchTweet().apply { arguments=Bundle {  putByteArray("query_bundle",query.getSerialized()) } }
-      1->object : UsersWatcher(){
+      1 -> object : UserList() {
         override fun loadMore() {
-          twitterObservable.getUserSearchAsync(query.query,page).subscribe(userSubscriber)
+          twitterObservable.getUserSearchAsync(query.query, page).subscribe { mAdapter.addAll(it) }
         }
       }
       2->TrendFragment()

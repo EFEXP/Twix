@@ -9,7 +9,7 @@ import twitter4j.Query
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.extrautils.Bundle
 import xyz.donot.quetzal.util.getDeserialized
-import xyz.donot.quetzal.view.adapter.SearchAdapter
+import xyz.donot.quetzal.viewmodel.adapter.SearchAdapter
 
 class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

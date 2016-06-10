@@ -18,16 +18,16 @@ import kotlinx.android.synthetic.main.activity_tweet_edit.*
 import kotlinx.android.synthetic.main.content_tweet_edit.*
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBDraft
+import xyz.donot.quetzal.model.realm.DBDraft
 import xyz.donot.quetzal.service.TweetPostService
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.newIntent
 import xyz.donot.quetzal.util.extrautils.onClick
 import xyz.donot.quetzal.util.rximage.RxImagePicker
 import xyz.donot.quetzal.util.rximage.Sources
-import xyz.donot.quetzal.view.adapter.EditTweetPicAdapter
 import xyz.donot.quetzal.view.fragment.DraftFragment
 import xyz.donot.quetzal.view.fragment.TrendFragment
+import xyz.donot.quetzal.viewmodel.adapter.EditTweetPicAdapter
 import java.io.File
 import java.util.*
 
