@@ -13,8 +13,15 @@ class RoundCorner() : Transformation {
         if (squaredBitmap != source) {
             source.recycle()
         }
+        val config =
+                if (source.config != null) {
+                    source.config
+                } else {
+                    Bitmap.Config.ARGB_8888
+                }
 
-        val bitmap = Bitmap.createBitmap(size, size, source.config)
+
+        val bitmap = Bitmap.createBitmap(size, size, config)
         val canvas = Canvas(bitmap)
         val paint = Paint()
         val shader =BitmapShader(squaredBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)

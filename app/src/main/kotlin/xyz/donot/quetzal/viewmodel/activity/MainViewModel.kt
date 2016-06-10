@@ -7,15 +7,14 @@ import jp.keita.kagurazaka.rxproperty.RxProperty
 import jp.keita.kagurazaka.rxproperty.toRxCommand
 import rx.lang.kotlin.filterNotNull
 import twitter4j.Status
-import xyz.donot.quetzal.model.StreamType
-import xyz.donot.quetzal.model.TwitterStream
+import twitter4j.StatusDeletionNotice
+import xyz.donot.quetzal.Quetzal
 import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.extrautils.mainThread
 import xyz.donot.quetzal.util.extrautils.toast
-import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.util.isMentionToMe
 
-class MainViewModel(val context: Context) : ActivityViewModel() {
+class MainViewModel(context: Context) : ActivityViewModel(context) {
     override fun clean() {
         statusSend.unsubscribe()
         editStatus.unsubscribe()
@@ -24,20 +23,20 @@ class MainViewModel(val context: Context) : ActivityViewModel() {
         stream.clean()
     }
 
-    val twitter by lazy { getTwitterInstance() }
-
     companion object {
-        val stream  by lazy { TwitterStream().run(StreamType.USER_STREAM) }
+        val stream  by lazy { Quetzal.stream }
     }
 
     val connected: RxProperty<Boolean>
     val status: RxProperty<Status>
+    val delete: RxProperty<StatusDeletionNotice>
     val editStatus: RxProperty<String> = RxProperty("")
     val statusSend: RxCommand<() -> Unit>
 
     init {
         connected = RxProperty(stream.isConnected)
         status = RxProperty(stream.statusSubject)
+        delete = RxProperty(stream.deleteSubject)
         status.asObservable().filterNotNull()
                 .subscribe {
                     if (isMentionToMe(it)) {

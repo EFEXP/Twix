@@ -5,6 +5,8 @@ import android.app.UiModeManager
 import android.support.v7.app.AppCompatDelegate
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import xyz.donot.quetzal.model.StreamType
+import xyz.donot.quetzal.model.TwitterStream
 import xyz.donot.quetzal.model.realm.MyRealmMigration
 import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
 import java.io.FileNotFoundException
@@ -12,6 +14,9 @@ import java.io.FileNotFoundException
 
 
 class Quetzal : Application() {
+    companion object {
+        val stream: TwitterStream by lazy { TwitterStream().run(StreamType.USER_STREAM) }
+    }
     override fun onCreate() {
         super.onCreate()
            val config= RealmConfiguration.Builder(this)

@@ -5,9 +5,8 @@ import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import rx.android.schedulers.AndroidSchedulers
 import twitter4j.Status
+import xyz.donot.quetzal.Quetzal
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.StreamType
-import xyz.donot.quetzal.model.TwitterStream
 import xyz.donot.quetzal.viewmodel.adapter.StatusAdapter
 
 
@@ -18,7 +17,7 @@ abstract class TimeLineFragment : BaseRecyclerFragment<Status, StatusAdapter>() 
     }
 
     abstract override fun loadMore()
-    protected val tsm by lazy { TwitterStream().run(StreamType.USER_STREAM) }
+    protected val tsm by lazy { Quetzal.stream }
     override fun onDestroy() {
         super.onDestroy()
         tsm.clean()

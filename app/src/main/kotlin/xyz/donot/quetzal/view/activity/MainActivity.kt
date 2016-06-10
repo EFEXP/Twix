@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.navigation_header.*
 import rx.lang.kotlin.BehaviorSubject
 import twitter4j.Status
 import twitter4j.User
+import xyz.donot.quetzal.Quetzal
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ActivityMainBinding
 import xyz.donot.quetzal.event.TwitterSubscriber
@@ -43,8 +44,7 @@ class MainActivity : RxAppCompatActivity() {
         binding.viewModel = viewModel
         viewpager.adapter = MainTimeLineAdapter(supportFragmentManager)
         viewpager.offscreenPageLimit = 2
-
-      if (!isConnected()) {
+        if (!isConnected()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
       toolbar.apply {
@@ -160,6 +160,7 @@ class MainActivity : RxAppCompatActivity() {
 
     override fun onDestroy() {
         viewModel.clean()
+        Quetzal.stream.clean()
         super.onDestroy()
     }
 
