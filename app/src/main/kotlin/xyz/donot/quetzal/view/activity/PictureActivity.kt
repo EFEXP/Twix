@@ -12,8 +12,8 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getExpandedText
 import xyz.donot.quetzal.util.getImageUrls
-import xyz.donot.quetzal.view.adapter.PicturePagerAdapter
 import xyz.donot.quetzal.view.fragment.PictureFragment
+import xyz.donot.quetzal.viewmodel.adapter.PicturePagerAdapter
 
 class PictureActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

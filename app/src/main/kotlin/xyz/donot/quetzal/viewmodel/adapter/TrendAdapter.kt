@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -10,7 +10,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemTrendBinding
 
 class TrendAdapter(context: Context)
-:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.TrendAdapter.ViewHolder,Trend>(context) {
+: BasicRecyclerAdapter<xyz.donot.quetzal.viewmodel.adapter.TrendAdapter.ViewHolder, Trend>(context) {
   override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
     val view:View =mInflater.inflate(R.layout.item_trend,parent, false)
     return ViewHolder(view)

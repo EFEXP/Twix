@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -12,7 +12,7 @@ import xyz.donot.quetzal.databinding.ItemUsersListBinding
 import xyz.donot.quetzal.util.RoundCorner
 
 class UsersListAdapter(context: Context)
-: BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.UsersListAdapter.ViewHolder,UserList>(context) {
+: BasicRecyclerAdapter<xyz.donot.quetzal.viewmodel.adapter.UsersListAdapter.ViewHolder, UserList>(context) {
   override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
     return ViewHolder(mInflater.inflate(R.layout.item_users_list, parent, false))
   }

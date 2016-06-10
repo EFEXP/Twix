@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
   <data>
     <import type="xyz.donot.quetzal.R" />
@@ -38,7 +39,7 @@
           android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
-        />
+          app:avatarImageUri="@{status.user.originalProfileImageURLHttps}" />
 
 
       <android.support.v7.widget.AppCompatTextView
@@ -52,6 +53,7 @@
         android:layout_toRightOf="@+id/icon"
         android:text="@{status.user.name}"
           android:textStyle="bold"
+          tools:text="user_name"
         />
 
       <android.support.v7.widget.AppCompatTextView
@@ -63,12 +65,13 @@
         android:layout_toEndOf="@+id/textView_date"
           android:layout_toRightOf="@+id/textView_date"
         android:ellipsize="end"
-        android:paddingEnd="0dp"
+          android:maxLines="1"
+          android:paddingEnd="0dp"
           android:paddingLeft="5dp"
           android:paddingRight="0dp"
-        android:paddingStart="5dp"
-        android:singleLine="true"
-          android:textAppearance="?android:attr/textAppearanceSmall" />
+          android:paddingStart="5dp"
+          android:textAppearance="?android:attr/textAppearanceSmall"
+          tools:text="screen" />
 
       <android.support.v7.widget.AppCompatTextView
         android:id="@+id/textView_date"
@@ -78,12 +81,13 @@
         android:layout_toEndOf="@+id/user_name_text"
           android:layout_toRightOf="@+id/user_name_text"
         android:ellipsize="end"
-        android:paddingEnd="0dp"
+          android:maxLines="1"
+          android:paddingEnd="0dp"
           android:paddingLeft="5dp"
           android:paddingRight="0dp"
         android:paddingStart="5dp"
-        android:singleLine="true"
-          android:textAppearance="?android:attr/textAppearanceSmall" />
+          android:textAppearance="?android:attr/textAppearanceSmall"
+          tools:text="date" />
       <com.klinker.android.link_builder.LinkConsumableTextView
         android:id="@+id/tweet_text"
         android:layout_width="match_parent"
@@ -92,6 +96,7 @@
         android:layout_alignStart="@+id/user_name_text"
         android:layout_below="@+id/user_name_text"
         android:textColor="?android:textColorPrimary"
+          tools:text="Tweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet"
         />
       <android.support.v7.widget.RecyclerView
           android:id="@+id/tweet_card_recycler"
@@ -186,6 +191,7 @@
           android:layout_margin="5dp"
           android:drawableEnd="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
           android:drawableRight="@{status.user.protected ? @drawable/ic_lock_grey_400_18dp : null}"
+          tools:text="ClientName"
           />
       <android.support.v7.widget.LinearLayoutCompat
           android:id="@+id/tools_liner"

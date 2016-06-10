@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.app.Activity
 import android.content.Context

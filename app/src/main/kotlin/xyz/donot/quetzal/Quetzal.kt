@@ -5,7 +5,7 @@ import android.app.UiModeManager
 import android.support.v7.app.AppCompatDelegate
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import xyz.donot.quetzal.model.MyRealmMigration
+import xyz.donot.quetzal.model.realm.MyRealmMigration
 import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
 import java.io.FileNotFoundException
 
@@ -18,7 +18,9 @@ class Quetzal : Application() {
                     .schemaVersion(2L)
                     .migration(MyRealmMigration())
                     .build()
-        try{ Realm.migrateRealm(config,MyRealmMigration())}
+        try {
+            Realm.migrateRealm(config, MyRealmMigration())
+        }
         catch(e:FileNotFoundException){}
         Realm.setDefaultConfiguration(config)
 

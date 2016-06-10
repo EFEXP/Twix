@@ -13,7 +13,7 @@ import xyz.donot.quetzal.util.extrautils.Bundle
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.view.activity.SeeMyListActivity
-import xyz.donot.quetzal.view.adapter.UsersListAdapter
+import xyz.donot.quetzal.viewmodel.adapter.UsersListAdapter
 
 class UsersListFragment() : BaseRecyclerFragment<UserList, UsersListAdapter>() {
 

@@ -13,7 +13,7 @@ class TwitterStream(val context: Context){
 
         val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
 
-    val isConnected:BehaviorSubject<Boolean>  by lazy{ BehaviorSubject<Boolean>() }
+    val isConnected: BehaviorSubject<Boolean>  by lazy { BehaviorSubject(false) }
     val statusSubject :BehaviorSubject<Status> by lazy { BehaviorSubject<Status>() }
     val deleteSubject:BehaviorSubject<StatusDeletionNotice>  by lazy { BehaviorSubject<StatusDeletionNotice>() }
     fun run(streamType: StreamType):TwitterStream

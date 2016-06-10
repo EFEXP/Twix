@@ -10,7 +10,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.getTwitterInstance
-import xyz.donot.quetzal.view.adapter.StatusAdapter
+import xyz.donot.quetzal.viewmodel.adapter.StatusAdapter
 import java.util.*
 
 class TweetDetailActivity : AppCompatActivity() {

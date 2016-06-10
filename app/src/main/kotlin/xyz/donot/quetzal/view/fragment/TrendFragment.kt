@@ -10,7 +10,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterTrendObservable
 import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.SearchActivity
-import xyz.donot.quetzal.view.adapter.TrendAdapter
+import xyz.donot.quetzal.viewmodel.adapter.TrendAdapter
 
 class TrendFragment() : BaseRecyclerFragment<Trend, TrendAdapter>() {
   override fun setUpRecycler() {

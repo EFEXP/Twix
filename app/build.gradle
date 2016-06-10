@@ -91,6 +91,9 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:9.0.2'
     compile 'com.google.firebase:firebase-analytics:9.0.2'
     compile 'com.jude:easyrecyclerview:3.5.8'
+    compile 'com.github.k-kagurazaka.rx-property-android:rx-property:1.0.0'
+    compile 'com.github.k-kagurazaka.rx-property-android:rx-property-setter:1.0.0'
+    compile 'com.github.k-kagurazaka.rx-property-android:rx-property-kotlin:1.0.0'
 }
 kapt {
     generateStubs = true

@@ -8,7 +8,7 @@ import twitter4j.Status
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.StreamType
 import xyz.donot.quetzal.model.TwitterStream
-import xyz.donot.quetzal.view.adapter.StatusAdapter
+import xyz.donot.quetzal.viewmodel.adapter.StatusAdapter
 
 
 abstract class TimeLineFragment : BaseRecyclerFragment<Status, StatusAdapter>() {

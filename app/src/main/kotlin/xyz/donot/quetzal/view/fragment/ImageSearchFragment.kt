@@ -8,7 +8,7 @@ import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.activity.PictureActivity
-import xyz.donot.quetzal.view.adapter.TwitterImageAdapter
+import xyz.donot.quetzal.viewmodel.adapter.TwitterImageAdapter
 import java.util.*
 
 class ImageSearchFragment : StaggeredFragment<String, TwitterImageAdapter>()

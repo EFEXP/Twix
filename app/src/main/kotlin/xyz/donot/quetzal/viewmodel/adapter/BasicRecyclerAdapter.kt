@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

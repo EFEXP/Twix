@@ -11,10 +11,10 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.content_account_setting.*
 import twitter4j.User
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBAccount
+import xyz.donot.quetzal.model.realm.DBAccount
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.getDeserialized
-import xyz.donot.quetzal.view.adapter.MyAccountsAdapter
+import xyz.donot.quetzal.viewmodel.adapter.MyAccountsAdapter
 
 class AccountSettingActivity : AppCompatActivity() {
 

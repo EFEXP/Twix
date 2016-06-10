@@ -80,7 +80,7 @@ class UserDetailFragment() : RxFragment()
           edit_profile.setOnClickListener{  activity.start<EditProfileActivity>()}
         }
         val iconIntent= Intent(activity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.originalProfileImageURLHttps))
-        Picasso.with(activity).load(user.originalProfileImageURLHttps).placeholder(R.drawable.avater_place_holder).into(icon_user)
+        Picasso.with(activity).load(user.originalProfileImageURLHttps).placeholder(R.drawable.avatar_place_holder).into(icon_user)
         icon_user.setOnClickListener{startActivity(iconIntent)}
         user_name.text=user.name
         val re=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_grey_400_18dp,null)

@@ -7,7 +7,7 @@ import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import rx.android.schedulers.AndroidSchedulers
 import twitter4j.Paging
-import xyz.donot.quetzal.model.DBNotification
+import xyz.donot.quetzal.model.realm.DBNotification
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.isMentionToMe
 

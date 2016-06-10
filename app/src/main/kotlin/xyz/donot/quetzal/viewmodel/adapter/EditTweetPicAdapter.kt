@@ -1,4 +1,4 @@
-package xyz.donot.quetzal.view.adapter
+package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -12,7 +12,7 @@ import xyz.donot.quetzal.databinding.ItemBitmapBinding
 
 
 class EditTweetPicAdapter(context: Context)
-:BasicRecyclerAdapter<xyz.donot.quetzal.view.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context) {
+: BasicRecyclerAdapter<xyz.donot.quetzal.viewmodel.adapter.EditTweetPicAdapter.ViewHolder, Uri>(context) {
     override fun OnCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder<*>? {
         val view:View = mInflater.inflate(R.layout.item_bitmap, parent, false)
         return  ViewHolder(view)

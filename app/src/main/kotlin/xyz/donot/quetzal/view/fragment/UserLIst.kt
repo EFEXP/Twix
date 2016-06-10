@@ -7,7 +7,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.extrautils.Bundle
 import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.view.activity.UserActivity
-import xyz.donot.quetzal.view.adapter.UsersAdapter
+import xyz.donot.quetzal.viewmodel.adapter.UsersAdapter
 
 abstract class UserList : BaseRecyclerFragment<User, UsersAdapter>() {
   abstract override  fun loadMore()

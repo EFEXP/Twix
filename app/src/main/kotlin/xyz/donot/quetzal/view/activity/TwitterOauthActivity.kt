@@ -15,7 +15,7 @@ import twitter4j.Twitter
 import twitter4j.TwitterFactory
 import twitter4j.auth.RequestToken
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.model.DBAccount
+import xyz.donot.quetzal.model.realm.DBAccount
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.getSerialized

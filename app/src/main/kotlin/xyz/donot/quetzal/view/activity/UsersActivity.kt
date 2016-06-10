@@ -5,7 +5,7 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_users.*
 import kotlinx.android.synthetic.main.content_users.*
 import xyz.donot.quetzal.R
-import xyz.donot.quetzal.view.adapter.FFAdapter
+import xyz.donot.quetzal.viewmodel.adapter.FFAdapter
 
 
 class UsersActivity() : RxAppCompatActivity() {
