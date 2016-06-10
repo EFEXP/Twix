@@ -1,12 +1,12 @@
 package xyz.donot.quetzal.viewmodel.adapter
 
 import android.content.Context
-import android.support.v7.widget.AppCompatImageView
+import android.databinding.DataBindingUtil
 import android.view.View
 import android.view.ViewGroup
 import com.jude.easyrecyclerview.adapter.BaseViewHolder
-import com.squareup.picasso.Picasso
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.databinding.ItemTwitterImageBinding
 
 class TwitterImageAdapter(context: Context)
 :BasicRecyclerAdapter<TwitterImageAdapter.ViewHolder,String>(context) {
@@ -17,10 +17,12 @@ class TwitterImageAdapter(context: Context)
     inner class ViewHolder(itemView: View) : BaseViewHolder<String>(itemView) {
         override fun setData(data:String) {
             super.setData(data)
-            val  item= data
-            Picasso.with(context).load(item).placeholder(R.drawable.picture_place_holder).into(picture)
+            binding.url = data
         }
-        val picture by lazy { itemView.findViewById(R.id.picture) as AppCompatImageView}
+
+        val binding = DataBindingUtil.bind<ItemTwitterImageBinding>(itemView)
+
+
     }
 
 }

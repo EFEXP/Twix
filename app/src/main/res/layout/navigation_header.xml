@@ -1,38 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="twitter4j.User" />
+    </data>
+
+    <android.support.v7.widget.LinearLayoutCompat
     android:layout_width="match_parent" android:layout_height="250sp"
     android:orientation="vertical"
     >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200sp">
-    <ImageView
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/my_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/my_header"
+            app:imageUrl="@{user.profileBannerIPadRetinaURL}"
          />
 
-    <ImageView
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/my_icon"
         android:layout_width="80sp"
         android:layout_height="80sp"
-        android:id="@+id/my_icon"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="15sp"
+            android:layout_marginLeft="15sp"
         android:layout_marginStart="15sp"
-        android:layout_marginLeft="15sp" />
+            app:avatarImageUrl="@{user.originalProfileImageURLHttps}" />
     </RelativeLayout>
     <android.support.v7.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/my_name_header"
-        android:layout_gravity="center" />
-    <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/my_screen_name_header"
         android:layout_gravity="center"
+        android:text="@{user.name}"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="accountName" />
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/my_screen_name_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@{user.screenName}"
+        tools:text="accountScreenName"
         />
 </android.support.v7.widget.LinearLayoutCompat>
+</layout>
