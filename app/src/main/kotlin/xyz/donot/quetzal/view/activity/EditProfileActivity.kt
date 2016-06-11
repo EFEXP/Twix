@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import br.com.goncalves.pugnotification.notification.PugNotification
 import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
@@ -20,6 +19,7 @@ import xyz.donot.quetzal.event.TwitterUserSubscriber
 import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
+import xyz.donot.quetzal.util.extrautils.getNotificationManager
 import xyz.donot.quetzal.util.extrautils.longToast
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getPath
@@ -67,7 +67,7 @@ val twitter by lazy { getTwitterInstance()}
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-    val color=ContextCompat.getColor(this@EditProfileActivity,R.color.colorPrimary)
+      val color = ContextCompat.getColor(this@EditProfileActivity, R.color.colorPrimary)
       toolbar.setNavigationOnClickListener { onBackPressed() }
         TwitterObservable(applicationContext,twitter).showUser(getMyId()).subscribe(object:TwitterUserSubscriber(this@EditProfileActivity){
           override fun onNext(user: User) {
@@ -124,6 +124,7 @@ val twitter by lazy { getTwitterInstance()}
               val bundle =  Bundle()
               bundle.putByteArray("userObject",user.getSerialized())
               setResult(RESULT_OK,Intent().putExtras(bundle));
+                finish()
             }
 
             override fun onCompleted() {
@@ -141,7 +142,7 @@ val twitter by lazy { getTwitterInstance()}
                     TwitterUpdateObservable(this@EditProfileActivity, twitter).profileImageUpdateAsync(File(getPath(this@EditProfileActivity, iconUri!!)))
                             .subscribe {
                                 longToast("画像更新しました")
-                                PugNotification.with(this@EditProfileActivity).cancel(id)
+                                getNotificationManager().cancel(id)
                                 finish()
                             }
                 } else if (bannerUri != null) {
@@ -150,7 +151,7 @@ val twitter by lazy { getTwitterInstance()}
                             .onError { longToast("Error") }
                             .subscribe {
                                 longToast("画像更新しました")
-                                PugNotification.with(this@EditProfileActivity).cancel(id)
+                                getNotificationManager().cancel(id)
                                 finish()
                             }
                 }

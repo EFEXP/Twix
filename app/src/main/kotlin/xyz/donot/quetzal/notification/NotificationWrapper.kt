@@ -1,46 +1,47 @@
 package xyz.donot.quetzal.notification
 
+import android.app.PendingIntent
 import android.content.Context
 import android.net.Uri
 import android.preference.PreferenceManager
-import br.com.goncalves.pugnotification.notification.PugNotification
+import android.support.v4.app.NotificationManagerCompat
 import twitter4j.Status
 import xyz.donot.quetzal.R
+import xyz.donot.quetzal.util.extrautils.newIntent
+import xyz.donot.quetzal.util.extrautils.newNotification
 import xyz.donot.quetzal.view.activity.NotificationActivity
 
 class NotificationWrapper(val context: Context){
-   val notification=PugNotification.with(context).load()
-    val res = context.resources
     val ringtone = PreferenceManager.getDefaultSharedPreferences(context).getString("notifications_ringtone", "")
-    fun replyNotification(status: Status): Unit {
-        val text = res.getString(R.string.new_mention_notification_placeholder_text_template,status.text)
-     notification.apply {
-               title("返信")
-               message(status.text)
-               bigTextStyle(text)
-               smallIcon(R.drawable.ic_reply_grey_400_24dp)
-               largeIcon(R.drawable.ic_launcher)
-               sound(Uri.parse(ringtone))
-         click (NotificationActivity::class.java)
 
-       }
-    notification.simple().build()
+    fun replyReceived(status: Status) {
+        val intent = context.newIntent<NotificationActivity>()
+        val contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        val notification = context.newNotification {
+            setSmallIcon(R.drawable.ic_reply_grey_400_24dp)
+            setContentTitle("返信")
+            setContentText(status.text)
+            setWhen(status.createdAt.time)
+            setTicker("${status.user.name}からの返信")
+            setAutoCancel(true)
+            setSound(Uri.parse(ringtone))
+            setContentIntent(contentIntent)
+        }
+        val manager = NotificationManagerCompat.from(context);
+        manager.notify(0, notification);
     }
+
+    val res = context.resources
     fun sendingNotification(identifier: Int) {
-        notification.apply {
-            title("送信中…")
-            identifier(identifier)
-            smallIcon(R.drawable.ic_launcher)
-            autoCancel(false)
+        val notification = context.newNotification {
+            setSmallIcon(R.drawable.ic_launcher)
+            setContentTitle("送信中…")
+            setTicker("送信中…")
+            setAutoCancel(false)
+            setProgress(100, 100, true)
         }
-        notification.progress().value(0,100,true).build()
-    }
-    fun sendingFailureNotification() {
-        notification.apply {
-            title("送信に失敗しました")
-            smallIcon(R.drawable.ic_launcher)
-            autoCancel(true)
-        }
+        val manager = NotificationManagerCompat.from(context);
+        manager.notify(identifier, notification);
     }
 
 

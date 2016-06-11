@@ -9,7 +9,8 @@ import xyz.donot.quetzal.util.isIgnore
 
 
 class TwitterStream() {
-        val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
+    var isChange = false
+    val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization) }
     val isConnected: BehaviorSubject<Boolean>  by lazy { BehaviorSubject(false) }
     val statusSubject :BehaviorSubject<Status> by lazy { BehaviorSubject<Status>() }
     val deleteSubject:BehaviorSubject<StatusDeletionNotice>  by lazy { BehaviorSubject<StatusDeletionNotice>() }
@@ -37,9 +38,6 @@ class TwitterStream() {
                 StreamType.SAMPLE_STREAM->{stream.sample()}
             }
         }
-        else{
-
-        }
        return  this
     }
     fun clean()
@@ -47,7 +45,7 @@ class TwitterStream() {
         if(isConnected.hasValue()) {
             if (isConnected.value) {
                 stream.clearListeners()
-                stream.shutdown()
+                stream.cleanUp()
             } else {
 
             }
@@ -69,7 +67,6 @@ class TwitterStream() {
         override fun onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {
             super.onDeletionNotice(statusDeletionNotice)
             deleteSubject.onNext(statusDeletionNotice)
-
         }
 
         override fun onFavorite(source: User, target: User, favoritedStatus: Status) {

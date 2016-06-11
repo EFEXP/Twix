@@ -6,7 +6,6 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import com.jude.easyrecyclerview.adapter.BaseViewHolder
-import com.squareup.picasso.Picasso
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemBitmapBinding
 
@@ -24,17 +23,9 @@ class EditTweetPicAdapter(context: Context)
         init {
             binding = DataBindingUtil.bind(itemView)
         }
-
         override fun setData(data: Uri) {
             super.setData(data)
-            val item = data
-            binding.apply {
-                textView.text = "${layoutPosition+1}/$count"
-                Picasso.with(context)
-                        .load(item)
-                        .resize(400, 400)
-                        .centerInside()
-                        .into(imageView)
-            }
+            binding.url = data.toString()
+            binding.textView.text = "${layoutPosition + 1}/$count"
         }
     }}

@@ -37,7 +37,7 @@ class EditTweetActivity : RxAppCompatActivity() {
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
   var screenName :String=""
   val statusTxt by lazy { intent.getStringExtra("status_txt") }
-    val mAdapter= EditTweetPicAdapter(this@EditTweetActivity)
+    val mAdapter by lazy { EditTweetPicAdapter(this@EditTweetActivity) }
     var dialog:DialogFragment?=null
 
 

@@ -6,6 +6,24 @@ import rx.Subscriber
 import twitter4j.Status
 import twitter4j.User
 
+open class StatusSubscriber(val context: Context, val body: (status: Status) -> Unit) : Subscriber<Status>() {
+  override fun onCompleted() {
+    onLoaded()
+  }
+
+  override fun onError(ex: Throwable) {
+    Toast.makeText(context, ex.message, Toast.LENGTH_LONG).show()
+
+  }
+
+  override fun onNext(status: Status) {
+    body(status)
+  }
+
+  open fun onLoaded() {
+  }
+}
+
 
 open class TwitterSubscriber(val context: Context) : Subscriber<Status>() {
     override fun onCompleted() {

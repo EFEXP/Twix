@@ -1,5 +1,6 @@
 package xyz.donot.quetzal.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
@@ -13,13 +14,15 @@ import xyz.donot.quetzal.model.realm.DBMute
 import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.extrautils.toast
+import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.util.getTwitterInstance
+import xyz.donot.quetzal.view.fragment.UserDetailFragment
 import xyz.donot.quetzal.viewmodel.adapter.AnyUserTimeLineAdapter
 
 class UserActivity : RxAppCompatActivity() {
   var userId :Long=0
-
+    val adapter by lazy { AnyUserTimeLineAdapter(supportFragmentManager) }
     val userName by lazy { intent.getStringExtra("user_name") }
   val twitter by lazy {getTwitterInstance()}
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,22 +37,35 @@ class UserActivity : RxAppCompatActivity() {
           .showUser(userId)
           .bindToLifecycle(this@UserActivity)
       .subscribe({ setUp(it)})
-      }
-      else{
-        TwitterObservable(applicationContext,twitter).showUser(userName).bindToLifecycle(this@UserActivity)
+      } else {
+          TwitterObservable(applicationContext, twitter).showUser(userName).bindToLifecycle(this@UserActivity)
           .subscribe{
               userId=it.id
               setUp(it)}
       }
     }
 
-  fun setUp(user: User){
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            val detail = adapter.findFragmentByPosition(viewpager_user, 0)
+            if (detail is UserDetailFragment) {
+                detail.setUpView(data.getByteArrayExtra("userObject").getDeserialized<User>())
+            }
+
+        }
+    }
+
+    fun setUp(user: User) {
     Picasso.with(applicationContext).load(user.profileBannerIPadURL).into(banner)
-    banner.setOnClickListener{startActivity(Intent(applicationContext, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.profileBannerIPadRetinaURL)))}
+        banner.setOnClickListener {
+            startActivity(Intent(applicationContext, PictureActivity::class.java).
+                    putStringArrayListExtra("picture_urls", arrayListOf(user.profileBannerIPadRetinaURL)))
+        }
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
-   val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
-      viewpager_user.offscreenPageLimit=4
+
+        viewpager_user.offscreenPageLimit=4
       adapter.user=user
     viewpager_user.adapter=adapter
     tabs_user.setupWithViewPager(viewpager_user)

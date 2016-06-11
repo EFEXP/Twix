@@ -15,14 +15,8 @@ abstract class TimeLineFragment : BaseRecyclerFragment<Status, StatusAdapter>() 
         mAdapter.setMore(R.layout.item_loadmore, { loadMore() })
         base_recycler_view.setLayoutManager(LinearLayoutManager(context))
     }
-
     abstract override fun loadMore()
     protected val tsm by lazy { Quetzal.stream }
-    override fun onDestroy() {
-        super.onDestroy()
-        tsm.clean()
-    }
-
     override val mAdapter: StatusAdapter by lazy { StatusAdapter(activity) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

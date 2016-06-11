@@ -13,24 +13,27 @@ import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import rx.lang.kotlin.BehaviorSubject
-import twitter4j.Status
 import twitter4j.User
 import xyz.donot.quetzal.Quetzal
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ActivityMainBinding
-import xyz.donot.quetzal.event.TwitterSubscriber
 import xyz.donot.quetzal.event.TwitterUserSubscriber
-import xyz.donot.quetzal.twitter.TwitterUpdateObservable
+import xyz.donot.quetzal.model.StreamType
 import xyz.donot.quetzal.twitter.UsersObservable
 import xyz.donot.quetzal.util.*
 import xyz.donot.quetzal.util.extrautils.*
 import xyz.donot.quetzal.view.fragment.HelpFragment
 import xyz.donot.quetzal.viewmodel.activity.MainViewModel
+import xyz.donot.quetzal.viewmodel.activity.hideKey
+import xyz.donot.quetzal.viewmodel.activity.sentStatus
 import xyz.donot.quetzal.viewmodel.adapter.MainTimeLineAdapter
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
+
   val twitter by lazy { getTwitterInstance() }
   val accountChanged by lazy { BehaviorSubject<Boolean>() }
     val viewModel by lazy { MainViewModel(applicationContext) }
@@ -40,10 +43,15 @@ class MainActivity : RxAppCompatActivity() {
       startActivity(intent<TwitterOauthActivity>())
       finish()
     } else {
+        EventBus.getDefault().register(this@MainActivity)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this@MainActivity, R.layout.activity_main)
         binding.viewModel = viewModel
         viewpager.adapter = MainTimeLineAdapter(supportFragmentManager)
         viewpager.offscreenPageLimit = 2
+        if (Quetzal.stream.isChange) {
+            Quetzal.stream.isChange = false
+            Quetzal.stream.run(StreamType.USER_STREAM)
+        }
         if (!isConnected()) {
         showSnackbar(coordinatorLayout, R.string.description_a_network_error_occurred)
       }
@@ -110,28 +118,11 @@ class MainActivity : RxAppCompatActivity() {
         true
       }
 
-      //通知
-        button_tweet.setOnClickListener(
-              {
-                  val tObserver = TwitterUpdateObservable(applicationContext,twitter);
-                  tObserver.updateStatusAsync(editText_status.editableText.toString())
-                          .bindToLifecycle(this@MainActivity)
-                          .subscribe(object : TwitterSubscriber(applicationContext) {
-                            override fun onStatus(status: Status) {
-                              editText_status.hideSoftKeyboard()
-                              Snackbar.make(coordinatorLayout, "投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
-                                tObserver.deleteStatusAsync(status.id).subscribe {
-                                  toast("削除しました")
-                                }
-                              }).show()
-                            }
-
-                          })
-                  editText_status.setText("")
-              })
     }
     accountChanged.subscribe {
       restart()
+        Quetzal.stream.isChange = true
+        Quetzal.stream.clean()
     }
     //パーミッション要求
     fromApi(23, true){
@@ -146,8 +137,22 @@ class MainActivity : RxAppCompatActivity() {
               ,REQUEST_WRITE_READ)
     }
     }
-
   }
+
+    @SuppressWarnings
+    @Subscribe
+    fun a(key: hideKey) {
+        editText_status.hideSoftKeyboard()
+    }
+
+    @SuppressWarnings
+    @Subscribe
+    fun b(sentStatus: sentStatus) {
+        Snackbar.make(coordinatorLayout, "投稿しました", Snackbar.LENGTH_LONG).setAction("取り消す", {
+            viewModel.deleteStatus(sentStatus.status.id)
+        }).show()
+        editText_status.setText("")
+    }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
@@ -161,9 +166,9 @@ class MainActivity : RxAppCompatActivity() {
     override fun onDestroy() {
         viewModel.clean()
         Quetzal.stream.clean()
+        EventBus.getDefault().unregister(this@MainActivity)
         super.onDestroy()
     }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
       if (requestCode == REQUEST_WRITE_READ) {

@@ -2,9 +2,9 @@ package xyz.donot.quetzal.service
 
 import android.app.IntentService
 import android.content.Intent
-import br.com.goncalves.pugnotification.notification.PugNotification
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.notification.NotificationWrapper
+import xyz.donot.quetzal.util.extrautils.getNotificationManager
 import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.getTwitterInstance
 import java.io.File
@@ -33,10 +33,10 @@ class TweetPostService() : IntentService("TweetPostService") {
               twitter.updateStatus(updateStatus)
           }
             catch(e:Exception){
-                PugNotification.with(this@TweetPostService).cancel(id)
-                NotificationWrapper(applicationContext).sendingFailureNotification()
+                applicationContext.getNotificationManager().cancel(id)
+                //     NotificationWrapper(applicationContext).sendingFailureNotification()
             }
-            PugNotification.with(this@TweetPostService).cancel(id)
+            applicationContext.getNotificationManager().cancel(id)
 
         }
     }

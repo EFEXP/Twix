@@ -3,18 +3,18 @@ package xyz.donot.quetzal.viewmodel.adapter
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import twitter4j.Paging
 import twitter4j.Query
 import twitter4j.User
 import xyz.donot.quetzal.util.extrautils.Bundle
 import xyz.donot.quetzal.util.getSerialized
+import xyz.donot.quetzal.view.customview.DynamicViewPager
 import xyz.donot.quetzal.view.fragment.ImageSearchFragment
 import xyz.donot.quetzal.view.fragment.TimeLineFragment
 import xyz.donot.quetzal.view.fragment.UserDetailFragment
 
 
-class AnyUserTimeLineAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm)
+class AnyUserTimeLineAdapter(val fm: FragmentManager) : DynamicViewPager(fm)
 {
 var user: User?=null
 override fun getItem(position: Int): Fragment {

@@ -5,6 +5,7 @@ import android.app.UiModeManager
 import android.support.v7.app.AppCompatDelegate
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import org.greenrobot.eventbus.EventBus
 import xyz.donot.quetzal.model.StreamType
 import xyz.donot.quetzal.model.TwitterStream
 import xyz.donot.quetzal.model.realm.MyRealmMigration
@@ -28,7 +29,7 @@ class Quetzal : Application() {
         }
         catch(e:FileNotFoundException){}
         Realm.setDefaultConfiguration(config)
-
+        EventBus.builder().installDefaultEventBus()
       val design=  when(defaultSharedPreferences.getString("night_mode","auto")){
             "black"->{
                 AppCompatDelegate.MODE_NIGHT_YES}
