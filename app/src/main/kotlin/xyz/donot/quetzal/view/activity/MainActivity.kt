@@ -2,6 +2,7 @@ package xyz.donot.quetzal.view.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
@@ -33,7 +34,6 @@ import xyz.donot.quetzal.viewmodel.adapter.MainTimeLineAdapter
 
 class MainActivity : RxAppCompatActivity() {
   val REQUEST_WRITE_READ=0
-
   val twitter by lazy { getTwitterInstance() }
   val accountChanged by lazy { BehaviorSubject<Boolean>() }
     val viewModel by lazy { MainViewModel(applicationContext) }
@@ -80,7 +80,6 @@ class MainActivity : RxAppCompatActivity() {
                         drawer_layout.closeDrawers()
                        }
             R.id.action_setting -> {
-
               start<SettingsActivity>()
               drawer_layout.closeDrawers()
             }
@@ -89,7 +88,8 @@ class MainActivity : RxAppCompatActivity() {
               drawer_layout.closeDrawers()
             }
             R.id.action_list -> {
-              start<ListsActivity>(Bundle().apply { putLong("user_id",getMyId()) })
+                startActivity(newIntent<ListsActivity>(Bundle().apply { putLong("user_id",getMyId()) }),  ActivityOptions.makeSceneTransitionAnimation(this, null).toBundle())
+
               drawer_layout.closeDrawers()
             }
             R.id.action_whats_new -> {
@@ -117,13 +117,13 @@ class MainActivity : RxAppCompatActivity() {
         start<EditTweetActivity>()
         true
       }
+        accountChanged.subscribe {
+            restart()
+            Quetzal.stream.isChange = true
+            Quetzal.stream.clean()
+        }
+    }
 
-    }
-    accountChanged.subscribe {
-      restart()
-        Quetzal.stream.isChange = true
-        Quetzal.stream.clean()
-    }
     //パーミッション要求
     fromApi(23, true){
     val EX_WRITE=ContextCompat.checkSelfPermission(applicationContext,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
@@ -164,9 +164,11 @@ class MainActivity : RxAppCompatActivity() {
   }
 
     override fun onDestroy() {
-        viewModel.clean()
-        Quetzal.stream.clean()
-        EventBus.getDefault().unregister(this@MainActivity)
+        if(haveToken()) {
+            viewModel.clean()
+            Quetzal.stream.clean()
+            EventBus.getDefault().unregister(this@MainActivity)
+        }
         super.onDestroy()
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

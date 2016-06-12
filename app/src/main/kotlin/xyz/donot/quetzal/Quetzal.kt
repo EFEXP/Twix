@@ -10,6 +10,7 @@ import xyz.donot.quetzal.model.StreamType
 import xyz.donot.quetzal.model.TwitterStream
 import xyz.donot.quetzal.model.realm.MyRealmMigration
 import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
+import xyz.donot.quetzal.util.extrautils.getUiModeManager
 import java.io.FileNotFoundException
 
 
@@ -38,6 +39,6 @@ class Quetzal : Application() {
           else->{AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM}
         }
       AppCompatDelegate.setDefaultNightMode(design)
-      (getSystemService(UI_MODE_SERVICE)as UiModeManager).nightMode = UiModeManager.MODE_NIGHT_AUTO
+        getUiModeManager().nightMode = UiModeManager.MODE_NIGHT_AUTO
     }
 }

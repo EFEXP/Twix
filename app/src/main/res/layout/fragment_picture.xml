@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-  android:layout_width="match_parent"
+    android:layout_width="match_parent"
   android:layout_height="match_parent"
+    android:orientation="horizontal"
   tools:context="xyz.donot.quetzal.view.fragment.PictureFragment">
-<uk.co.senab.photoview.PhotoView
+
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
   android:id="@+id/photo_view_image"
   android:layout_width="match_parent"
   android:layout_height="match_parent" />

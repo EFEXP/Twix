@@ -13,10 +13,10 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
+import com.davemorrissey.labs.subscaleview.ImageSource
 import com.squareup.picasso.Picasso
-import uk.co.senab.photoview.PhotoViewAttacher
+import kotlinx.android.synthetic.main.fragment_picture.*
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.util.getPictureStorePath
@@ -29,23 +29,26 @@ import java.util.*
 class PictureFragment : Fragment() {
  private  val REQUEST_WRITE:Int=1
   private   val stringURL by lazy {  arguments.getString("url") }
-  private var photoAttacher:PhotoViewAttacher?=  null
+  override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    Picasso.with(activity).load(stringURL).into(object : com.squareup.picasso.Target {
+      override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+      }
+
+      override fun onBitmapFailed(errorDrawable: Drawable?) {
+      }
+
+      override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom?) {
+        photo_view_image.setImage(ImageSource.bitmap(bitmap))
+      }
+    })
+    photo_view_image.maxScale = 100F
+  }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_picture, container, false)
-    val img = v.findViewById(R.id.photo_view_image)as ImageView
-    Picasso.with(activity).load(stringURL).into(img)
-    img.setOnClickListener{
-
-    }
-   photoAttacher=  PhotoViewAttacher(img)
-    photoAttacher?.update()
     return v
   }
 
-  override fun onStop() {
-    super.onStop()
-    photoAttacher?.cleanup()
-  }
 
   fun SavePics(){
     if(ContextCompat.checkSelfPermission(this@PictureFragment.activity,Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){

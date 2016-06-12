@@ -19,9 +19,7 @@ class TwitterImageAdapter(context: Context)
             super.setData(data)
             binding.url = data
         }
-
         val binding = DataBindingUtil.bind<ItemTwitterImageBinding>(itemView)
-
 
     }
 
