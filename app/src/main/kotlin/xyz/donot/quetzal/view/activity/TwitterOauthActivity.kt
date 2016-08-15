@@ -75,7 +75,7 @@ class TwitterOauthActivity : RxAppCompatActivity() {
          val params =Bundle()
          params.putString(FirebaseAnalytics.Param.VALUE, x.screenName)
          
-         fire.logEvent(FirebaseAnalytics.Event.LOGIN, params);
+         fire.logEvent(FirebaseAnalytics.Event.LOGIN, params)
          fire.logEvent("Start App",   Bundle().apply { putString("name",x.screenName) })
 
         Realm.getDefaultInstance().use {

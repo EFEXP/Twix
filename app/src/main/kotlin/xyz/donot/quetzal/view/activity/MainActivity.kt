@@ -37,7 +37,7 @@ class MainActivity : RxAppCompatActivity() {
     super.onCreate(savedInstanceState)
     if (!haveToken()) {
       startActivity(intent<TwitterOauthActivity>())
-      finish()
+      this.finish()
     } else {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this@MainActivity, R.layout.activity_main)
         binding.viewModel = viewModel
@@ -159,7 +159,7 @@ class MainActivity : RxAppCompatActivity() {
   }
 
     override fun onDestroy() {
-        viewModel.clean()
+        if (haveToken()) { viewModel.clean()}
         super.onDestroy()
     }
 
