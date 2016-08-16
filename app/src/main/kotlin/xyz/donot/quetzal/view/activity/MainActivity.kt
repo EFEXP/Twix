@@ -106,9 +106,11 @@ class MainActivity : RxAppCompatActivity() {
                 }
               })
       button_tweet.setOnLongClickListener {
-        start<EditTweetActivity>()
+          toast("edit")
+          startActivity(intent<EditTweetActivity>())
         true
       }
+
 
       //通知
         button_tweet.setOnClickListener(

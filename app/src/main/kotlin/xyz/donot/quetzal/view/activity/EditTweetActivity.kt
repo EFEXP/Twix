@@ -16,13 +16,16 @@ import com.yalantis.ucrop.UCropActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_tweet_edit.*
 import kotlinx.android.synthetic.main.content_tweet_edit.*
+import rx.lang.kotlin.BehaviorSubject
 import twitter4j.StatusUpdate
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.realm.DBDraft
 import xyz.donot.quetzal.service.TweetPostService
 import xyz.donot.quetzal.util.*
+import xyz.donot.quetzal.util.extrautils.hide
 import xyz.donot.quetzal.util.extrautils.newIntent
 import xyz.donot.quetzal.util.extrautils.onClick
+import xyz.donot.quetzal.util.extrautils.show
 import xyz.donot.quetzal.util.rximage.RxImagePicker
 import xyz.donot.quetzal.util.rximage.Sources
 import xyz.donot.quetzal.view.fragment.DraftFragment
@@ -36,10 +39,10 @@ class EditTweetActivity : RxAppCompatActivity() {
   val  twitter  by lazy {  getTwitterInstance() }
   val  statusId by lazy {  intent.getLongExtra("status_id",0) }
   var screenName :String=""
-  val statusTxt by lazy { intent.getStringExtra("status_txt") }
+  val statusTxt: String by lazy { intent.getStringExtra("status_txt") }
     val mAdapter= EditTweetPicAdapter(this@EditTweetActivity)
     var dialog:DialogFragment?=null
-
+    val hasPictures by lazy { BehaviorSubject(false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +76,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                         })
                         .setNegativeButton("削除", { dialogInterface, i ->
                             mAdapter.remove(item)
+                            hasPictures.onNext(false)
                         })
                         .show(); }
 
@@ -100,7 +104,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                             a +="人"
                             b += "^Y"
                         }
-                             val text="＿人人人人人人$a＿\n＞　${editText_status.text}　＜\n￣Y^Y^Y^Y^Y$b￣"
+                             val text="＿人人人人人人$a＿\n＞ ${editText_status.text} ＜\n￣Y^Y^Y^Y^Y$b￣"
                              editText_status.text.clear()
                              editText_status.setText(text)                         }
                         }
@@ -144,7 +148,14 @@ class EditTweetActivity : RxAppCompatActivity() {
           finish()
       }}
 
-
+    hasPictures.subscribe {
+        if(it){
+            pic_quality_seekBar.show()
+        }
+        else{
+            pic_quality_seekBar.hide()
+        }
+    }
     }
   override fun onActivityResult(requestCode:Int , resultCode: Int, data: Intent?){
     if (resultCode == AppCompatActivity.RESULT_OK &&data!=null) {
@@ -170,6 +181,7 @@ class EditTweetActivity : RxAppCompatActivity() {
     }
   fun addPhotos(uri: Uri){
       mAdapter.add(uri)
+      hasPictures.onNext(true)
     }
 
     override fun onBackPressed() {

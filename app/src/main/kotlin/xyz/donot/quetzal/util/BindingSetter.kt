@@ -9,7 +9,7 @@ object CustomizedSetter{
     @JvmStatic
     @BindingAdapter("avatarImageUrl")
     fun avatarImageUrl(view:ImageView,url:String) {
-        Picasso.with(view.context).load(url).transform(RoundCorner()).placeholder(R.drawable.ic_contacts_grey_400_36dp).into(view)
+        Picasso.with(view.context).load(url).transform(RoundCorner()).placeholder(R.drawable.avatar_place_holder).into(view)
     }
     @JvmStatic
     @BindingAdapter("imageUrl")

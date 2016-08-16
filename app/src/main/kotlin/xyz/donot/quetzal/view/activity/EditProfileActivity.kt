@@ -59,8 +59,7 @@ val twitter by lazy { getTwitterInstance()}
             .setMessage("編集を削除して戻りますか？")
             .setPositiveButton("はい",  { dialogInterface, i ->   super.onBackPressed() })
             .setNegativeButton("いいえ",{ dialogInterface, i -> dialogInterface.cancel()})
-            .show();
-
+            .show()
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
