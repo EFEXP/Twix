@@ -40,7 +40,6 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
    val binding :ItemTweetCardBinding
       init {
           binding = DataBindingUtil.bind(itemView)
-
       }
       override fun setData(data: Status) {
           super.setData(data)

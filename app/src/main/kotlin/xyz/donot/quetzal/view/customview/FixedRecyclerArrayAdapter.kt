@@ -6,7 +6,8 @@ import xyz.donot.quetzal.util.extrautils.mainThread
 
 abstract class  FixedRecyclerArrayAdapter<T>(context: Context): RecyclerArrayAdapter<T>(context) {
 
-    var holderInsertListener:ItemInsertListener?=null
+    var holderInsertListener:(Int)->Unit={}
+
 
     override fun add(`object`: T) {
         mainThread {
@@ -32,22 +33,16 @@ abstract class  FixedRecyclerArrayAdapter<T>(context: Context): RecyclerArrayAda
             mObjects.removeAt(position)
             notifyItemRemoved(position)
         }
-
-
     }
 
 
     override fun insert(`object`: T, index: Int) {
         mainThread {
             mObjects.add(index, `object`)
-            if(holderInsertListener !=null){
-                holderInsertListener?.itemInserted(index)
-
-            }
+            holderInsertListener(index)
             notifyItemInserted(index)
         }
-
-        holderInsertListener=null
+       // holderInsertListener={}
     }
 
     fun replace(replacedItem: T,replaceItem: T) {
@@ -60,13 +55,7 @@ abstract class  FixedRecyclerArrayAdapter<T>(context: Context): RecyclerArrayAda
 
     }
 
-
-
-
-    fun setItemInsertListener(listener: ItemInsertListener) {
-        this.holderInsertListener=listener
+    fun setItemInsertListener(listener:(Int)->Unit) {
+        holderInsertListener=listener
     }
-}
-interface ItemInsertListener{
-    fun itemInserted(index: Int)
 }

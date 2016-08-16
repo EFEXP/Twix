@@ -48,6 +48,7 @@ android {
             reset()
             include 'x86', 'armeabi', 'armeabi-v7a', 'x86_64'
             universalApk false
+
         }
     }
     android.applicationVariants.all { variant ->
@@ -72,6 +73,7 @@ dependencies {
     compile "com.android.support:customtabs:${supportLibVersion}"
     compile "com.android.support:support-v4:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
+    compile 'id.zelory:compressor:1.0.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     kapt 'com.android.databinding:compiler:2.2.0-beta1'
     compile 'io.realm:android-adapters:1.2.1'

@@ -1,6 +1,5 @@
 package xyz.donot.quetzal.util
 
-import android.content.Context
 import android.databinding.BindingAdapter
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
@@ -10,7 +9,7 @@ object CustomizedSetter{
     @JvmStatic
     @BindingAdapter("avatarImageUrl")
     fun avatarImageUrl(view:ImageView,url:String) {
-        Picasso.with(view.context).load(url).placeholder(R.drawable.ic_contacts_grey_400_36dp).into(view)
+        Picasso.with(view.context).load(url).transform(RoundCorner()).placeholder(R.drawable.ic_contacts_grey_400_36dp).into(view)
     }
     @JvmStatic
     @BindingAdapter("imageUrl")

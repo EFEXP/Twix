@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.1.2'
+    classpath 'com.android.tools.build:gradle:2.2.0-beta1'
     classpath "io.realm:realm-gradle-plugin:1.1.1"
     classpath 'com.google.gms:google-services:3.0.0'
   }
@@ -17,8 +17,4 @@ allprojects {
 }
 
 
-task clean(type: Exec) {
-  ext.lockhunter = '\"C:\\LockHunter.exe\"'
-  def buildDir = file(new File("build"))
-  commandLine 'cmd', "$lockhunter", '/delete', '/silent', buildDir
-}
+

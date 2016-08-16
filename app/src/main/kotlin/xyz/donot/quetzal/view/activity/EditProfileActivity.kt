@@ -129,6 +129,7 @@ val twitter by lazy { getTwitterInstance()}
             override fun onCompleted() {
               super.onCompleted()
               longToast("更新しました")
+              finish()
             }
           })
 

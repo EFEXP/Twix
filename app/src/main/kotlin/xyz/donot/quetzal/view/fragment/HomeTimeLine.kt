@@ -6,7 +6,6 @@ import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import rx.android.schedulers.AndroidSchedulers
 import twitter4j.Paging
 import xyz.donot.quetzal.util.bindToLifecycle
-import xyz.donot.quetzal.view.customview.ItemInsertListener
 
 class HomeTimeLine() : TimeLineFragment() {
        override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,12 +13,12 @@ class HomeTimeLine() : TimeLineFragment() {
     tsm.statusSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                mAdapter.setItemInsertListener(object : ItemInsertListener {
-                    override fun itemInserted(index: Int) {
-                        val t=base_recycler_view.recyclerView.layoutManager as LinearLayoutManager
-                        if(t.findFirstCompletelyVisibleItemPosition()==0){base_recycler_view.scrollToPosition(0)}
+                mAdapter.setItemInsertListener {
+                    val t=base_recycler_view.recyclerView.layoutManager as LinearLayoutManager
+                    if(t.findFirstCompletelyVisibleItemPosition()==0){
+                        base_recycler_view.scrollToPosition(0)
                     }
-                })
+                    }
                 mAdapter.insert(it,0)
             }
   }
