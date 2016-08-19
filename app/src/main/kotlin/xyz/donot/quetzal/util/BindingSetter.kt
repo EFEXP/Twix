@@ -14,9 +14,14 @@ object CustomizedSetter{
     @JvmStatic
     @BindingAdapter("imageUrl")
     fun imageUrl(view:ImageView,url:String) {
-        Picasso.with(view.context).load(url).placeholder(R.drawable.pugnotification_ic_placeholder).into(view)
+            Picasso.with(view.context).load(url).placeholder(R.drawable.pugnotification_ic_placeholder).into(view)
     }
-
+    @JvmStatic
+    @BindingAdapter("compressImageUrl")
+    fun compressImageUrl(view:ImageView,url:String) {
+        Picasso.with(view.context).load(url) .resize(400, 400)
+                .centerInside().placeholder(R.drawable.pugnotification_ic_placeholder).into(view)
+    }
     @JvmStatic
     @BindingAdapter("srcCompat")
     fun srcCompat(view: ImageView, resourceId: Int) {

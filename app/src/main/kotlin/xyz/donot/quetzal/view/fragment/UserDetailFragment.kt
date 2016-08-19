@@ -34,9 +34,9 @@ class UserDetailFragment() : RxFragment()
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
     val userId: Long = arguments.getLong("userId",0L)
-
    val observable=if(userId!=0L){TwitterObservable(context,twitter).showUser(userId)
-     .bindToLifecycle(this@UserDetailFragment)}
+     .bindToLifecycle(this@UserDetailFragment)
+   }
     else{
      TwitterObservable(context,twitter).showUser(userName)
              .bindToLifecycle(this@UserDetailFragment)

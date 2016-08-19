@@ -8,13 +8,14 @@ import twitter4j.Paging
 import twitter4j.Query
 import twitter4j.User
 import xyz.donot.quetzal.util.extrautils.Bundle
+import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.fragment.ImageSearchFragment
 import xyz.donot.quetzal.view.fragment.TimeLineFragment
 import xyz.donot.quetzal.view.fragment.UserDetailFragment
 
 
-class AnyUserTimeLineAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm)
+class AnyUserTimeLineAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm)
 {
 var user: User?=null
 override fun getItem(position: Int): Fragment {
@@ -26,22 +27,22 @@ override fun getItem(position: Int): Fragment {
       }}
     1 -> object : TimeLineFragment() {
       override fun loadMore() {
-        twitterObservable.getUserTimelineAsync(user!!.id, Paging(page)).subscribe {
+        twitterObservable.getUserTimelineAsync(user!!.id, Paging(page)).subscribe ({
           if(it.isNotEmpty()){
           mAdapter.addAll(it.toList())}
           else{
             empty.onNext(true)
           }
-        }
+        },{toast("Error")})
       }
     }
     2 -> object : TimeLineFragment() {
       override fun loadMore() {
-        twitterObservable.getFavoritesAsync(user!!.id, Paging(page)).subscribe { if(it.isNotEmpty()){
+        twitterObservable.getFavoritesAsync(user!!.id, Paging(page)).subscribe( { if(it.isNotEmpty()){
           mAdapter.addAll(it.toList())}
         else{
           empty.onNext(true)
-        } } }
+        } } ,{toast("Error")})}
       }
      3->{
       val query=Query()

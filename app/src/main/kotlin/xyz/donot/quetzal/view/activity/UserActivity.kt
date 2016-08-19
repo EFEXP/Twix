@@ -7,6 +7,7 @@ import com.squareup.picasso.Picasso
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_user.*
+import rx.lang.kotlin.onError
 import twitter4j.User
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.realm.DBMute
@@ -20,27 +21,30 @@ import xyz.donot.quetzal.viewmodel.adapter.AnyUserTimeLineAdapter
 class UserActivity : RxAppCompatActivity() {
   var userId :Long=0
 
-    val userName by lazy { intent.getStringExtra("user_name") }
+    val userName: String by lazy { intent.getStringExtra("user_name") }
   val twitter by lazy {getTwitterInstance()}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
-        userId=intent.getLongExtra("user_id",0L)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-      toolbar.setNavigationOnClickListener { finish() }
-        toolbar.inflateMenu(R.menu.menu_user)
-      if(userName.isNullOrEmpty()){
-        TwitterObservable(applicationContext,twitter)
-          .showUser(userId)
-          .bindToLifecycle(this@UserActivity)
-      .subscribe({ setUp(it)})
-      }
-      else{
-        TwitterObservable(applicationContext,twitter).showUser(userName).bindToLifecycle(this@UserActivity)
-          .subscribe{
-              userId=it.id
-              setUp(it)}
-      }
+            setContentView(R.layout.activity_user)
+            userId = intent.getLongExtra("user_id", 0L)
+            val toolbar = findViewById(R.id.toolbar) as Toolbar
+            toolbar.setNavigationOnClickListener { finish() }
+            toolbar.inflateMenu(R.menu.menu_user)
+            if (userName.isNullOrEmpty()) {
+                TwitterObservable(applicationContext, twitter)
+                        .showUser(userId)
+                        .onError { toast("Error") }
+                        .bindToLifecycle(this@UserActivity)
+                        .subscribe { setUp(it) }
+            } else {
+                TwitterObservable(applicationContext, twitter).showUser(userName).bindToLifecycle(this@UserActivity)
+                        .onError { toast("Error") }
+                        .subscribe {
+                            userId = it.id
+                            setUp(it)
+            }
+        }
+
     }
 
   fun setUp(user: User){
@@ -49,10 +53,10 @@ class UserActivity : RxAppCompatActivity() {
     toolbar.title=user.name
     toolbar.subtitle=user.screenName
    val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
-      viewpager_user.offscreenPageLimit=4
       adapter.user=user
     viewpager_user.adapter=adapter
     tabs_user.setupWithViewPager(viewpager_user)
+      viewpager_user.offscreenPageLimit=4
       toolbar.setOnMenuItemClickListener {
           when(it.itemId)
           {

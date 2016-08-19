@@ -105,17 +105,14 @@ class MainActivity : RxAppCompatActivity() {
                   my_screen_name_header.text = "@${user.screenName}"
                 }
               })
-      button_tweet.setOnLongClickListener {
-          toast("edit")
-          startActivity(intent<EditTweetActivity>())
-        true
-      }
+
 
 
       //通知
         button_tweet.setOnClickListener(
               {
-                  val tObserver = TwitterUpdateObservable(applicationContext,twitter);
+                 if( viewModel.statusSend.canExecute()){
+                  val tObserver = TwitterUpdateObservable(applicationContext,twitter)
                   tObserver.updateStatusAsync(editText_status.editableText.toString())
                           .bindToLifecycle(this@MainActivity)
                           .subscribe(object : TwitterSubscriber(applicationContext) {
@@ -130,7 +127,12 @@ class MainActivity : RxAppCompatActivity() {
 
                           })
                   editText_status.setText("")
-              })
+              }})
+
+        button_tweet.setOnLongClickListener({
+            startActivity(intent<EditTweetActivity>())
+            true
+        })
     }
     accountChanged.subscribe {
       restart()

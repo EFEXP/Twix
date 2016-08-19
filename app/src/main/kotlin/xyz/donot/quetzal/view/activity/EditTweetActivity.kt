@@ -76,7 +76,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                         })
                         .setNegativeButton("削除", { dialogInterface, i ->
                             mAdapter.remove(item)
-                            hasPictures.onNext(false)
+                           hasPictures.onNext(false)
                         })
                         .show(); }
 
@@ -116,10 +116,7 @@ class EditTweetActivity : RxAppCompatActivity() {
                   && ContextCompat.checkSelfPermission(this@EditTweetActivity,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                   ==PackageManager.PERMISSION_GRANTED) {
             RxImagePicker.with(applicationContext).requestImage(Sources.CAMERA)
-              .subscribe {
-
-                 it.let {   addPhotos(it!!) }
-
+              .subscribe { it.let {addPhotos(it)}
               }
           }
       }
@@ -180,8 +177,8 @@ class EditTweetActivity : RxAppCompatActivity() {
         dialog=null
     }
   fun addPhotos(uri: Uri){
-      mAdapter.add(uri)
-      hasPictures.onNext(true)
+     mAdapter.add(uri)
+     hasPictures.onNext(true)
     }
 
     override fun onBackPressed() {
