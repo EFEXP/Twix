@@ -11,7 +11,7 @@ import xyz.donot.quetzal.view.activity.PictureActivity
 import xyz.donot.quetzal.viewmodel.adapter.TwitterImageAdapter
 import java.util.*
 
-class ImageSearchFragment : StaggeredFragment<String, TwitterImageAdapter>()
+open class ImageSearchFragment : StaggeredFragment<String, TwitterImageAdapter>()
 {
     override val mAdapter by lazy {  TwitterImageAdapter(activity) }
     private  var query : Query?=null

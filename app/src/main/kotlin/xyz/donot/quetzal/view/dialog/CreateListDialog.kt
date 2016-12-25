@@ -8,13 +8,13 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-import com.trello.rxlifecycle.components.support.RxDialogFragment
+import com.trello.rxlifecycle.components.support.RxAppCompatDialogFragment
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterUpdateObservable
 import xyz.donot.quetzal.util.bindToLifecycle
 import xyz.donot.quetzal.util.getTwitterInstance
 
-class CreateListDialog : RxDialogFragment() {
+class CreateListDialog : RxAppCompatDialogFragment() {
   val twitter by lazy { getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                             savedInstanceState: Bundle?): View? {

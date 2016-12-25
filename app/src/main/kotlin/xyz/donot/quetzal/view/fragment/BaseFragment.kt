@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter
-import com.trello.rxlifecycle.components.support.RxDialogFragment
+import com.trello.rxlifecycle.components.support.RxAppCompatDialogFragment
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
@@ -16,7 +16,7 @@ import xyz.donot.quetzal.twitter.TwitterObservable
 import xyz.donot.quetzal.util.extrautils.mainThread
 import xyz.donot.quetzal.util.getTwitterInstance
 
-abstract class BaseRecyclerFragment<L, T : RecyclerArrayAdapter<L>> : RxDialogFragment() {
+abstract class BaseRecyclerFragment<L, out T : RecyclerArrayAdapter<L>> : RxAppCompatDialogFragment() {
     val twitterObservable: TwitterObservable by lazy { TwitterObservable(context, twitter) }
     val twitter by lazy { getTwitterInstance() }
     val load by lazy { BehaviorSubject(true) }

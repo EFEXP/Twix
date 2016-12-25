@@ -27,7 +27,7 @@ class TweetPostService() : IntentService("TweetPostService") {
                     array[i] = uploadedMediaId[i]
                     i++
                 }
-                updateStatus.setMediaIds(array)
+                updateStatus.setMediaIds(*array)
             }
           try {
               twitter.updateStatus(updateStatus)

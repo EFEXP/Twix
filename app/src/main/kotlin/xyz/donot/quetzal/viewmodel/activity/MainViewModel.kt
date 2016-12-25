@@ -11,7 +11,6 @@ import xyz.donot.quetzal.model.StreamType
 import xyz.donot.quetzal.model.TwitterStream
 import xyz.donot.quetzal.notification.NotificationWrapper
 import xyz.donot.quetzal.util.extrautils.mainThread
-import xyz.donot.quetzal.util.extrautils.toast
 import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.util.isMentionToMe
 
@@ -32,8 +31,8 @@ class MainViewModel(val context: Context) : ActivityViewModel() {
 
     val connected: RxProperty<Boolean>
     val status: RxProperty<Status>
-    val editStatus: RxProperty<String> = RxProperty("")
-    val statusSend: RxCommand<() -> Unit>
+    val editStatus: RxProperty<String> = RxProperty("").setValidator { if(!it.isNullOrBlank() && it.count() <= 140){ "Text must not be empty!"} else null }
+    val statusSend: RxCommand<()->Unit>
 
     init {
         connected = RxProperty(stream.isConnected)
@@ -46,8 +45,8 @@ class MainViewModel(val context: Context) : ActivityViewModel() {
                         }
                     }
                 }
-        statusSend = editStatus.asObservable().map { !it.isNullOrBlank() && it.count() <= 140 }
-                .toRxCommand { context.toast("Hello!") }
+        statusSend = editStatus.onHasErrorsChanged().map { !it }
+                .toRxCommand()
     }
 
 

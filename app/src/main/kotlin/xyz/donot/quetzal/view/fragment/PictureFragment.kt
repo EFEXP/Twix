@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import com.squareup.picasso.Picasso
+import com.trello.rxlifecycle.components.support.RxFragment
 import uk.co.senab.photoview.PhotoViewAttacher
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.util.extrautils.toast
@@ -26,7 +26,7 @@ import java.io.IOException
 import java.util.*
 
 
-class PictureFragment : Fragment() {
+class PictureFragment : RxFragment() {
  private  val REQUEST_WRITE:Int=1
   private   val stringURL by lazy {  arguments.getString("url") }
   private var photoAttacher:PhotoViewAttacher?=  null
@@ -89,7 +89,7 @@ class PictureFragment : Fragment() {
             put("_data",attachName.absolutePath )
 
           }
-          activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+          activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         }
         catch(ex: IOException){
           ex.printStackTrace()

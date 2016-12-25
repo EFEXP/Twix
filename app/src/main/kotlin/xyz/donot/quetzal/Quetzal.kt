@@ -14,10 +14,10 @@ import java.io.FileNotFoundException
 class Quetzal : Application() {
     override fun onCreate() {
         super.onCreate()
-           val config= RealmConfiguration.Builder(this)
-                    .schemaVersion(2L)
-                    .migration(MyRealmMigration())
-                    .build()
+        Realm.init(this)
+           val config= RealmConfiguration.Builder().schemaVersion(2L)
+                   .migration(MyRealmMigration())
+                   .build()
         try {
             Realm.migrateRealm(config, MyRealmMigration())
         }

@@ -18,8 +18,7 @@
         android:label="${appName}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:label"
-        >
+        tools:replace="android:label">
         <activity
             android:name=".view.activity.MainActivity"
             android:label="${appName}"

@@ -62,8 +62,6 @@ class SearchSettingActivity : RxAppCompatActivity() {
               query.resultType=Query.MIXED
 
                 query.query=querytext
-
-
                 start<SearchActivity>(Bundle().apply {
                     putByteArray("query_bundle",query.getSerialized())
                 })
@@ -72,11 +70,6 @@ class SearchSettingActivity : RxAppCompatActivity() {
                   putString(FirebaseAnalytics.Param.ITEM_NAME,querytext)
                 })
             }
-
-
-
-
-
                 true
 
 

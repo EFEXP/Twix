@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import xyz.donot.quetzal.view.listener.OnLoadMoreListener
 
 
-abstract class StaggeredFragment<L, T : RecyclerArrayAdapter<L>> : BaseRecyclerFragment<L, T>()
+abstract class StaggeredFragment<L, out T : RecyclerArrayAdapter<L>> : BaseRecyclerFragment<L, T>()
 {
     override fun setUpRecycler() {
         base_recycler_view.setLayoutManager(StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL))

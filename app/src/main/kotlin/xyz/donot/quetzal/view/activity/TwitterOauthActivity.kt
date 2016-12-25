@@ -55,9 +55,9 @@ class TwitterOauthActivity : RxAppCompatActivity() {
                     if (url.startsWith(getString(R.string.twitter_callback_url))) {
                         view.stopLoading()
                         getAccessToken(Uri.parse(url))
-                        return true;
+                        return true
                     }
-                    return false;
+                    return false
                 }
             })
 
@@ -88,8 +88,7 @@ class TwitterOauthActivity : RxAppCompatActivity() {
                 if(realm.where(DBAccount::class.java).equalTo("isMain", true).findFirst()!=null){
                     it.where(DBAccount::class.java).equalTo("isMain", true).findFirst().isMain=false}
                 if(it.where(DBAccount::class.java).equalTo("id", x.id).findFirst()==null){
-                    it.createObject(DBAccount::class.java).apply {
-                        id =x.id
+                    it.createObject(DBAccount::class.java,x.id).apply {
                         isMain = true
                         twitter = x.getSerialized()} }
             }

@@ -74,8 +74,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/What_is_happening"
             android:inputType="textMultiLine"
-            android:text="@{viewModel.editStatus.get}"
-            app:text="@{viewModel.editStatus.set}" />
+            app:text="@{viewModel.editStatus.value}" />
       </android.support.design.widget.TextInputLayout>
       <android.support.v7.widget.AppCompatImageButton
           android:id="@+id/button_tweet"

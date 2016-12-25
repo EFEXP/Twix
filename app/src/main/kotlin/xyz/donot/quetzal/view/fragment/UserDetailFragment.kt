@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.klinker.android.link_builder.LinkBuilder
 import com.squareup.picasso.Picasso
-import com.trello.rxlifecycle.components.support.RxFragment
+import com.trello.rxlifecycle.components.support.RxAppCompatDialogFragment
 import kotlinx.android.synthetic.main.fragment_user_detail.*
 import twitter4j.User
 import xyz.donot.quetzal.R
@@ -27,9 +27,10 @@ import xyz.donot.quetzal.view.activity.UsersActivity
 import java.text.SimpleDateFormat
 
 
-class UserDetailFragment() : RxFragment()
+open class UserDetailFragment() : RxAppCompatDialogFragment()
 {
-  val userName by lazy {arguments.getString("user_name") }
+
+  val userName: String by lazy {arguments.getString("user_name") }
   val twitter by lazy { getTwitterInstance() }
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     val v = inflater.inflate(R.layout.fragment_user_detail, container, false)
