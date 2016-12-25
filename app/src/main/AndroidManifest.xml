@@ -18,7 +18,9 @@
         android:label="${appName}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:label">
+        tools:replace="android:label"
+        >
+
         <activity
             android:name=".view.activity.MainActivity"
             android:label="${appName}"
@@ -103,6 +105,15 @@
         <activity
             android:name=".view.activity.SearchSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

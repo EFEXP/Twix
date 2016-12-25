@@ -87,6 +87,7 @@ dependencies {
     compile 'id.zelory:compressor:1.0.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
     kapt 'com.android.databinding:compiler:2.2.2'
+    compile "com.github.miguelbcr:RxPaparazzo:0.4.2"
     compile 'io.realm:android-adapters:1.4.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
     compile 'io.reactivex:rxkotlin:0.60.0'

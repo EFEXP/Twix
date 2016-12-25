@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.util.Log
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import java.io.File
@@ -41,7 +42,7 @@ class HiddenActivity : RxAppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             handleIntent(intent)
         } else {
             finish()
@@ -69,7 +70,7 @@ class HiddenActivity : RxAppCompatActivity() {
         var pictureChooseIntent: Intent? = null
         when (sourceType) {
             Sources.CAMERA -> {
-                cameraPictureUrl = Uri.fromFile(createImageFile())
+                cameraPictureUrl =  FileProvider.getUriForFile(this@HiddenActivity, applicationContext.packageName + ".provider", createImageFile())
                 pictureChooseIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 pictureChooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUrl)
                 chooseCode = TAKE_PHOTO
