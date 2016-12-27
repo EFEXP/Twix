@@ -9,7 +9,8 @@ import xyz.donot.quetzal.util.basicNetworkTask
 class RetweeterDialog : UserList() {
   override fun loadMore() {
     if (load.value) {
-      getRetweeterIdAsync().subscribe { twitterObservable.showUser(it).subscribe { mAdapter.addAll(it) } }
+      getRetweeterIdAsync()
+              .subscribe( { twitterObservable.showUser(it).subscribe { mAdapter.addAll(it) } },{it.printStackTrace()})
     }
   }
   fun getRetweeterIdAsync(): Observable<LongArray>

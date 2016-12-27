@@ -7,7 +7,7 @@ import xyz.donot.quetzal.view.fragment.HomeTimeLine
 import xyz.donot.quetzal.view.fragment.MentionTimeLine
 
 
-class MainTimeLineAdapter(val fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class MainTimeLineAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(i: Int): Fragment {
         when (i) {
             0 -> {

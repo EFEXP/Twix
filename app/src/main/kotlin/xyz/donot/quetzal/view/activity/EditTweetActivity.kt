@@ -34,6 +34,7 @@ import xyz.donot.quetzal.viewmodel.adapter.EditTweetPicAdapter
 import java.io.File
 import java.util.*
 
+
 class EditTweetActivity : RxAppCompatActivity() {
     var croppingUri:Uri?= null
   val  twitter  by lazy {  getTwitterInstance() }
@@ -106,7 +107,9 @@ class EditTweetActivity : RxAppCompatActivity() {
                         }
                              val text="＿人人人人人人$a＿\n＞ ${editText_status.text} ＜\n￣Y^Y^Y^Y^Y$b￣"
                              editText_status.text.clear()
-                             editText_status.setText(text)                         }
+                             editText_status.setText(text)
+
+                         }
                         }
                     })
                     .show()
@@ -181,6 +184,35 @@ class EditTweetActivity : RxAppCompatActivity() {
   fun addPhotos(uri: Uri){
      mAdapter.add(uri)
      hasPictures.onNext(true)
+    }
+
+    fun suddendeath(msg: String): String {
+
+        // 全角と半角文字で文字幅が異なるのでバイト数で判断
+        val length = msg.codePointCount(0, msg.length)
+
+        val br = StringBuilder()
+
+        // 上段
+        br.append("＿人")
+        for (i in 0..length / 2 - 1) {
+            br.append("人")
+        }
+        br.append("＿")
+        br.append(System.getProperty("line.separator"))
+
+        // メッセージ本体
+        br.append("＞ ").append(msg).append(" ＜")
+
+        // 下段
+        br.append(System.getProperty("line.separator"))
+        br.append("￣")
+        for (i in 0..length / 2 - 1) {
+            br.append("^Y")
+        }
+        br.append("￣")
+
+        return br.toString()
     }
 
     override fun onBackPressed() {

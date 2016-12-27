@@ -2,9 +2,11 @@ package xyz.donot.quetzal.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import twitter4j.Trend
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.twitter.TwitterTrendObservable
@@ -14,6 +16,7 @@ import xyz.donot.quetzal.viewmodel.adapter.TrendAdapter
 
 class TrendFragment() : BaseRecyclerFragment<Trend, TrendAdapter>() {
   override fun setUpRecycler() {
+    base_recycler_view.setLayoutManager(LinearLayoutManager(context))
     mAdapter.setOnItemClickListener {
       val item = mAdapter.getItem(it)
       if (activity is SearchActivity) {

@@ -152,4 +152,5 @@
     <string name="title_activity_oauth_fire">OauthFireActivity</string>
     <string name="title_activity_user_detail">UserDetailActivity</string>
     <string name="android_package_name" translatable="false">xyz.donot.quetzal</string>
+    <string name="has_not_retweeted_yet">まだRTされていません。</string>
 </resources>

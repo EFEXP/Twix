@@ -32,6 +32,7 @@ abstract class BaseRecyclerFragment<L, out T : RecyclerArrayAdapter<L>> : RxAppC
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val tempAdapter= AlphaInAnimationAdapter(mAdapter)
         base_recycler_view.apply {
             empty.subscribe {
                 if (it) {
@@ -40,7 +41,7 @@ abstract class BaseRecyclerFragment<L, out T : RecyclerArrayAdapter<L>> : RxAppC
             }
             setItemAnimator(OvershootInRightAnimator(0.3f))
             setUpRecycler()
-            adapter = AlphaInAnimationAdapter(mAdapter)
+           setAdapterWithProgress(tempAdapter)
             setRefreshListener { reload() }
         }
 

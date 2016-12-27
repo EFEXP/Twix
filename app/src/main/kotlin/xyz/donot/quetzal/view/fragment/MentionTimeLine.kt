@@ -40,7 +40,7 @@ class MentionTimeLine() : TimeLineFragment() {
       }
     }
     val t=  Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()
-    t?.forEach { mAdapter.add(it.status?.getDeserialized()!!) }
+    t?.forEach { mAdapter.add(it.status?.getDeserialized()!!)}
   }
   override fun loadMore() {
   twitterObservable.getMentionsTimelineAsync(Paging(page)).subscribe{mAdapter.addAll(it)}

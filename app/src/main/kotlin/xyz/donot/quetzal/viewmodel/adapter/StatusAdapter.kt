@@ -115,12 +115,9 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
                                       }
 
                                       "RTした人"-> {
-                                          RetweeterDialog().apply {
-                                              arguments= Bundle().apply { putLong("statusId",item.id) }
-                                          }
-
-                                                  .show((context as AppCompatActivity).supportFragmentManager ,"")
-
+                                          val fragment=RetweeterDialog()
+                                          fragment.apply { Bundle().apply { putLong("statusId",item.id) } }
+                                          fragment.show((context as AppCompatActivity).supportFragmentManager ,"")
                                       }
                                       "共有"-> {
                                           context. startActivity( Intent().apply {
