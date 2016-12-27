@@ -13,9 +13,10 @@
    long producerNode;
    long consumerNode;
 }
-
+-dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn io.github.kexanie.**
+-keep class android.support.v4.content{*;}
 -keep class com.x5.** { *; }
 -dontwarn com.x5.**
 #twitter4j

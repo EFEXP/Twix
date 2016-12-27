@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import twitter4j.UserList
 import xyz.donot.quetzal.R
@@ -21,7 +22,13 @@ class UsersListFragment() : BaseRecyclerFragment<UserList, UsersListAdapter>() {
     internal var cursor = -1L
 
     override fun setUpRecycler() {
-        mAdapter.setMore(R.layout.item_loadmore, { loadMore() })
+        mAdapter.setMore(R.layout.item_loadmore, object : RecyclerArrayAdapter.OnMoreListener {
+            override fun onMoreClick() {
+            }
+            override fun onMoreShow() {
+                loadMore()
+            }
+        })
         mAdapter.setOnItemClickListener {
             val item = mAdapter.getItem(it)
             activity.start<SeeMyListActivity>(Bundle { putLong("list_id", item.id) })

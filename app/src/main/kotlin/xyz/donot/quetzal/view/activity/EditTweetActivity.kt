@@ -121,12 +121,11 @@ class EditTweetActivity : RxAppCompatActivity() {
           }
       }
       add_picture.setOnClickListener {
-          if(pic_recycler_view.layoutManager.itemCount<4)
+          if(pic_recycler_view.layoutManager.itemCount<4
+                  && ContextCompat.checkSelfPermission(this@EditTweetActivity,Manifest.permission.READ_EXTERNAL_STORAGE) ==PackageManager.PERMISSION_GRANTED)
           {
               RxImagePicker.with(applicationContext).requestImage(Sources.GALLERY)
-              .subscribe {
-                  addPhotos(it)
-              }
+              .subscribe({addPhotos(it)},{it.printStackTrace()})
       }}
 //Set
       editText_status.setText("$screenName")
@@ -163,7 +162,10 @@ class EditTweetActivity : RxAppCompatActivity() {
               mAdapter.insertWithPosition(croppingUri!!,resultUri!!)
           }
     }
-  }}
+  }
+
+
+  }
 
     fun changeToDraft(draft: DBDraft){
         editText_status.editableText.clear()

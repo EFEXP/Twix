@@ -20,14 +20,12 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label"
         >
-
         <activity
             android:name=".view.activity.MainActivity"
             android:label="${appName}"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -105,15 +103,7 @@
         <activity
             android:name=".view.activity.SearchSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
+
     </application>
 
 </manifest>

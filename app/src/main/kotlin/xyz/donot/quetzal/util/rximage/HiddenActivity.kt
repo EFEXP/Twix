@@ -13,10 +13,13 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.util.Log
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
+import xyz.donot.quetzal.util.extrautils.fromApi
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 
 
@@ -52,8 +55,15 @@ class HiddenActivity : RxAppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                SELECT_PHOTO -> RxImagePicker.with(this).onImagePicked(data?.data)
-                TAKE_PHOTO -> RxImagePicker.with(this).onImagePicked(cameraPictureUrl)
+                SELECT_PHOTO -> {
+                    val uri=data?.data
+                    fromApi(19){
+                    val takeFlags:Int = intent.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    contentResolver.takePersistableUriPermission(uri, takeFlags)
+                    }
+                    RxImagePicker.with(this).onImagePicked(uri)
+                }
+                TAKE_PHOTO ->{ RxImagePicker.with(this).onImagePicked(cameraPictureUrl)}
             }
         }
         finish()
@@ -79,10 +89,9 @@ class HiddenActivity : RxAppCompatActivity() {
                 if (!checkPermission()) {
                     return
                 }
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    pictureChooseIntent = Intent(Intent.ACTION_PICK)
-                    pictureChooseIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                    pictureChooseIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                    pictureChooseIntent.addCategory(Intent.CATEGORY_OPENABLE)
                     pictureChooseIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                 } else {
                     pictureChooseIntent = Intent(Intent.ACTION_PICK)

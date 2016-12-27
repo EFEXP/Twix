@@ -3,6 +3,7 @@ package xyz.donot.quetzal.view.fragment
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter
 import io.realm.Realm
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import twitter4j.User
@@ -21,7 +22,13 @@ class AccountsFragment : UserList() {
 
     override fun setUpRecycler() {
         base_recycler_view.setLayoutManager(LinearLayoutManager(context))
-        mAdapter.setMore(R.layout.item_loadmore, { loadMore() })
+        mAdapter.setMore(R.layout.item_loadmore, object : RecyclerArrayAdapter.OnMoreListener {
+            override fun onMoreClick() {
+            }
+            override fun onMoreShow() {
+               loadMore()
+            }
+        })
         if (activity is AccountSettingActivity) {
             mAdapter.setOnItemClickListener {
                 val item = mAdapter.getItem(it)

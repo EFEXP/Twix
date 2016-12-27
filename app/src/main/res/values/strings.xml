@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="Loading">Loading</string>
     <string name="is_retweeted_by">%s がリツイート</string>
@@ -151,4 +151,5 @@
     <string name="title_activity_twitter_firebase">TwitterFirebaseActivity</string>
     <string name="title_activity_oauth_fire">OauthFireActivity</string>
     <string name="title_activity_user_detail">UserDetailActivity</string>
+    <string name="android_package_name" translatable="false">xyz.donot.quetzal</string>
 </resources>

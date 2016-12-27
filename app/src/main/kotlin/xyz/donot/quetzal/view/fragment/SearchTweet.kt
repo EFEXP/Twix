@@ -21,7 +21,6 @@ class SearchTweet() : TimeLineFragment() {
         load.onNext(false)
       }
       mAdapter.addAll(it.tweets)
-
     }}
 
   } else{
