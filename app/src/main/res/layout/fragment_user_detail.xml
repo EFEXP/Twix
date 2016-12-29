@@ -18,6 +18,7 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:scaleType="centerCrop"
+      app:srcCompat="@drawable/avatar_place_holder"
     />
     <Button
       android:layout_width="wrap_content"

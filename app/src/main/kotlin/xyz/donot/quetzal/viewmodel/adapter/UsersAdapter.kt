@@ -16,7 +16,7 @@ class UsersAdapter(context: Context) :BasicRecyclerAdapter<UsersAdapter.ViewHold
 
 
   inner class ViewHolder(itemView: View) :BaseViewHolder<User>(itemView) {
-    val binding:ItemUserBinding
+    val binding:ItemUserBinding = DataBindingUtil.bind(itemView)
     override fun setData(data: User) {
       super.setData(data)
       val  item= data
@@ -30,9 +30,6 @@ class UsersAdapter(context: Context) :BasicRecyclerAdapter<UsersAdapter.ViewHold
       }
     }
 
-    init {
-    binding=DataBindingUtil.bind(itemView)
-    }
   }
 
 }

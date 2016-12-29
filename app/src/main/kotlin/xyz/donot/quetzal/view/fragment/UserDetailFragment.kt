@@ -27,7 +27,7 @@ import xyz.donot.quetzal.view.activity.UsersActivity
 import java.text.SimpleDateFormat
 
 
-open class UserDetailFragment() : RxAppCompatDialogFragment()
+open class UserDetailFragment: RxAppCompatDialogFragment()
 {
 
   val userName: String by lazy {arguments.getString("user_name") }
@@ -81,7 +81,7 @@ open class UserDetailFragment() : RxAppCompatDialogFragment()
           edit_profile.setOnClickListener{  activity.start<EditProfileActivity>()}
         }
         val iconIntent= Intent(activity, PictureActivity::class.java).putStringArrayListExtra("picture_urls",arrayListOf(user.originalProfileImageURLHttps))
-        Picasso.with(activity).load(user.originalProfileImageURLHttps).placeholder(R.drawable.avatar_place_holder).into(icon_user)
+        Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
         icon_user.setOnClickListener{startActivity(iconIntent)}
         user_name.text=user.name
         val re=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_grey_400_18dp,null)

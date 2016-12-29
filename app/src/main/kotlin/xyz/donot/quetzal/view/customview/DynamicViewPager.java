@@ -62,7 +62,7 @@ public abstract class DynamicViewPager extends PagerAdapter {
         }
 
         Fragment fragment = getItem(position);
-        if (DEBUG) Log.v(TAG, "Adding item #" + position + ": f=" + fragment);
+
         if (mSavedState.size() > position) {
             Fragment.SavedState fss = mSavedState.get(position);
             if (fss != null) {
@@ -87,8 +87,6 @@ public abstract class DynamicViewPager extends PagerAdapter {
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        if (DEBUG) Log.v(TAG, "Removing item #" + position + ": f=" + object
-                + " v=" + ((Fragment) object).getView());
         while (mSavedState.size() <= position) {
             mSavedState.add(null);
         }
@@ -190,7 +188,7 @@ public abstract class DynamicViewPager extends PagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        if (mFragments == null || mFragments.isEmpty()) {
+        if (mFragments.isEmpty()) {
             super.getItemPosition(object);
         }
         final Fragment fragment = (Fragment) object;
@@ -217,7 +215,7 @@ public abstract class DynamicViewPager extends PagerAdapter {
      * @param position 0から始まるFragmentの位置。
      */
     public void removeItem(int position) {
-        if (mFragments == null || mFragments.isEmpty()) {
+        if ( mFragments.isEmpty()) {
             return;
         }
         if (position < 0 || position >= mFragments.size()) {
@@ -242,7 +240,7 @@ public abstract class DynamicViewPager extends PagerAdapter {
      * @param to 0から始まるFragmentの位置
      */
     public void swapItem(int from, int to) {
-        if (mFragments == null || mFragments.isEmpty()) {
+        if (mFragments.isEmpty()) {
             return;
         }
         if (from < 0 || from > mFragments.size()) {

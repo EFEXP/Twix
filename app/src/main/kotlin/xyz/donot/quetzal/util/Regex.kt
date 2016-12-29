@@ -346,7 +346,7 @@ object Regex {
     val VALID_URL_GROUP_PATH = 7
     val VALID_URL_GROUP_QUERY_STRING = 8
 
-    val VALID_TCO_URL = Pattern.compile("^https?:\\/\\/t\\.co\\/[a-z0-9]+", Pattern.CASE_INSENSITIVE)
+    val VALID_TCO_URL = Pattern.compile("^https?://t\\.co/[a-z0-9]+", Pattern.CASE_INSENSITIVE)
     val INVALID_URL_WITHOUT_PROTOCOL_MATCH_BEGIN = Pattern.compile("[-_./]$")
 
     val CASHTAG_PATTERN = Pattern.compile("($DOLLAR_SIGN_CHAR)($CASHTAG)(?=$|\\s|\\p{Punct})", Pattern.CASE_INSENSITIVE)

@@ -52,11 +52,14 @@ override fun getItem(position: Int): Fragment {
   }}
 class UserTimeLine(val user:User) :TimeLineFragment(){
   override fun loadMore() {
-    twitterObservable.getFavoritesAsync(user.id, Paging(page)).subscribe( { if(it.isNotEmpty()){
-      mAdapter.addAll(it.toList())}
-    else{
-      empty.onNext(true)
-    } } ,{toast("Error")})}
+    twitterObservable.getUserTimelineAsync(user!!.id, Paging(page)).subscribe {
+      if(it.isNotEmpty()){
+        mAdapter.addAll(it.toList())}
+      else{
+        empty.onNext(true)
+      }
+    }
+  }
   }
 
   class UserTimeLine2(val user:User) :TimeLineFragment(){

@@ -101,7 +101,7 @@ class MainActivity : RxAppCompatActivity() {
                   super.onUser(user)
                   Picasso.with(applicationContext).load(user.profileBannerIPadRetinaURL).placeholder(R.drawable.picture_place_holder).into(my_header)
                     Picasso.with(applicationContext).load(user.originalProfileImageURLHttps).placeholder(R.drawable.avatar_place_holder).transform(RoundCorner()).into(my_icon)
-                  my_name_header.text="${user.name}"
+                  my_name_header.text= user.name
                   my_screen_name_header.text = "@${user.screenName}"
                 }
               })

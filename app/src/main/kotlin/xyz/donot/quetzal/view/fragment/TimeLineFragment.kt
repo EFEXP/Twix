@@ -2,6 +2,7 @@ package xyz.donot.quetzal.view.fragment
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter
 import kotlinx.android.synthetic.main.fragment_timeline_base.*
 import rx.android.schedulers.AndroidSchedulers
@@ -21,6 +22,8 @@ abstract class TimeLineFragment : BaseRecyclerFragment<Status, StatusAdapter>() 
                 loadMore()
             }
         })
+        base_recycler_view.isDrawingCacheEnabled = true
+        base_recycler_view.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         base_recycler_view.setLayoutManager(LinearLayoutManager(context))
     }
 

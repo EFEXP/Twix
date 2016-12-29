@@ -39,6 +39,7 @@
           android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
+          app:srcCompat="@drawable/avatar_place_holder"
           app:avatarImageUrl="@{status.user.originalProfileImageURLHttps}" />
 
 
@@ -54,6 +55,8 @@
         android:text="@{status.user.name}"
           android:textStyle="bold"
           tools:text="user_name"
+          android:drawableEnd="@{status.user.verified ? @drawable/ic_check_circle_black_18dp : null}"
+          android:drawableRight="@{status.user.verified ? @drawable/ic_check_circle_black_18dp : null}"
         />
 
       <android.support.v7.widget.AppCompatTextView
@@ -96,7 +99,15 @@
         android:layout_alignStart="@+id/user_name_text"
         android:layout_below="@+id/user_name_text"
         android:textColor="?android:textColorPrimary"
-          tools:text="Tweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeet"
+          tools:text="りんごんりんごーん
+私ベルエンジェル
+シャドウバース知ってる
+本格カードゲームがスマホで楽しめちゃうの
+カードの進化が勝負の鍵
+進化したら私だってこんなに強くなっちゃうんだから
+どすこーい❗
+お前に負けるなら悔いはないさ…！
+シャドウバース！"
         />
       <android.support.v7.widget.RecyclerView
           android:id="@+id/tweet_card_recycler"
@@ -208,7 +219,7 @@
               android:layout_height="24dp"
               android:layout_weight="1"
               android:background="@android:color/transparent"
-              android:src="@drawable/ic_reply_grey_400_24dp" />
+              app:srcCompat="@drawable/ic_reply_grey_400_24dp" />
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/retweet"
             android:layout_width="24dp"

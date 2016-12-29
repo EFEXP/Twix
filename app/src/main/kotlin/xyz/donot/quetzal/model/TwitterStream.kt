@@ -8,8 +8,8 @@ import xyz.donot.quetzal.util.getTwitterInstance
 import xyz.donot.quetzal.util.isIgnore
 
 
-class TwitterStream() {
-   val stream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
+class TwitterStream{
+   val stream: twitter4j.TwitterStream by lazy { TwitterStreamFactory().getInstance(getTwitterInstance().authorization)  }
     val isConnected: BehaviorSubject<Boolean>  by lazy { BehaviorSubject(false) }
     val statusSubject :BehaviorSubject<Status> by lazy { BehaviorSubject<Status>() }
     val deleteSubject:BehaviorSubject<StatusDeletionNotice>  by lazy { BehaviorSubject<StatusDeletionNotice>() }
@@ -19,8 +19,7 @@ class TwitterStream() {
            stream.addConnectionLifeCycleListener(MyConnectionAdapter())
             StreamCreateUtil.addStatusListener(stream,MyStreamAdapter())
             when(streamType){
-                StreamType.USER_STREAM->{
-                    stream.user()}
+                StreamType.USER_STREAM->{ stream.user()}
                 StreamType.FILTER_STREAM->{}
                 StreamType.RETWEET_STREAM->{}
                 StreamType.SAMPLE_STREAM->{ stream.sample()}
@@ -48,8 +47,7 @@ class TwitterStream() {
             if (isConnected.value) {
                 stream.clearListeners()
                 stream.shutdown()
-            } else {
-
+                isConnected.onNext(false)
             }
         }
     }

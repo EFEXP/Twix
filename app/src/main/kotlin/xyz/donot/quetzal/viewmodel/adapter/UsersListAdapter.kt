@@ -31,11 +31,7 @@ class UsersListAdapter(context: Context)
       }
     }
 
-    val binding: ItemUsersListBinding
-
-    init {
-      binding = DataBindingUtil.bind(itemView)
-    }
+    val binding: ItemUsersListBinding= DataBindingUtil.bind(itemView)
   }
 
 }

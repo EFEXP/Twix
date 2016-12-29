@@ -80,7 +80,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
                   quotedUserName.text=q.user.name
                   quotedScreenName.text="@${q.user.screenName}"
                   quotedText.text=q.text
-                  Picasso.with(context).load(q.user.profileImageURLHttps).placeholder(R.drawable.avatar_place_holder).transform(RoundCorner()).into(quotedIcon)
+                  Picasso.with(context).load(q.user.profileImageURLHttps).transform(RoundCorner()).into(quotedIcon)
               }else{
                   itemQuotedTweet.visibility=View.GONE
               }
