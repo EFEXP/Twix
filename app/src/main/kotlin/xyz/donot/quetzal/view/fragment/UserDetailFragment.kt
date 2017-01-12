@@ -84,8 +84,11 @@ open class UserDetailFragment: RxAppCompatDialogFragment()
         Picasso.with(activity).load(user.originalProfileImageURLHttps).into(icon_user)
         icon_user.setOnClickListener{startActivity(iconIntent)}
         user_name.text=user.name
-        val re=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_grey_400_18dp,null)
-        if(user.isProtected){user_name.setCompoundDrawablesWithIntrinsicBounds(null,null,re,null)}
+
+        val lock=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_lock_grey_400_18dp,null)
+        val verify=ResourcesCompat.getDrawable(activity.resources, R.drawable.ic_check_circle_black_18dp,null)
+        if(user.isProtected){screen_name.setCompoundDrawablesWithIntrinsicBounds(null,null,lock,null)}
+        if (user.isVerified){user_name.setCompoundDrawablesWithIntrinsicBounds(null,null,verify,null)}
 
         screen_name.text="@${user.screenName}"
         description.text=user.description.replace("\n","")

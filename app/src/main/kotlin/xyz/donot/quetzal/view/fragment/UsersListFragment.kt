@@ -16,7 +16,7 @@ import xyz.donot.quetzal.util.getMyId
 import xyz.donot.quetzal.view.activity.SeeMyListActivity
 import xyz.donot.quetzal.viewmodel.adapter.UsersListAdapter
 
-class UsersListFragment() : BaseRecyclerFragment<UserList, UsersListAdapter>() {
+class UsersListFragment : BaseRecyclerFragment<UserList, UsersListAdapter>() {
 
     override val mAdapter: UsersListAdapter by lazy { UsersListAdapter(context) }
     internal var cursor = -1L

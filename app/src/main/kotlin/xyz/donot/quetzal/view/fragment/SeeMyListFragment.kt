@@ -2,7 +2,7 @@ package xyz.donot.quetzal.view.fragment
 
 import twitter4j.Paging
 
-class SeeMyListFragment() : TimeLineFragment() {
+class SeeMyListFragment : TimeLineFragment() {
 
   override fun loadMore() {
     twitterObservable.getMyListAsync(

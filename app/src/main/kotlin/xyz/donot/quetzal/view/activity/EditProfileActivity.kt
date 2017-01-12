@@ -122,7 +122,7 @@ val twitter by lazy { getTwitterInstance()}
               super.onNext(user)
               val bundle =  Bundle()
               bundle.putByteArray("userObject",user.getSerialized())
-              setResult(RESULT_OK,Intent().putExtras(bundle));
+              setResult(RESULT_OK,Intent().putExtras(bundle))
             }
 
             override fun onCompleted() {

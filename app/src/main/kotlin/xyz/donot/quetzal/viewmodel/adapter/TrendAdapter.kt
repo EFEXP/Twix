@@ -15,20 +15,12 @@ class TrendAdapter(context: Context)
     val view:View =mInflater.inflate(R.layout.item_trend,parent, false)
     return ViewHolder(view)
   }
-
-
-
   inner class ViewHolder(itemView: View) : BaseViewHolder<Trend>(itemView) {
     override fun setData(data: Trend) {
       super.setData(data)
       binding.trend = data
-
     }
-
-    val binding:ItemTrendBinding
-    init {
-      binding=DataBindingUtil.bind(itemView)
-    }
+    val binding:ItemTrendBinding = DataBindingUtil.bind(itemView)
   }
 
 }

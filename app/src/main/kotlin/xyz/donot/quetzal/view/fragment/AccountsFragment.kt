@@ -42,7 +42,7 @@ class AccountsFragment : UserList() {
                 }
                 val data = Intent()
                 data.putExtra("accountChanged", true);
-                activity.setResult(AppCompatActivity.RESULT_OK, data);
+                activity.setResult(AppCompatActivity.RESULT_OK, data)
                 activity.finish()
             }
         }

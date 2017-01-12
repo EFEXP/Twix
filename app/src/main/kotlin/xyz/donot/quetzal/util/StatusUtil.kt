@@ -5,7 +5,7 @@ import twitter4j.Status
 import java.util.regex.Pattern
 
     fun getClientName(source: String): String {
-        val tokens = source.split("[<>]".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val tokens = source.split("[<>]".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
         if (tokens.size > 1) {
             return tokens[2]
         } else {

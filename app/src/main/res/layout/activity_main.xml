@@ -49,6 +49,7 @@
           android:layout_width="wrap_content"
           android:layout_height="?attr/actionBarSize"
           android:background="@android:color/transparent"
+          android:visibility="gone"
           android:tag="@{viewModel.connected.get ? true : false}"
           app:srcCompat="@{viewModel.connected.get ? R.drawable.ic_cloud_white_24dp : R.drawable.ic_cloud_off_white_24dp}"
           />

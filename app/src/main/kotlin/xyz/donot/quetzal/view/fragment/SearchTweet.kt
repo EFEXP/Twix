@@ -4,7 +4,7 @@ import android.os.Bundle
 import twitter4j.Query
 import xyz.donot.quetzal.util.getDeserialized
 
-class SearchTweet() : TimeLineFragment() {
+class SearchTweet : TimeLineFragment() {
    private  var query :Query?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

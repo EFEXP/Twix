@@ -22,10 +22,8 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.model.realm.DBDraft
 import xyz.donot.quetzal.service.TweetPostService
 import xyz.donot.quetzal.util.*
-import xyz.donot.quetzal.util.extrautils.hide
 import xyz.donot.quetzal.util.extrautils.newIntent
 import xyz.donot.quetzal.util.extrautils.onClick
-import xyz.donot.quetzal.util.extrautils.show
 import xyz.donot.quetzal.util.rximage.RxImagePicker
 import xyz.donot.quetzal.util.rximage.Sources
 import xyz.donot.quetzal.view.fragment.DraftFragment
@@ -131,7 +129,7 @@ class EditTweetActivity : RxAppCompatActivity() {
               .subscribe({addPhotos(it)},{it.printStackTrace()})
       }}
 //Set
-      editText_status.setText("$screenName")
+      editText_status.setText(screenName)
       reply_for_status.text=statusTxt
         editText_status.setSelection(editText_status.editableText.count())
       send_status.setOnClickListener{
@@ -149,10 +147,10 @@ class EditTweetActivity : RxAppCompatActivity() {
 
     hasPictures.subscribe {
         if(it){
-            pic_quality_seekBar.show()
+        //    pic_quality_seekBar.show()
         }
         else{
-            pic_quality_seekBar.hide()
+         //   pic_quality_seekBar.hide()
         }
     }
     }

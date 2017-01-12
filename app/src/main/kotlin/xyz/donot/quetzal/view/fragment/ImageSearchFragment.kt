@@ -29,26 +29,25 @@ open class ImageSearchFragment : StaggeredFragment<String, TwitterImageAdapter>(
     override fun loadMore() {
         if(load.value){
             twitterObservable.getSearchAsync(query!!).subscribe {
-                if(!it.tweets.isEmpty()){
-                    empty.onNext(false)
-                if(it.hasNext()){
-                    query=it.nextQuery()
-                }
-                else{
-                    load.onNext(false)
-                }
                 it.tweets.forEach {
                     status->
                     status.mediaEntities.forEach {
                         statusList.add(status)
                         mAdapter.add(it.mediaURLHttps)
                     }
-                }}
+                }
+                if(!it.tweets.isEmpty()){
+                   empty.onNext(false)
+                if(it.hasNext()){
+                    query=it.nextQuery()
+                }
+                else{
+                    load.onNext(false)
+                }
+                   }
                 else{
                     empty.onNext(true)
                 }
-
-
             }
         }}
 }

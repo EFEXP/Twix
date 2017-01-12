@@ -43,14 +43,6 @@
           android:scrollbars="horizontal"
           android:layout_height="300sp"
           android:layout_margin="5dp"/>
-      <android.support.v7.widget.AppCompatSeekBar
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:id="@+id/pic_quality_seekBar"
-          android:visibility="gone"
-          android:layout_below="@+id/pic_recycler_view"
-          />
-
     <LinearLayout
         android:id="@+id/tools_layout"
         android:orientation="horizontal"

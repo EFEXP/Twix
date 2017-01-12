@@ -4,12 +4,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import twitter4j.Paging
-import twitter4j.Query
 import twitter4j.User
 import xyz.donot.quetzal.util.extrautils.Bundle
 import xyz.donot.quetzal.util.extrautils.toast
-import xyz.donot.quetzal.util.getSerialized
-import xyz.donot.quetzal.view.fragment.ImageSearchFragment
 import xyz.donot.quetzal.view.fragment.TimeLineFragment
 import xyz.donot.quetzal.view.fragment.UserDetailFragment
 
@@ -40,19 +37,19 @@ override fun getItem(position: Int): Fragment {
        fragment
     }
 
-     3->{
+    /* 3->{
        val fragment=ImageSearchFragment()
        val query=Query()
        query.query="from:${user!!.screenName}"
        fragment.arguments= Bundle {putByteArray("query_bundle", query.getSerialized())}
         fragment
-     }
+     }*/
 
     else->throw  IllegalStateException()
   }}
 class UserTimeLine(val user:User) :TimeLineFragment(){
   override fun loadMore() {
-    twitterObservable.getUserTimelineAsync(user!!.id, Paging(page)).subscribe {
+    twitterObservable.getUserTimelineAsync(user.id, Paging(page)).subscribe {
       if(it.isNotEmpty()){
         mAdapter.addAll(it.toList())}
       else{
@@ -77,12 +74,12 @@ override fun getPageTitle(position: Int): CharSequence {
     0->"Info"
     1->"User"
     2->"Like"
-    3->"Media"
+   // 3->"Media"
     else->throw IllegalStateException()
   }}
 
 override fun getCount(): Int {
-  return 4
+  return 3
 }
 
 

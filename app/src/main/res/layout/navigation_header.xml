@@ -2,14 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="user"
             type="twitter4j.User" />
     </data>
-
     <android.support.v7.widget.LinearLayoutCompat
     android:layout_width="match_parent" android:layout_height="250sp"
     android:orientation="vertical"
@@ -22,7 +19,6 @@
             android:id="@+id/my_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-            app:imageUrl="@{user.profileBannerIPadRetinaURL}"
          />
 
         <android.support.v7.widget.AppCompatImageView
@@ -35,7 +31,8 @@
         android:layout_marginBottom="15sp"
             android:layout_marginLeft="15sp"
         android:layout_marginStart="15sp"
-            app:avatarImageUrl="@{user.originalProfileImageURLHttps}" />
+            app:srcCompat="@drawable/avatar_place_holder"
+            />
     </RelativeLayout>
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/my_name_header"

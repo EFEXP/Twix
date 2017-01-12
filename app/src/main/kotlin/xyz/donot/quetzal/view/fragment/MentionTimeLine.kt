@@ -12,19 +12,19 @@ import xyz.donot.quetzal.util.getDeserialized
 import xyz.donot.quetzal.util.isMentionToMe
 
 
-class MentionTimeLine() : TimeLineFragment() {
+class MentionTimeLine : TimeLineFragment() {
  /* override fun onDeserialize() {
     super.onDeserialize()
-    val t=   Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()
-    t?.forEach { mAdapter.add(it.status?.getStatusDeserialized()!!) }
+    val tInstance=   Realm.getDefaultInstance().where(DBNotification::class.java).equalTo("type",0).findAll()
+    tInstance?.forEach { mAdapter.add(it.status?.getStatusDeserialized()!!) }
   }
 
   override fun onSerialize(sStatus: Status) {
     super.onSerialize(sStatus)
     Realm.getDefaultInstance().executeTransaction {
-      val t=   it.createObject(DBNotification::class.java)
-      t.status=sStatus.getSerialized()
-      t.type=0
+      val tInstance=   it.createObject(DBNotification::class.java)
+      tInstance.status=sStatus.getSerialized()
+      tInstance.type=0
     }
   }*/
 

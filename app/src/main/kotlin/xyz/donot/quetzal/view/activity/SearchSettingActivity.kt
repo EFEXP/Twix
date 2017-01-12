@@ -10,22 +10,33 @@ import xyz.donot.quetzal.util.extrautils.start
 import xyz.donot.quetzal.util.getSerialized
 import xyz.donot.quetzal.view.fragment.DatePickFragment
 
+
 class SearchSettingActivity : RxAppCompatActivity() {
    fun dateSet(year: Int, monthOfYear: Int, dayOfMonth: Int,isFrom:Boolean) {
        if(isFrom){
-           day_from.text = "${year.toString()}年${monthOfYear.toString()}月${dayOfMonth.toString()}日～"
-           day_from.tag=" since:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
+           day_from.text = "${year}年${monthOfYear}月${dayOfMonth}日～"
+           day_from.tag=" since:${year}-${monthOfYear}-${dayOfMonth}"
        }
        else {
-           day_to.text = "～${year.toString()}年${monthOfYear.toString()}月${dayOfMonth.toString()}日"
-           day_to.tag=" until:${year.toString()}-${monthOfYear.toString()}-${dayOfMonth.toString()}"
+           day_to.text = "～${year}年${monthOfYear}月${dayOfMonth}日"
+           day_to.tag=" until:${year}-${monthOfYear}-${dayOfMonth}"
        }
     }
 
-
+   // private val COUNTRIES = arrayOf( "#Belgium", "#France", "#Italy", "#Germany", "#Spain")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_setting)
+        //AutoComplete
+      /*  val adapter=  HashTagSuggestAdapter(this@SearchSettingActivity, android.R.layout.simple_dropdown_item_1line,COUNTRIES)
+        adapter.listener= object : HashTagSuggestAdapter.CursorPositionListener {
+            override fun currentCursorPosition(): Int {
+               return search_setting_query.selectionStart
+            }
+        }
+        search_setting_query.setAdapter(adapter)*/
+
+
         day_from.setOnClickListener {DatePickFragment()
                 .apply { arguments= Bundle().apply { putBoolean("isFrom",true) } }
                 .show(supportFragmentManager,"") }

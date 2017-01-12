@@ -3,7 +3,7 @@ package xyz.donot.quetzal.util
 import android.graphics.*
 import com.squareup.picasso.Transformation
 
-class RoundCorner() : Transformation {
+class RoundCorner : Transformation {
 
     override fun transform(source: Bitmap): Bitmap {
         val size = Math.min(source.width, source.height)

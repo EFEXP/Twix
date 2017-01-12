@@ -10,7 +10,7 @@ import xyz.donot.quetzal.util.getTwitterInstance
 import java.io.File
 import java.util.*
 
-class TweetPostService() : IntentService("TweetPostService") {
+class TweetPostService : IntentService("TweetPostService") {
     val twitter by lazy { getTwitterInstance() }
     override fun onHandleIntent(intent: Intent) {
         val filePath: ArrayList<String>

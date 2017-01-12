@@ -51,7 +51,7 @@ class UserActivity : RxAppCompatActivity() {
    val adapter= AnyUserTimeLineAdapter(supportFragmentManager)
       adapter.user=user
     viewpager_user.adapter=adapter
-      viewpager_user.offscreenPageLimit=4
+      viewpager_user.offscreenPageLimit=3
     tabs_user.setupWithViewPager(viewpager_user)
 
       toolbar.setOnMenuItemClickListener {

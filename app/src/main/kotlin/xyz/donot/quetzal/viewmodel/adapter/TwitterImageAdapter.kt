@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.view.View
 import android.view.ViewGroup
 import com.jude.easyrecyclerview.adapter.BaseViewHolder
+import com.squareup.picasso.Picasso
 import xyz.donot.quetzal.R
 import xyz.donot.quetzal.databinding.ItemTwitterImageBinding
 
@@ -17,7 +18,7 @@ class TwitterImageAdapter(context: Context)
     inner class ViewHolder(itemView: View) : BaseViewHolder<String>(itemView) {
         override fun setData(data:String) {
             super.setData(data)
-            binding.url = data
+            Picasso.with(context).load(data).placeholder(R.drawable.pugnotification_ic_placeholder).into(binding.picture)
         }
 
         val binding: ItemTwitterImageBinding = DataBindingUtil.bind<ItemTwitterImageBinding>(itemView)

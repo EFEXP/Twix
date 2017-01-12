@@ -26,17 +26,14 @@ class TweetCardPicAdapter(context: Context,val status: Status)
     }
 
     inner class ViewHolder(itemView: View) :BaseViewHolder<String>(itemView) {
-        val binding: ItemBitmapBinding
-        init {
-            binding= DataBindingUtil.bind(itemView)
-        }
+        val binding: ItemBitmapBinding = DataBindingUtil.bind(itemView)
         override fun setData(data: String) {
             super.setData(data)
             binding.url = data
            binding.apply {
                 textView.text="${layoutPosition+1}/$count"
                 imageView.setOnClickListener {
-                    val videoUrl: String? = getVideoURL(status.mediaEntities, status.extendedMediaEntities)
+                    val videoUrl: String? = getVideoURL(status.mediaEntities)
                     if (videoUrl != null) {
                         context.startActivity(Intent(context, VideoActivity::class.java).putExtra("video_url", videoUrl))
                     } else {

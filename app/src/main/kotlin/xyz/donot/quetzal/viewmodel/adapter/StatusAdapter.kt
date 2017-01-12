@@ -37,10 +37,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
   }
 
   inner class ViewHolder(itemView: View) :BaseViewHolder<Status>(itemView) {
-   val binding :ItemTweetCardBinding
-      init {
-          binding = DataBindingUtil.bind(itemView)
-      }
+   val binding :ItemTweetCardBinding = DataBindingUtil.bind(itemView)
       override fun setData(data: Status) {
           super.setData(data)
           val item= if (data.isRetweet){

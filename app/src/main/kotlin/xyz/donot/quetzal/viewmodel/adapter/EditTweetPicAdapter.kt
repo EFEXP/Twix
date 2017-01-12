@@ -18,11 +18,7 @@ class EditTweetPicAdapter(context: Context)
     }
 
     inner class ViewHolder(itemView: View) : BaseViewHolder<Uri>(itemView) {
-        val binding: ItemEditTweetPicturesBinding
-
-        init {
-            binding = DataBindingUtil.bind(itemView)
-        }
+        val binding: ItemEditTweetPicturesBinding = DataBindingUtil.bind(itemView)
 
         override fun setData(data: Uri) {
             super.setData(data)

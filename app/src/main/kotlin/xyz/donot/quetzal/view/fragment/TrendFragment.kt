@@ -14,7 +14,7 @@ import xyz.donot.quetzal.view.activity.EditTweetActivity
 import xyz.donot.quetzal.view.activity.SearchActivity
 import xyz.donot.quetzal.viewmodel.adapter.TrendAdapter
 
-class TrendFragment() : BaseRecyclerFragment<Trend, TrendAdapter>() {
+class TrendFragment : BaseRecyclerFragment<Trend, TrendAdapter>() {
   override fun setUpRecycler() {
     base_recycler_view.setLayoutManager(LinearLayoutManager(context))
     mAdapter.setOnItemClickListener {

@@ -18,7 +18,7 @@ public class RxImagePicker {
         return instance;
     }
 
-    private Context context;
+    private final Context context;
     private PublishSubject<Uri> publishSubject;
 
     private RxImagePicker(Context context) {

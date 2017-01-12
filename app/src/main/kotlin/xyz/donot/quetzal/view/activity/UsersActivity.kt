@@ -8,7 +8,7 @@ import xyz.donot.quetzal.R
 import xyz.donot.quetzal.viewmodel.adapter.FFAdapter
 
 
-class UsersActivity() : RxAppCompatActivity() {
+class UsersActivity : RxAppCompatActivity() {
     val userId by lazy { intent.getLongExtra("user_id",0L) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

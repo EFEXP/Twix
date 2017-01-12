@@ -65,7 +65,7 @@ fun SharedPreferences.discardBulk(): SharedPreferences {
 private var SharedPreferences.bulkEditor: SharedPreferences.Editor?
   get() = this.bulkEditor
 
-  set(editor: SharedPreferences.Editor?) {
+  set(editor) {
     this.bulkEditor = editor
   }
 

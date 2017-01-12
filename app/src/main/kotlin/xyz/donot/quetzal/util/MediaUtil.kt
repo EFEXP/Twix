@@ -1,7 +1,6 @@
 package xyz.donot.quetzal.util
 
 
-import twitter4j.ExtendedMediaEntity
 import twitter4j.MediaEntity
 import twitter4j.Status
 import java.util.*
@@ -23,19 +22,16 @@ val PIC_TWITTER_GIF_URL_2 = "png"
 val PIC_TWITTER_GIF_REPLACE_1 = "tweet_video"
 val PIC_TWITTER_GIF_REPLACE_2 = "mp4"
 
-fun getVideoURL(mediaEntities: Array<MediaEntity>, extendedMediaEntities: Array<ExtendedMediaEntity>): String? {
-    if (mediaEntities.size > 0) {
+fun getVideoURL(mediaEntities: Array<MediaEntity>): String? {
+    if (mediaEntities.isNotEmpty()) {
         val mediaEntity = mediaEntities[0]
         val url = mediaEntity.mediaURLHttps
         if (url.matches(PIC_TWITTER_GIF.toRegex())) {
             return url.replace(PIC_TWITTER_GIF_URL_1, PIC_TWITTER_GIF_REPLACE_1).replace(PIC_TWITTER_GIF_URL_2, PIC_TWITTER_GIF_REPLACE_2)
         }
-    }
-    // MP4 Video
-    if (extendedMediaEntities.size > 0) {
-        for (entity in extendedMediaEntities) {
+        for (entity in mediaEntities) {
             val variants = entity.videoVariants
-            if (variants != null && variants.size > 0) {
+            if (variants != null && variants.isNotEmpty()) {
                 val videoMap = TreeMap<Int, String>()
                 val bitrateList = ArrayList<Int>()
                 for (variant in variants) {
@@ -52,6 +48,8 @@ fun getVideoURL(mediaEntities: Array<MediaEntity>, extendedMediaEntities: Array<
             }
         }
     }
+    // MP4 Video
+
     return null
 }
 
@@ -106,14 +104,10 @@ fun getImageUrls(status: Status): ArrayList<String> {
         }
     }
 
-    if (status.extendedMediaEntities.size > 0) {
-        for (media in status.extendedMediaEntities) {
-            imageUrls.add(media.mediaURL)
-        }
+    if (status.mediaEntities.isNotEmpty()) {
+        status.mediaEntities.mapTo(imageUrls) { it.mediaURL }
     } else {
-        for (media in status.mediaEntities) {
-            imageUrls.add(media.mediaURL)
-        }
+        status.mediaEntities.mapTo(imageUrls) { it.mediaURL }
     }
 
     return imageUrls

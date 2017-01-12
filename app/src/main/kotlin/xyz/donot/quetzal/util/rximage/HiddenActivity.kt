@@ -80,7 +80,13 @@ class HiddenActivity : RxAppCompatActivity() {
         var pictureChooseIntent: Intent? = null
         when (sourceType) {
             Sources.CAMERA -> {
-                cameraPictureUrl =  FileProvider.getUriForFile(this@HiddenActivity, applicationContext.packageName + ".provider", createImageFile())
+                if(Build.VERSION.SDK_INT >=24){
+                    cameraPictureUrl =  FileProvider.getUriForFile(this@HiddenActivity, applicationContext.packageName + ".provider", createImageFile())
+                }
+                else{
+                    cameraPictureUrl = Uri.fromFile(createImageFile())
+                }
+
                 pictureChooseIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 pictureChooseIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPictureUrl)
                 chooseCode = TAKE_PHOTO

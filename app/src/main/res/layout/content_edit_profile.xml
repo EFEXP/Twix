@@ -15,12 +15,14 @@
     android:id="@+id/profile_banner"
     android:layout_centerHorizontal="true"
       android:scaleType="fitXY"
+      android:contentDescription="@string/banner"
     />
 
   <ImageView
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:id="@+id/icon"
+      android:contentDescription="@string/pugnotification_text_description_image_icon"
     android:layout_alignBottom="@+id/profile_banner"
     android:layout_centerHorizontal="true" />
 
