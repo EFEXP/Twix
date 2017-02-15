@@ -45,6 +45,12 @@ class TwitterUpdateObservable(val context: Context,val twitter: Twitter){
   fun destroyFriendShipAsync(long: Long): Observable<User> {
     return  safeTry(context){twitter.destroyFriendship(long)}
   }
+    fun createBlock(long: Long): Observable<User> {
+        return  safeTry(context){twitter.createBlock(long)}
+    }
+    fun destroyBlock(long: Long): Observable<User> {
+        return  safeTry(context){twitter.destroyBlock(long)}
+    }
   fun createList(name: String,isPublic:Boolean,description: String): Observable<UserList> {
     return  safeTry(context){twitter.createUserList(name,isPublic,description)}
   }
