@@ -117,6 +117,9 @@
       android:id="@+id/web_txt"
       android:layout_centerHorizontal="true"
       android:layout_weight="1"
+        android:gravity="center"
+        tools:text="https:"
+
       />
     <com.klinker.android.link_builder.LinkConsumableTextView
       android:layout_width="wrap_content"

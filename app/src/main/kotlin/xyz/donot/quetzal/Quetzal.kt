@@ -7,6 +7,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import xyz.donot.quetzal.model.realm.MyRealmMigration
 import xyz.donot.quetzal.util.extrautils.defaultSharedPreferences
+import xyz.donot.quetzal.util.extrautils.putBoolean
 import java.io.FileNotFoundException
 
 
@@ -23,6 +24,13 @@ class Quetzal : Application() {
         }
         catch(e:FileNotFoundException){}
         Realm.setDefaultConfiguration(config)
+
+       if(defaultSharedPreferences.getBoolean("first_start",true)){
+           Realm.getDefaultInstance().executeTransaction {
+               it.deleteAll()
+           }
+           defaultSharedPreferences.putBoolean("first_start",false)
+       }
 
       val design=  when(defaultSharedPreferences.getString("night_mode","auto")){
             "black"->{

@@ -41,10 +41,10 @@
       android:layout_toEndOf="@+id/icon"
         android:layout_toRightOf="@+id/icon"
         android:text="@{user.name}"
-        android:drawableEnd="@{user.verified ? @drawable/ic_check_circle_black_18dp : null}"
-        android:drawableRight="@{user.verified ? @drawable/ic_check_circle_black_18dp : null}"
-        />
 
+        />
+<!-- android:drawableEnd="@{user.verified ? @drawable/ic_check_circle_black_18dp : null}"
+        android:drawableRight="@{user.verified ? @drawable/ic_check_circle_black_18dp : null}"-->
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/screen_name"
       android:layout_width="wrap_content"

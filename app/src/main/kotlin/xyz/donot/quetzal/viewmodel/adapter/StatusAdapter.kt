@@ -37,7 +37,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
   }
 
   inner class ViewHolder(itemView: View) :BaseViewHolder<Status>(itemView) {
-   val binding :ItemTweetCardBinding = DataBindingUtil.bind(itemView)
+   val binding : ItemTweetCardBinding = DataBindingUtil.bind(itemView)
       override fun setData(data: Status) {
           super.setData(data)
           val item= if (data.isRetweet){
@@ -90,7 +90,7 @@ class StatusAdapter(context: Context) : BasicRecyclerAdapter<StatusAdapter.ViewH
                   if( !(context as Activity).isFinishing){
                       val tweetItem=if(getMyId() ==data.user.id){R.array.tweet_my_menu}else{R.array.tweet_menu}
                       AlertDialog.Builder(context)
-                              .setItems(tweetItem, { dialogInterface, int ->
+                              .setItems(tweetItem, { _, int ->
                                   val selectedItem=context.resources.getStringArray(tweetItem)[int]
                                   when (selectedItem) {
                                       "削除" -> {
